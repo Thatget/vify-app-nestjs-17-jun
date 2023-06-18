@@ -1,0 +1,25 @@
+{
+  "name": "vify-app-nestjs-17-jun",
+  "version": "1.0.0",
+  "main": "web/index.js_",
+  "license": "UNLICENSED",
+  "scripts": {
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy"
+  },
+  "dependencies": {
+    "@shopify/app": "3.46.5",
+    "@shopify/cli": "3.46.5"
+  },
+  "author": "Brucenguyen",
+  "private": true,
+  "workspaces": [
+    "web",
+    "web/frontend",
+    "extensions/*"
+  ]
+}
