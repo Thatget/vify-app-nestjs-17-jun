@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vify-app-nestjs-17-jun" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/web/backend" vcs="Git" />
   </component>
 </project>

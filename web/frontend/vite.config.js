@@ -43,6 +43,10 @@ if (host === "localhost") {
 }
 
 export default defineConfig({
+  esbuild: {
+    jsxFactory: 'h',
+    jsxFragment: 'Fragment',
+  },
   root: dirname(fileURLToPath(import.meta.url)),
   plugins: [react()],
   define: {
