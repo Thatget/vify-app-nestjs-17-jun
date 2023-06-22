@@ -9,29 +9,25 @@ import {
 import { ConfigModule } from "@nestjs/config";
 import { join } from "path";
 import shopify from "../utils/shopify";
-// import { ProductModule } from "./product/product.module.js";
 import { Request, Response, NextFunction } from "express";
 import { readFileSync } from "fs";
 import GDPRWebhookHandlers from "../utils/gdpr";
+import { StoreModule } from '../modules/store/store.module';
+import { AuthModule } from '../modules/auth/auth.module';
+import { DatabaseModule } from '../modules/database/database.module';
 
-// @Module({
-//   imports: [],
-//   controllers: [AppController],
-//   providers: [AppService],
-// })
-// export class AppModule {}
-
-// const STATIC_PATH =
-//     process.env.NODE_ENV === "production"
-//         ? `${process.cwd()}/frontend/dist`
-//         : `${process.cwd()}/frontend/`;
-const STATIC_PATH = '/Users/Brucenguyen/vify-app-nestjs-17-jun/web/frontend'
-console.log("Static path", STATIC_PATH)
+const STATIC_PATH =
+    process.env.NODE_ENV === "production"
+        ? `${process.cwd()}/../frontend/dist`
+        : `${process.cwd()}/../frontend/`;
 @Module({
   imports: [
+    AuthModule,
+    StoreModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    DatabaseModule
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -52,6 +48,7 @@ export class AppModule implements NestModule {
     // Validate Authenticated Session Middleware for Backend Routes
     consumer
         .apply(shopify.validateAuthenticatedSession())
+        .exclude({ path: "/api/auth/(.*)", method: RequestMethod.ALL }, { path: "/api/webhook/(.*)", method: RequestMethod.ALL })
         .forRoutes({ path: "/api/*", method: RequestMethod.ALL });
 
     // Webhooks
