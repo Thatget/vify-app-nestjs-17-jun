@@ -1,9 +1,13 @@
-import ReactDOM from "react-dom";
-
 import App from "./App";
-import { initI18n } from "./utils/i18nUtils";
+import React from "react";
+import ReactDOM from "react-dom"
+import {CssBaseline} from "@mui/material";
 
-// Ensure that locales are loaded before rendering the app
-initI18n().then(() => {
-  ReactDOM.render(<App />, document.getElementById("app"));
-});
+const rootElement = document.getElementById("app")
+ReactDOM.render(
+    <React.StrictMode>
+        <CssBaseline />
+            <App />
+    </React.StrictMode>,
+    rootElement
+)
