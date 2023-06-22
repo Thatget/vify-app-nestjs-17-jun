@@ -1,37 +1,38 @@
-import { BrowserRouter } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { NavigationMenu } from "@shopify/app-bridge-react";
-import Routes from "./Routes";
+import {BrowserRouter, Route, Routes,Link} from "react-router-dom";
+import HomePage from "./pages";
+import React, {useState} from "react";
+import Products from "./pages/Products";
+import Quotes from "./pages/Quotes";
+import ResponsiveAppBar from "./components/MenuBar";
+import Setting from "./pages/Setting";
+import GettingStarted from "./pages/GettingStarted";
+import SaleOff from "./components/SaleOff";
 
-import {
-  AppBridgeProvider,
-  QueryProvider,
-  PolarisProvider,
-} from "./components";
-
-export default function App() {
-  // Any .tsx or .jsx files in /pages will become a route
-  // See documentation for <Routes /> for more info
-  const pages = import.meta.globEager('./pages/**/!(*.test.[jt]sx)*.([jt]sx)');
-  const { t } = useTranslation();
-
-  return (
-    <PolarisProvider>
-      <BrowserRouter>
-        <AppBridgeProvider>
-          <QueryProvider>
-            <NavigationMenu
-              navigationLinks={[
-                {
-                  label: t("NavigationMenu.pageName"),
-                  destination: "/pagename",
-                },
-              ]}
-            />
-            <Routes pages={pages} />
-          </QueryProvider>
-        </AppBridgeProvider>
-      </BrowserRouter>
-    </PolarisProvider>
-  );
+export interface IApplicationProps {
 }
+
+const App: React.FunctionComponent<IApplicationProps> = (props) => {
+    const[path,setPath]=useState("")
+    const getPath = (childData:string) => {
+        setPath(childData)
+        console.log("path",childData)
+    }
+
+    return (
+        <BrowserRouter>
+            <ResponsiveAppBar parentCallback={getPath}/>
+            <SaleOff />
+
+
+            <Routes>
+                <Route path="/" element={<GettingStarted/>} />
+                <Route path="GettingStarted" element={<GettingStarted/>} />
+                <Route path="Quotes" element={<Quotes />} />
+                <Route path="Products" element={<Products />} />
+                <Route path="Setting" element={<Setting />} />
+
+            </Routes>
+        </BrowserRouter>
+    );
+};
+export default App
