@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Inject , Res } from '@nestjs/common';
 import { StoreService } from '../store/store.service';
 import shopify from '../../utils/shopify';
 
@@ -10,10 +10,8 @@ export class AuthController {
     console.log("Quyet da qua buoc begin")
   }
   @Get('callback')
-  async getStoreCallBack(@Query() query) {
-    // await this.storeService.create({shop: query.shop})
-    console.log(query)
-    // shopify.redirectToShopifyOrAppRoot()
-    return "fff";
+  async getStoreCallBack(@Query() query, @Res() res) {
+    await this.storeService.create({shop: query.shop})
+    return res.redirect(`https://${query.shop}/admin`);
   }
 }
