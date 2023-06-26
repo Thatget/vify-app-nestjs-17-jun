@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ReactNode, useMemo, useState } from "react";
+import { To, useLocation, useNavigate } from "react-router-dom";
 import { Provider } from "@shopify/app-bridge-react";
 import { Banner, Layout, Page } from "@shopify/polaris";
 
@@ -12,12 +12,15 @@ import { Banner, Layout, Page } from "@shopify/polaris";
  *
  * See: https://shopify.dev/apps/tools/app-bridge/getting-started/using-react
  */
-export function AppBridgeProvider({ children }) {
+interface AppBridgeProviderProps {
+  children: ReactNode;
+}
+export function AppBridgeProvider({ children }: AppBridgeProviderProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const history = useMemo(
     () => ({
-      replace: (path) => {
+      replace: (path: To) => {
         navigate(path, { replace: true });
       },
     }),

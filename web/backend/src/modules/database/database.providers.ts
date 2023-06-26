@@ -1,7 +1,10 @@
+import { ConfigModule } from '@nestjs/config';
+import databaseConfig from '../../config/database.config';
 import { DataSource } from 'typeorm';
 
 export const databaseProviders = [
   {
+    // imports: [ConfigModule],
     provide: 'DATA_SOURCE',
     useFactory: async () => {
       const dataSource = new DataSource({
@@ -11,8 +14,8 @@ export const databaseProviders = [
         username: 'vify_user',
         password: 'vify_password',
         database: 'vify_database',
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
+        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       });
 
       return dataSource.initialize();

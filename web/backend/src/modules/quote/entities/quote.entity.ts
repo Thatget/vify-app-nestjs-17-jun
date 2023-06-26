@@ -4,7 +4,9 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export class Quote {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ unique: true })
+  @Column()
+  name: string;
+  @Column()
   email: string;
   @Column('tinyint')
   status: number;

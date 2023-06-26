@@ -15,6 +15,7 @@ import GDPRWebhookHandlers from "../utils/gdpr";
 import { StoreModule } from '../modules/store/store.module';
 import { AuthModule } from '../modules/auth/auth.module';
 import { DatabaseModule } from '../modules/database/database.module';
+import { QuoteModule } from '../modules/quote/quote.module';
 
 const STATIC_PATH =
     process.env.NODE_ENV === "production"
@@ -24,6 +25,7 @@ const STATIC_PATH =
   imports: [
     AuthModule,
     StoreModule,
+    QuoteModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

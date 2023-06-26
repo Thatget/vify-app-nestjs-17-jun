@@ -3,7 +3,7 @@ import { QuoteService } from './quote.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { UpdateQuoteDto } from './dto/update-quote.dto';
 
-@Controller('quote')
+@Controller('api/quote')
 export class QuoteController {
   constructor(private readonly quoteService: QuoteService) {}
 
@@ -13,8 +13,11 @@ export class QuoteController {
   }
 
   @Get()
-  findAll() {
-    return this.quoteService.findAll();
+  async findAll() {
+    const a = new Promise((resolve) => setTimeout(resolve, 9000));
+    await a;
+    return [{id: 1, name: 'Quyet', email: 'Quyet.nguyen.7712826@gmail.com', status: 1}]
+    // return this.quoteService.findAll();
   }
 
   @Get(':id')
