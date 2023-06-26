@@ -14,10 +14,8 @@ export class QuoteController {
 
   @Get()
   async findAll() {
-    const a = new Promise((resolve) => setTimeout(resolve, 9000));
-    await a;
-    return [{id: 1, name: 'Quyet', email: 'Quyet.nguyen.7712826@gmail.com', status: 1}]
-    // return this.quoteService.findAll();
+    const a = await this.quoteService.findAll()
+    return a;
   }
 
   @Get(':id')

@@ -8,6 +8,7 @@ import Setting from "./pages/Setting";
 import GettingStarted from "./pages/GettingStarted";
 import SaleOff from "./components/SaleOff";
 import { AppBridgeProvider, QueryProvider } from "./components";
+import NotFound from "./pages/NotFound";
 
 export interface IApplicationProps {
 }
@@ -31,6 +32,7 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
                   <Route path="Quotes" element={<Quotes />} />
                   <Route path="Products" element={<Products />} />
                   <Route path="Setting" element={<Setting />} />
+                  <Route path="*" element={<NotFound />} />
               </Routes>
             </QueryProvider>
           </AppBridgeProvider>

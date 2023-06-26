@@ -6,7 +6,7 @@ export class AuthController {
   constructor(@Inject(StoreService) private readonly storeService: StoreService) {}
   @Get()
   getStoreBegin() {
-    console.log("Quyet da qua buoc begin")
+    console.log("Authen api")
   }
   @Get('callback')
   async getStoreCallBack(@Query() query, @Res() res) {
