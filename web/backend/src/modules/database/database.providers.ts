@@ -1,10 +1,7 @@
-import { ConfigModule } from '@nestjs/config';
-import databaseConfig from '../../config/database.config';
 import { DataSource } from 'typeorm';
 
 export const databaseProviders = [
   {
-    // imports: [ConfigModule],
     provide: 'DATA_SOURCE',
     useFactory: async () => {
       const dataSource = new DataSource({

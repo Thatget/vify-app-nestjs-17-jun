@@ -1,41 +1,66 @@
-import {LegacyCard, Tabs} from '@shopify/polaris';
-import {useState, useCallback} from 'react';
+import * as React from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import FormTemplate from '../components/FormTemplate/Index';
+import SettingComponent from '../components/Setting/Index';
 
-import React from 'react'
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
-type Props = {}
-
-const Setting = (props: Props) => {
-  const [selected, setSelected] = useState<number>(0);
-
-  const handleTabChange = useCallback(
-    
-    (selectedTabIndex: number) => setSelected(selectedTabIndex),
-    [],
-  );
-
-  const tabs = [
-    {
-      id: 'all-customers-1',
-      content: 'All',
-      accessibilityLabel: 'All customers',
-      panelID: 'all-customers-content-1',
-    },
-    {
-      id: 'prospects-1',
-      content: 'Prospects',
-      panelID: 'prospects-content-1',
-    },
-  ];
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
 
   return (
-    <>
-    <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
-      <LegacyCard.Section title={tabs[selected].content}>
-        <p>Tabselected</p>
-      </LegacyCard.Section>
-    </Tabs>
-    </>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+const Setting = () => {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Setting" {...a11yProps(0)} />
+          <Tab label="Template" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <SettingComponent />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <FormTemplate />
+      </TabPanel>
+    </Box>
   );
 }
 

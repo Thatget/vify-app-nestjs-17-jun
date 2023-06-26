@@ -7,7 +7,7 @@ import ResponsiveAppBar from "./components/MenuBar";
 import Setting from "./pages/Setting";
 import GettingStarted from "./pages/GettingStarted";
 import SaleOff from "./components/SaleOff";
-import { AppBridgeProvider, QueryProvider } from "./components";
+import { AppBridgeProvider, PolarisProvider, QueryProvider } from "./components";
 import NotFound from "./pages/NotFound";
 
 export interface IApplicationProps {
@@ -21,6 +21,7 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
     }
 
     return (
+      <PolarisProvider>
         <BrowserRouter>
           <AppBridgeProvider>
             <QueryProvider>
@@ -37,6 +38,7 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
             </QueryProvider>
           </AppBridgeProvider>
         </BrowserRouter>
+      </PolarisProvider>
     );
 };
 export default App
