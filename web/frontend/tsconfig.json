@@ -30,7 +30,8 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "test/**/*.spec.ts"
   ],
   "exclude": [
     "node_modules/**"

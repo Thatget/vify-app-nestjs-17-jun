@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-const Willdesk =(
+const Sales =(
     <React.Fragment>
         <Grid container spacing={2}>
             <Grid item xs={8}>
@@ -45,7 +45,7 @@ export default function SaleOff(){
                 <br/>
                 <Container>
                     <Box sx={{minWidth: 275}}>
-                        <Card variant="outlined">{Willdesk}</Card>
+                        <Card variant="outlined">{Sales}</Card>
                     </Box>
                 </Container>
             </React.Fragment>

@@ -9,6 +9,7 @@ import {
   DEFAULT_LOCALE as DEFAULT_POLARIS_LOCALE,
   SUPPORTED_LOCALES as SUPPORTED_POLARIS_LOCALES,
 } from "@shopify/polaris";
+import locale from "dayjs/locale/*";
 
 /**
  * The default locale for the app.
@@ -29,7 +30,7 @@ const DEFAULT_APP_LOCALE = "en";
  */
 const SUPPORTED_APP_LOCALES = ["en", "de", "fr"];
 
-let _userLocale, _polarisTranslations;
+let _userLocale:any, _polarisTranslations:any;
 
 /**
  * Retrieves the user's locale from the `locale` request parameter and matches it to supported app locales.
@@ -103,7 +104,7 @@ async function loadIntlPolyfills() {
  * @see Available Shopify Admin languages in the Shopify Help Center:
  * https://help.shopify.com/en/manual/your-account/languages#available-languages
  */
-const PLURAL_RULES_LOCALE_DATA = {
+const PLURAL_RULES_LOCALE_DATA: {[Key:string]: any} = {
   cs: () => import("@formatjs/intl-pluralrules/locale-data/cs"),
   da: () => import("@formatjs/intl-pluralrules/locale-data/da"),
   de: () => import("@formatjs/intl-pluralrules/locale-data/de"),
@@ -126,7 +127,7 @@ const PLURAL_RULES_LOCALE_DATA = {
   zh: () => import("@formatjs/intl-pluralrules/locale-data/zh"),
 };
 
-async function loadIntlPluralRulesLocaleData(locale) {
+async function loadIntlPluralRulesLocaleData(locale:any):Promise<any> {
   return (await PLURAL_RULES_LOCALE_DATA[locale]()).default;
 }
 /**
@@ -159,7 +160,7 @@ async function initI18next() {
 }
 
 function localResourcesToBackend() {
-  return resourcesToBackend(async (locale, _namespace) => {
+  return resourcesToBackend(async (locale:any, _namespace:any) => {
     return (await import(`../locales/${locale}.json`)).default;
   });
 }
@@ -198,7 +199,7 @@ async function fetchPolarisTranslations() {
  * for files with relative paths, not packages.
  * @see https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#limitations
  */
-const POLARIS_LOCALE_DATA = {
+const POLARIS_LOCALE_DATA: {[Key:string]: any}  = {
   cs: () => import("@shopify/polaris/locales/cs.json"),
   da: () => import("@shopify/polaris/locales/da.json"),
   de: () => import("@shopify/polaris/locales/de.json"),
@@ -222,6 +223,9 @@ const POLARIS_LOCALE_DATA = {
   "zh-TW": () => import("@shopify/polaris/locales/zh-TW.json"),
 };
 
-async function loadPolarisTranslations(locale) {
-  return (await POLARIS_LOCALE_DATA[locale]()).default;
+async function loadPolarisTranslations(locale:any) {
+  let result : any
+
+   result = await  POLARIS_LOCALE_DATA[locale]()
+  return result.default;
 }

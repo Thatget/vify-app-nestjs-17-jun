@@ -12,6 +12,7 @@ import { Banner, Layout, Page } from "@shopify/polaris";
  *
  * See: https://shopify.dev/apps/tools/app-bridge/getting-started/using-react
  */
+
 interface AppBridgeProviderProps {
   children: ReactNode;
 }
