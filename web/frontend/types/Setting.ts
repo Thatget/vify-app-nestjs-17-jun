@@ -1,8 +1,9 @@
 interface Setting {
-  hide_price?: number;
-  hide_by_now?: string;
-  hide_add_to_cart?: string;
-  hide_request_to_quote?: string;
+  shop?: string;
+  hide_price?: boolean;
+  hide_by_now?: boolean;
+  hide_add_to_cart?: boolean;
+  hide_request_to_quote?: boolean;
 }
 
 export default Setting;

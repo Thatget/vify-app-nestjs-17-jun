@@ -10,17 +10,20 @@ export class SettingController {
 
   @Post()
   create(@Body() createSettingDto: CreateSettingDto) {
+    console.log("FX");
     return this.settingService.create(createSettingDto);
   }
 
   @Get()
   async findOne(@Req() req: Request, @Res() res: Response) {
+    console.log("FY")
     try {
-      const shop = res.locals.shopify.session;
+      const { shop } = res.locals.shopify.session;
       if (shop) {
         const setting = await this.settingService.findByShop(shop);
         return res.send(setting);
       }
+      return {}
     } catch (error) {
       return res.json({message: error.message});
     }
