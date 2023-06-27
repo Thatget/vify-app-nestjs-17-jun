@@ -1,5 +1,5 @@
-import { Store } from './../../store/entities/store.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Store } from './../../store/entities/store.entity';
 
 @Entity()
 export class Setting {
@@ -15,7 +15,9 @@ export class Setting {
   hide_request_a_quote: boolean;
   @Column()
   form_number: number;
+  @Column({ unique: true })
+  shop: string;
   @OneToOne(() => Store)
   @JoinColumn({ name: 'store_id' })
-  user: Store;
+  store_id: Store;
 }

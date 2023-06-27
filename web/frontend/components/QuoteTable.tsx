@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useDemoData } from '@mui/x-data-grid-generator';
 import { styled } from '@mui/material/styles';
-import Quote from 'types/Quote';
+import Quote from '../types/Quote';
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',

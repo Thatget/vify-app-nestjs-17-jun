@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Res, Req } from '@nestjs/common';
 import { SettingService } from './setting.service';
 import { CreateSettingDto } from './dto/create-setting.dto';
 import { UpdateSettingDto } from './dto/update-setting.dto';
+import {Request, Response} from "express";
 
-@Controller('setting')
+@Controller('api/setting')
 export class SettingController {
   constructor(private readonly settingService: SettingService) {}
 
@@ -13,13 +14,16 @@ export class SettingController {
   }
 
   @Get()
-  findAll() {
-    return this.settingService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.settingService.findOne(+id);
+  async findOne(@Req() req: Request, @Res() res: Response) {
+    try {
+      const shop = res.locals.shopify.session;
+      if (shop) {
+        const setting = await this.settingService.findByShop(shop);
+        return res.send(setting);
+      }
+    } catch (error) {
+      return res.json({message: error.message});
+    }
   }
 
   @Patch(':id')
@@ -27,8 +31,4 @@ export class SettingController {
     return this.settingService.update(+id, updateSettingDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.settingService.remove(+id);
-  }
 }

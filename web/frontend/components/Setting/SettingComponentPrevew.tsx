@@ -1,10 +1,18 @@
+import { Card } from '@material-ui/core'
 import React from 'react'
+import Setting from '../../types/Setting'
 
-type Props = {}
+interface SettingComponentPrevewProps {
+  setting: Setting;
+}
 
-const SettingComponentPrevew = (props: Props) => {
+const SettingComponentPrevew: React.FC<SettingComponentPrevewProps>  = ({setting}) => {
   return (
-    <div>SettingComponentPrevew</div>
+    <div>
+      <Card>
+        Preview
+      </Card>
+    </div>
   )
 }
 

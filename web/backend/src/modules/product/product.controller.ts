@@ -7,22 +7,20 @@ import {CreateProductDto} from "./dto/create-product.dto";
 import {UpdateProductDto} from "./dto/update-product.dto";
 import fetchProducts from "./products";
 import {shopifyApi} from "@shopify/shopify-api";
-import {ShopifyModule} from "../../shopify/shopify.module";
-import {ShopifyService} from "../../shopify/shopify.service";
 import {Request, Response} from "express";
 
 @Controller('api/products')
 
 export class ProductController {
 
-    constructor(private readonly productService: ProductService,private readonly shopifyService: ShopifyService) {}
+    constructor(private readonly productService: ProductService) {}
 
     @Get()
     async getAllProducts(@Req() req: Request,@Res() res: Response) {
         try{
             let status = 200;
             const products = await fetchProducts(res.locals.shopify.session);
-            console.log("products",products)
+            console.log(res.locals.shopify)
             return this.productService.findAll()
         }
         catch (e){
