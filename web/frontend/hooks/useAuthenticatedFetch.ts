@@ -18,14 +18,15 @@ export function useAuthenticatedFetch() {
   const app = useAppBridge();
   const fetchFunction = authenticatedFetch(app);
 
-  return async (uri, options) => {
+  return async (uri:any, options:any):Promise<Response> => {
     const response = await fetchFunction(uri, options);
     checkHeadersForReauthorization(response.headers, app);
+    console.log("Response from UseAuthen",response)
     return response;
   };
 }
 
-function checkHeadersForReauthorization(headers, app) {
+function checkHeadersForReauthorization(headers:any, app:any) {
   if (headers.get("X-Shopify-API-Request-Failure-Reauthorize") === "1") {
     const authUrlHeader =
       headers.get("X-Shopify-API-Request-Failure-Reauthorize-Url") ||

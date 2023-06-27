@@ -7,6 +7,7 @@ import ResponsiveAppBar from "./components/MenuBar";
 import Setting from "./pages/Setting";
 import GettingStarted from "./pages/GettingStarted";
 import SaleOff from "./components/SaleOff";
+import {AppBridgeProvider, PolarisProvider, QueryProvider} from "./components";
 
 export interface IApplicationProps {
 }
@@ -19,20 +20,23 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
     }
 
     return (
+        <PolarisProvider>
         <BrowserRouter>
-            <ResponsiveAppBar parentCallback={getPath}/>
-            <SaleOff />
-
-
-            <Routes>
-                <Route path="/" element={<GettingStarted/>} />
-                <Route path="GettingStarted" element={<GettingStarted/>} />
-                <Route path="Quotes" element={<Quotes />} />
-                <Route path="Products" element={<Products />} />
-                <Route path="Setting" element={<Setting />} />
-
-            </Routes>
+            <AppBridgeProvider>
+                <QueryProvider>
+                    <ResponsiveAppBar parentCallback={getPath}/>
+                    <SaleOff />
+                    <Routes>
+                        <Route path="/" element={<GettingStarted/>} />
+                        <Route path="GettingStarted" element={<GettingStarted/>} />
+                        <Route path="Quotes" element={<Quotes />} />
+                        <Route path="Products" element={<Products />} />
+                        <Route path="Setting" element={<Setting />} />
+                    </Routes>
+                </QueryProvider>
+            </AppBridgeProvider>
         </BrowserRouter>
+        </PolarisProvider>
     );
 };
 export default App

@@ -28,7 +28,7 @@
     "@mui/x-date-pickers-pro": "^6.8.0",
     "@shopify/app-bridge": "^3.7.7",
     "@shopify/app-bridge-react": "^3.7.7",
-    "@shopify/i18next-shopify": "0.2.0",
+    "@shopify/i18next-shopify": "^0.2.3",
     "@shopify/polaris": "^10.49.1",
     "@vitejs/plugin-react": "1.2.0",
     "boostrap": "^2.0.0",
