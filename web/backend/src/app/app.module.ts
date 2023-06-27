@@ -17,6 +17,7 @@ import {AuthModule} from '../modules/auth/auth.module';
 import {DatabaseModule} from '../modules/database/database.module';
 import {ProductModule} from "../modules/product/product.module";
 import {ShopifyModule} from "../shopify/shopify.module";
+import { QuoteModule } from '../modules/quote/quote.module';
 
 const STATIC_PATH =
     process.env.NODE_ENV === "production"
@@ -28,6 +29,7 @@ const STATIC_PATH =
         AuthModule,
         StoreModule,
         ProductModule,
+        QuoteModule,
         ShopifyModule,
         ConfigModule.forRoot({
             isGlobal: true,

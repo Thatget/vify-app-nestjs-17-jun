@@ -12,8 +12,8 @@ export const databaseProviders = [
         username: 'root',
         password: 'root',
         database: 'vify_database',
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
+        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       });
 
       return dataSource.initialize();

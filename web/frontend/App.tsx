@@ -7,7 +7,8 @@ import ResponsiveAppBar from "./components/MenuBar";
 import Setting from "./pages/Setting";
 import GettingStarted from "./pages/GettingStarted";
 import SaleOff from "./components/SaleOff";
-import {AppBridgeProvider, PolarisProvider, QueryProvider} from "./components";
+import { AppBridgeProvider, PolarisProvider, QueryProvider } from "./components";
+import NotFound from "./pages/NotFound";
 
 export interface IApplicationProps {
 }
@@ -20,23 +21,24 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
     }
 
     return (
-        <PolarisProvider>
+      <PolarisProvider>
         <BrowserRouter>
-            <AppBridgeProvider>
-                <QueryProvider>
-                    <ResponsiveAppBar parentCallback={getPath}/>
-                    <SaleOff />
-                    <Routes>
-                        <Route path="/" element={<GettingStarted/>} />
-                        <Route path="GettingStarted" element={<GettingStarted/>} />
-                        <Route path="Quotes" element={<Quotes />} />
-                        <Route path="Products" element={<Products />} />
-                        <Route path="Setting" element={<Setting />} />
-                    </Routes>
-                </QueryProvider>
-            </AppBridgeProvider>
+          <AppBridgeProvider>
+            <QueryProvider>
+              <ResponsiveAppBar parentCallback={getPath}/>
+              <SaleOff />
+              <Routes>
+                  <Route path="/" element={<GettingStarted/>} />
+                  <Route path="GettingStarted" element={<GettingStarted/>} />
+                  <Route path="Quotes" element={<Quotes />} />
+                  <Route path="Products" element={<Products />} />
+                  <Route path="Setting" element={<Setting />} />
+                  <Route path="*" element={<NotFound />} />
+              </Routes>
+            </QueryProvider>
+          </AppBridgeProvider>
         </BrowserRouter>
-        </PolarisProvider>
+      </PolarisProvider>
     );
 };
 export default App

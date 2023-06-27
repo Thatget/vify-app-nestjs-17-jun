@@ -1,6 +1,6 @@
 import { useAuthenticatedFetch } from "./useAuthenticatedFetch";
 import { useMemo } from "react";
-import { useQuery } from "react-query";
+import { useQuery, UseQueryOptions } from "react-query";
 
 /**
  * A hook for querying your custom app data.
@@ -14,17 +14,31 @@ import { useQuery } from "react-query";
  *
  * @returns Return value of useQuery.  See: https://react-query.tanstack.com/reference/useQuery.
  */
-export const useAppQuery = ({ url, fetchInit = {}, reactQueryOptions }:any) => {
-  const authenticatedFetch = useAuthenticatedFetch();
-  const fetch = useMemo(() => {
-    return async () => {
-      const response = await authenticatedFetch(url, fetchInit);
-      return response.json();
-    };
-  }, [url, JSON.stringify(fetchInit)]);
 
-  return useQuery(url, fetch, {
-    ...reactQueryOptions,
-    refetchOnWindowFocus: false,
-  });
+interface UseAppQueryOptions<TData> {
+  url: string;
+  fetchInit?: RequestInit;
+  reactQueryOptions?: UseQueryOptions<TData>;
+}
+export const useAppQuery = <TData>({
+  url,
+  fetchInit = {},
+  reactQueryOptions,
+}: UseAppQueryOptions<TData>) => {
+  try {
+    const authenticatedFetch = useAuthenticatedFetch();
+    const fetch = useMemo(() => {
+      return async () => {
+        const response = await authenticatedFetch(url, fetchInit);
+        return response.json();
+      };
+    }, [url, JSON.stringify(fetchInit)]);
+
+    return useQuery(url, fetch, {
+      ...reactQueryOptions,
+      refetchOnWindowFocus: false,
+    });
+  } catch (error) {
+    alert(error.message)
+  }
 };

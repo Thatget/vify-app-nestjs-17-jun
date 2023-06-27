@@ -1,8 +1,11 @@
+import React from 'react'
 import { Card, EmptyState, Page } from "@shopify/polaris";
 import { useTranslation } from "react-i18next";
 import { notFoundImage } from "../assets/index";
 
-export default function NotFound() {
+type Props = {}
+
+const NotFound = (props: Props) => {
   const { t } = useTranslation();
   return (
     <Page>
@@ -16,3 +19,5 @@ export default function NotFound() {
     </Page>
   );
 }
+
+export default NotFound
