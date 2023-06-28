@@ -35,16 +35,16 @@ const SettingComponent = () => {
             hide_add_to_cart: value,
           };
           break;
-        case "hide_by_now":
+        case "hide_buy_now":
           return {
             ...prevSetting,
-            hide_by_now: value,
+            hide_buy_now: value,
           };
           break;
-        case "hide_request_to_quote":
+        case "hide_request_for_quote":
           return {
             ...prevSetting,
-            hide_request_to_quote: value,
+            hide_request_for_quote: value,
           };
           break;
         default:

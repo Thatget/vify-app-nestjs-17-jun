@@ -10,8 +10,23 @@ export class SettingService {
     @Inject ('SETTING_REPOSITORY')
     private settingRepository: Repository<Setting>,
   ) {}
-  create(createSettingDto: CreateSettingDto) {
-    return 'This action adds a new setting';
+  async createOrUpdate(createSettingDto: CreateSettingDto) {
+    const shop = createSettingDto.shop;
+    if (shop) {
+      const options: FindOneOptions<Setting> = {
+        where: { shop },
+      };
+      const settingExit = await this.settingRepository.findOne(options);
+      if (settingExit) {
+        // Cập nhật entity đã tồn tại
+        const entityUpdate = { ...settingExit, ...createSettingDto };
+        return this.settingRepository.save(entityUpdate);
+      } else {
+        // Tạo mới entity
+        return this.settingRepository.save(createSettingDto);
+      }
+    }
+    throw new Error('store is required');
   }
 
   async findByShop(shop: string) {
@@ -19,7 +34,7 @@ export class SettingService {
       where: { shop },
     };
     const setting = await this.settingRepository.findOne(options);
-    return ;
+    return setting;
   }
 
   update(id: number, updateSettingDto: UpdateSettingDto) {

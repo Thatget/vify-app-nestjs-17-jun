@@ -20,7 +20,6 @@ export class ProductController {
         try{
             let status = 200;
             const products = await fetchProducts(res.locals.shopify.session);
-            console.log(res.locals.shopify)
             return this.productService.findAll()
         }
         catch (e){

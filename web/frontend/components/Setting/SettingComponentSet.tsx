@@ -21,22 +21,17 @@ const SettingComponentSet: React.FC<SettingComponentSetProps> = ({setting, handl
     handleUpdateSetting(event.target.name, event.target.checked)
   }
   const submitSetting = () => {
-    const { data } = useAppQuery({
-      url: "/api/setting",
-        reactQueryOptions: {
-          onSuccess: () => {
-            // setIsLoading(false);
-            // setSetting(data);
-          }
-        },
-      });
-    // const data = fetch('/api/setting', {method: 'POST'});
-    console.log(currentSetting)
+    const data = fetch('/api/setting', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(currentSetting),
+    });
   }
 
   return (
     <div>
-      <Card>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', padding: '5px'}}>
           <span>Hide Price</span>
           <Switch checked={currentSetting?.hide_price ? currentSetting?.hide_price: false} name='hide_price' onChange={handleChangeSetting} />
@@ -47,16 +42,13 @@ const SettingComponentSet: React.FC<SettingComponentSetProps> = ({setting, handl
         </div>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', padding: '5px'}}>
           <span>Hide Buy now</span>
-          <Switch checked={currentSetting?.hide_by_now ? currentSetting?.hide_by_now : false} name='hide_by_now' onChange={handleChangeSetting} />
+          <Switch checked={currentSetting?.hide_buy_now ? currentSetting?.hide_buy_now : false} name='hide_buy_now' onChange={handleChangeSetting} />
         </div>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', padding: '5px'}}>
           <span>Hide Request To Quote</span>
-          <Switch checked={currentSetting?.hide_request_to_quote ? currentSetting?.hide_request_to_quote : false} name='hide_request_to_quote' onChange={handleChangeSetting} />
+          <Switch checked={currentSetting?.hide_request_for_quote ? currentSetting?.hide_request_for_quote : false} name='hide_request_for_quote' onChange={handleChangeSetting} />
         </div>
-      </Card>
-      <Card>
         <Button fullWidth onClick={() => submitSetting()}>Save</Button>
-      </Card>
     </div>
   )
 }
