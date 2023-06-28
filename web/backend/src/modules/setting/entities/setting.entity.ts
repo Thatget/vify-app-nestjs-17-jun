@@ -12,9 +12,7 @@ export class Setting {
   @Column({ type: 'boolean', default: false })
   hide_buy_now: boolean;
   @Column({ type: 'boolean', default: false })
-  hide_request_a_quote: boolean;
-  @Column()
-  form_number: number;
+  show_request_for_quote: boolean;
   @Column({ unique: true })
   shop: string;
   @OneToOne(() => Store)

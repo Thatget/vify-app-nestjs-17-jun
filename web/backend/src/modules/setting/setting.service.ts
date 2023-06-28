@@ -20,10 +20,12 @@ export class SettingService {
       if (settingExit) {
         // Cập nhật entity đã tồn tại
         const entityUpdate = { ...settingExit, ...createSettingDto };
-        return this.settingRepository.save(entityUpdate);
+        const setting = this.settingRepository.save(entityUpdate);
+        return setting;
       } else {
         // Tạo mới entity
-        return this.settingRepository.save(createSettingDto);
+        const setting = this.settingRepository.save(createSettingDto);
+        return setting;
       }
     }
     throw new Error('store is required');

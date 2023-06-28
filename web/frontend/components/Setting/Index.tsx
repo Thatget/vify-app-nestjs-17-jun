@@ -41,10 +41,10 @@ const SettingComponent = () => {
             hide_buy_now: value,
           };
           break;
-        case "hide_request_for_quote":
+        case "show_request_for_quote":
           return {
             ...prevSetting,
-            hide_request_for_quote: value,
+            show_request_for_quote: value,
           };
           break;
         default:

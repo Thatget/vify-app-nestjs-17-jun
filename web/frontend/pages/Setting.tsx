@@ -2,6 +2,15 @@ import * as React from 'react';
 import SettingComponent from '../components/Setting/Index';
 import FormTemplate from '../components/FormTemplate/Index';
 import { Tabs } from '@shopify/polaris';
+import {
+  LegacyCard,
+  LegacyStack,
+  Button,
+  Collapsible,
+  TextContainer,
+  Link,
+} from '@shopify/polaris';
+
 const Setting = () => {
   const [selected, setSelected] = React.useState(0);
   const handleTabChange = React.useCallback(
