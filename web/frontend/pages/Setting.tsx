@@ -1,44 +1,21 @@
-import * as React from 'react';
-import SettingComponent from '../components/Setting/Index';
-import FormTemplate from '../components/FormTemplate/Index';
-import { Tabs } from '@shopify/polaris';
-import {
-  LegacyCard,
-  LegacyStack,
-  Button,
-  Collapsible,
-  TextContainer,
-  Link,
-} from '@shopify/polaris';
+import React from 'react'
+import { Grid, Page } from '@shopify/polaris'
+import SettingComponentSet from '../components/Setting/SettingComponentSet'
+import SettingComponentPrevew from '../components/Setting/SettingComponentPrevew'
 
 const Setting = () => {
-  const [selected, setSelected] = React.useState(0);
-  const handleTabChange = React.useCallback(
-    (selectedTabIndex: number) => setSelected(selectedTabIndex),
-    [],
-  );
-  const tabs = [
-    {
-      id: 'setting',
-      content: 'Setting',
-      accessibilityLabel: 'Setting',
-      panelID: 'setting',
-      children: <SettingComponent />,
-    },
-    {
-      id: 'form',
-      content: 'Form',
-      accessibilityLabel: 'Form',
-      panelID: 'form',
-      children: <FormTemplate />,
-    },
-  ];
-
   return (
-    <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
-      { tabs[selected].children }
-    </Tabs>
-  );
+    <Page fullWidth>
+      <Grid>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
+          <SettingComponentSet />
+        </Grid.Cell>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
+          <SettingComponentPrevew setting={ undefined } />
+        </Grid.Cell>
+      </Grid>
+    </Page>
+  )
 }
 
 export default Setting
