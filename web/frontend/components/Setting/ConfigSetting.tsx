@@ -1,41 +1,30 @@
 import { Switch } from '@mui/material'
-import { Button, Divider, Text, VerticalStack} from '@shopify/polaris'
-import React, { useEffect, useState } from 'react'
-
-type ConfigSetting = {
-  hide_price: boolean;
-  hide_buy_now: boolean;
-  show_request_for_quote: boolean;
-}
-type Props = {
-  configSetting: ConfigSetting
-}
+import { Divider, Text, VerticalStack} from '@shopify/polaris'
+import React, { useContext } from 'react'
+import { StoreContext, actions } from '../../store'
 
 const defaultConfigSetting = { hide_price: false, hide_buy_now: false, show_request_for_quote: false };
 
-const ConfigSetting = (props: Props) => {
-  const [localConfigSetting, setLocalConfigSetting] = useState<ConfigSetting>(defaultConfigSetting);
-  useEffect(() => {
-    setLocalConfigSetting({...props.configSetting})
-  }, [props.configSetting])
-  
+const ConfigSetting = () => {
+  const [state, dispatch] = useContext(StoreContext)
+  const localConfigSetting = ({ ...defaultConfigSetting, ...state.setting, ...state.currentSetting });
+
   const handleChangeConfig = (configKey: string) => {
-    let curruntLocalConfigSetting = {...defaultConfigSetting};
     switch (configKey) {
       case 'hide_price':
-        curruntLocalConfigSetting = {...localConfigSetting, hide_price: !localConfigSetting.hide_price};
+        dispatch(actions.setNewSetting({ hide_price: !localConfigSetting.hide_price }))
         break;
       case 'hide_buy_now':
-        curruntLocalConfigSetting = {...localConfigSetting, hide_buy_now: !localConfigSetting.hide_buy_now};
+        dispatch(actions.setNewSetting({ hide_buy_now: !localConfigSetting.hide_buy_now}))
         break;
       case 'show_request_for_quote':
-        curruntLocalConfigSetting = {...localConfigSetting, hide_buy_now: !localConfigSetting.hide_buy_now};
+        dispatch(actions.setNewSetting({ show_request_for_quote: !localConfigSetting.show_request_for_quote }))
         break;
       default:
         break;
     }
-    setLocalConfigSetting({...curruntLocalConfigSetting})
   }
+
   return (
     <VerticalStack gap="2">
       <div style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center' }}

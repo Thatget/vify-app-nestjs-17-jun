@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { LegacyCard, TextField } from '@shopify/polaris'
+import { StoreContext, actions } from '../../store';
 
 type FormSetting = {
   name_title: string;
@@ -16,37 +17,75 @@ interface FormSettingProps {
 
 const defaultFormSetting = { name_title: '', name_placeholder: '', email_title: '', email_placeholder: '', message_title: '', massage_placeholder: ''};
 
-const FormSetting: React.FC<FormSettingProps> = ({ formSetting }) => {
-  const [localFormSetting, setLocalFormSetting] = useState<FormSetting>(defaultFormSetting)
-  useEffect(() => {
-    setLocalFormSetting({...formSetting})
-  })
+const FormSetting = () => {
+  const [state, dispatch] = useContext(StoreContext)
+  const localFormSetting = { ...defaultFormSetting, ...state.setting, ... state.currentSetting }
+
+  const handleChangeField = ( value: string, id: string) => {
+    let field = {}
+    switch (id) {
+      case 'name_title':
+        field = {name_title: value}
+        break;
+      case 'name_placeholder':
+        field = {name_placeholder: value}
+        break;
+      case 'email_title':
+        field = {email_title: value}
+        break;
+      case 'email_placeholder':
+        field = {email_placeholder: value}
+        break;
+      case 'message_title':
+        field = {message_title: value}
+        break;
+      case 'message_placeholder':
+        field = {message_placeholder: value}
+        break;
+      default:
+        break;
+    }
+    dispatch(actions.setNewSetting({...field}))
+  }
+
   return (
     <div>
       <LegacyCard.Section title={"Field Name"}>
-        <TextField label="Title" onChange={() => {}} autoComplete="off" />
         <TextField
-          type="text"
-          label="Placeholder"
+          id="name_title"
+          label="Name Title"
           value={localFormSetting.name_title}
-          onChange={() => {}}
-          autoComplete="email"
+          onChange={handleChangeField}
+          autoComplete="off"
         />
-        <TextField label="Email Title" onChange={() => {}} autoComplete="off" />
         <TextField
-          type="text"
-          label="Placeholder"
-          onChange={() => {}}
-          autoComplete="email"
+          id="name_placeholder"
+          label="Name Placeholder"
+          value={localFormSetting.name_placeholder}
+          onChange={handleChangeField}
+          autoComplete="off"
+        />
+        <TextField
+          id='email_title'
+          label="Email"
+          value={localFormSetting.email_title}
+          onChange={handleChangeField}
+          autoComplete="off"
+        />
+        <TextField
+          id='email_placeholder'
+          label="Name Placeholder"
+          value={localFormSetting.email_placeholder}
+          onChange={handleChangeField}
+          autoComplete="off"
         />
       </LegacyCard.Section>
       <LegacyCard.Section title={"Form page"}>
         <TextField label="Name" onChange={() => {}} autoComplete="off" />
         <TextField
-          type="text"
           label="Account email"
           onChange={() => {}}
-          autoComplete="email"
+          autoComplete="off"
         />
       </LegacyCard.Section>
     </div>

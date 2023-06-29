@@ -9,6 +9,7 @@ import GettingStarted from "./pages/GettingStarted";
 import SaleOff from "./components/SaleOff";
 import { AppBridgeProvider, PolarisProvider, QueryProvider } from "./components";
 import NotFound from "./pages/NotFound";
+import ContextProvider from "./store/ContextProvider";
 
 export interface IApplicationProps {
 }
@@ -25,16 +26,18 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
         <BrowserRouter>
           <AppBridgeProvider>
             <QueryProvider>
-              <ResponsiveAppBar parentCallback={getPath}/>
-              <SaleOff />
-              <Routes>
-                  <Route path="/" element={<GettingStarted/>} />
-                  <Route path="GettingStarted" element={<GettingStarted/>} />
-                  <Route path="Quotes" element={<Quotes />} />
-                  <Route path="Products" element={<Products />} />
-                  <Route path="Setting" element={<Setting />} />
-                  <Route path="*" element={<NotFound />} />
-              </Routes>
+              <ContextProvider>
+                <ResponsiveAppBar parentCallback={getPath}/>
+                <SaleOff />
+                <Routes>
+                    <Route path="/" element={<GettingStarted/>} />
+                    <Route path="GettingStarted" element={<GettingStarted/>} />
+                    <Route path="Quotes" element={<Quotes />} />
+                    <Route path="Products" element={<Products />} />
+                    <Route path="Setting" element={<Setting />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+              </ContextProvider>
             </QueryProvider>
           </AppBridgeProvider>
         </BrowserRouter>

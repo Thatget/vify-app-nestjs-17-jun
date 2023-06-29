@@ -1,14 +1,5 @@
-import {
-  LegacyCard,
-  LegacyStack,
-  Collapsible,
-  Icon,
-  Divider,
-} from '@shopify/polaris';
-import {
-  ChevronDownMinor,
-  ChevronUpMinor
-} from '@shopify/polaris-icons';
+import { LegacyCard, LegacyStack, Collapsible, Icon, Divider } from '@shopify/polaris';
+import { ChevronDownMinor, ChevronUpMinor } from '@shopify/polaris-icons';
 import { useState } from 'react';
 import ConfigSetting from './ConfigSetting';
 import FormSetting from './FormSetting';
@@ -24,10 +15,7 @@ const SettingComponentSet = () => {
           onClick={() => {section !== 'configSetting' ? setSection('configSetting') : setSection('') }} >
           General
           <div>
-            <Icon
-              source={ (section === 'configSetting') ? ChevronDownMinor : ChevronUpMinor }
-              color="base"
-            />
+            <Icon source={ (section === 'configSetting') ? ChevronDownMinor : ChevronUpMinor } color="base" />
           </div>
         </div>
       <Divider borderColor="border-inverse" borderWidth='2' />
@@ -37,7 +25,7 @@ const SettingComponentSet = () => {
           transition={{duration: '500ms', timingFunction: 'ease-in-out'}}
           expandOnPrint
         >
-          <ConfigSetting configSetting={{ hide_price: false, hide_buy_now: false, show_request_for_quote: false }} />
+          <ConfigSetting configSetting={{ hide_price: false, hide_buy_now: false, show_request_for_quote: false }} handleChangeConfigSetting={undefined}  />
         </Collapsible>
       </LegacyStack>
       <LegacyStack vertical>
@@ -46,10 +34,7 @@ const SettingComponentSet = () => {
           onClick={() => {section !== 'formField' ? setSection('formField') : setSection('') }} >
           FormField
           <div>
-            <Icon
-              source={ (section === 'formField') ? ChevronDownMinor : ChevronUpMinor }
-              color="base"
-            />
+            <Icon source={ (section === 'formField') ? ChevronDownMinor : ChevronUpMinor } color="base" />
           </div>
         </div>
       <Divider borderColor="border-inverse" borderWidth='2' />

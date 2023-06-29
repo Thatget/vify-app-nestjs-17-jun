@@ -1,5 +1,4 @@
 import React from 'react'
-import Setting from '../../types/Setting'
 
 // interface SettingComponentPrevewProps {
 //   setting: Setting;
