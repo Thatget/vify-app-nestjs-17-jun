@@ -18,7 +18,6 @@ const reducer = (state = initialState, action: { type: string; payload: any }) =
       return { ...state, ...{ setting } };
     // UPDATE NEW SETTING
     case ActionTypes.SET_NEW_SETTING:
-      console.log(action.payload)
       const currentSetting = { ...state.currentSetting, ...action.payload}
       return { ...state, ...{ currentSetting } };
     default:

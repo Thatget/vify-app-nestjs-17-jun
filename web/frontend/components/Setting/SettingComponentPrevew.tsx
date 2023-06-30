@@ -1,4 +1,5 @@
 import React from 'react'
+import ConfigSettingPreview from './ConfigSettingPreview'
 
 // interface SettingComponentPrevewProps {
 //   setting: Setting;
@@ -14,7 +15,9 @@ import React from 'react'
 
 const SettingComponentPrevew = () => {
   return (
-    <div>Preview</div>
+    <div>
+      <ConfigSettingPreview />
+    </div>
   )
 }
 
