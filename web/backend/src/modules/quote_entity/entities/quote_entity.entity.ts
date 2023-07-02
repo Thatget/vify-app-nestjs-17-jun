@@ -11,8 +11,8 @@ export class QuoteEntity {
   name: string;
   @Column()
   lable: string;
-  @Column()
-  type: string;
+	@Column('text')
+  value: string;
   @OneToOne(() => Store)
   @JoinColumn({ name: 'store_id' })
   user: Store;

@@ -8,7 +8,7 @@ const SaveSetting = () => {
   const currentSetting = state.currentSetting;
   const fetch = useAuthenticatedFetch();
   const updateSetting = () => {
-    const data = fetch("/api/products",{
+    const data = fetch("/api/quote-entity",{
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -20,7 +20,7 @@ const SaveSetting = () => {
   const saveAble = (Object.entries(state.currentSetting).length === 0)
   return (
     <div style={{color: '#bf0711', marginTop: '10px', marginBottom: '20px'}}>
-    <Button disabled={saveAble} fullWidth monochrome outline>
+    <Button disabled={saveAble} fullWidth monochrome outline onClick={updateSetting}>
       Save
     </Button>
   </div>

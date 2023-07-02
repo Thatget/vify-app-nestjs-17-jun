@@ -4,7 +4,11 @@ import { CreateQuoteEntityDto } from './dto/create-quote_entity.dto';
 import { UpdateQuoteEntityDto } from './dto/update-quote_entity.dto';
 import {Request, Response} from "express";
 
-
+const allowedAttribute = [
+	{ code: 'show_request_for_quote:', type: "boolean" },
+	{ code: 'name_title', type: "string" },
+	{ code: 'name_placeholder', type: "string" },
+]
 @Controller('api/quote-entity')
 export class QuoteEntityController {
   constructor(private readonly quoteEntityService: QuoteEntityService) {}
@@ -13,13 +17,14 @@ export class QuoteEntityController {
   async create(@Body() createQuoteEntityDto: CreateQuoteEntityDto, @Res() res: Response) {
     try {
       const { shop } = res.locals.shopify.session;
-      if (shop) {}
+      if (shop) {
+				console.log("FS: ", createQuoteEntityDto)
+				return this.quoteEntityService.createUpdateEntity(createQuoteEntityDto);
+			}
       res.status(HttpStatus.BAD_REQUEST);
       return {message: "Missing store name"};
-    } catch (error) {
-      
+    } catch (error) { 
     }
-    return this.quoteEntityService.create(createQuoteEntityDto);
   }
 
   @Get()
