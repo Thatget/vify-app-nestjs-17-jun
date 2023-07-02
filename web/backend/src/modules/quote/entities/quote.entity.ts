@@ -6,6 +6,8 @@ export class Quote {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
+  shop: string;
+  @Column()
   name: string;
   @Column()
   email: string;

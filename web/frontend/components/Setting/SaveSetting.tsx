@@ -14,7 +14,7 @@ const SaveSetting = () => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(curr)
+      body: JSON.stringify(currentSetting)
     })
   }
   const saveAble = (Object.entries(state.currentSetting).length === 0)

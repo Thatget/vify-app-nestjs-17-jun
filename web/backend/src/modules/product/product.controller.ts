@@ -6,7 +6,6 @@ import {ProductService} from "./product.service";
 import {CreateProductDto} from "./dto/create-product.dto";
 import {UpdateProductDto} from "./dto/update-product.dto";
 import fetchProducts from "./products";
-import {shopifyApi} from "@shopify/shopify-api";
 import {Request, Response} from "express";
 
 @Controller('api/products')
