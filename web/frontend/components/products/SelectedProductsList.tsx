@@ -1,67 +1,114 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
-import CssBaseline from "@mui/material/CssBaseline";
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Resource_Picker from "./Resource_Picker";
+import Divider from "@mui/material/Divider";
+import DeleteIcon from '@mui/icons-material/Delete'
+import IconButton from "@mui/material/IconButton";
+import Button from '@mui/material/Button'
+import {useAuthenticatedFetch} from "../../hooks";
+import {makeStyles} from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+
 
 export default function SelectedProductsList() {
-    const [checked, setChecked] = React.useState([1]);
-    const handleToggle = (value: number) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-        setChecked(newChecked);
-    };
+    const fetch = useAuthenticatedFetch()
+    const [deselect, setDeselect] = React.useState([])
+    const [show, setShow] = React.useState(false)
+    const getSelectedProducts = (productsResource_Picker: any) => {
+        setSelectedProducts(productsResource_Picker)
+        setShow(true)
+    }
+    const [selectedProducts, setSelectedProducts] = React.useState([])
+    const handleRemove = (id: string) => {
+        const newList = selectedProducts.filter((item) => item.id !== id)
+        setSelectedProducts(newList)
+    }
+    const handleClick = (chosenProduct: any): void => {
+        console.log("abc")
+        setDeselect(null)
+        deselect.push(chosenProduct)
+        setDeselect(deselect)
+        console.log("chosenProduct", chosenProduct)
+        console.log("deselect", deselect)
+    }
+    const handleSave = () => {
+        fetch("/api/products/insert",
+            {
+                method: "Post",
+                body: JSON.stringify(selectedProducts),
+                headers: {"Content-Type": "application/json"}
+            }
+        ).then((data: Response): void => {
+            console.log("data from handleSelection", data)
+        });
+        alert("Okay, data has saved")
+    }
+
+    // const useStyles = makeStyles({
+    //     listItem: {
+    //         fontSize: '0.7rem'
+    //     }
+    // })
+    // const classes = useStyles()
 
     return (
-        <>
-            <React.Fragment>
-                <CssBaseline/>
+        <Box sx={{width: '100%'}}>
+            <Box sx={{width: '100%'}}>
+                <Resource_Picker chosenProducts={deselect} parentCallback={getSelectedProducts}/>
+            </Box>
+            <Box sx={{width: '100%'}}>
+                <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
+
+                    {selectedProducts.map((product) => {
+                        const labelId = `checkbox-list-secondary-label-${product.id}`;
+                        return (
+                            <ListItem
+                                key={product.id}
+                                secondaryAction={
+                                    <IconButton edge="end" aria-label="delete"
+                                                onClick={() => {
+                                                    handleClick({product})
+                                                    handleRemove(product.id)
+                                                }
+                                                }>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                }
+                                disablePadding
+                            >
+                                <ListItem
+                                >
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={''}
+                                            src={`${product.images[0].originalSrc}`}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText id={labelId}   primary={<Typography variant="body1">{`${product.title}`}</Typography>}/>
+                                </ListItem>
+                            </ListItem>
+                        );
+                    })}
+                </List>
+                {show && <Divider variant="middle" sx={{ bgcolor: "#1a237e",height:2 }}/>}
                 <br/>
-                <Container>
-                    <Box sx={{minWidth: 275}}>
-                        <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
-                            {[0, 1, 2, 3].map((value) => {
-                                const labelId = `checkbox-list-secondary-label-${value}`;
-                                return (
-                                    <ListItem
-                                        key={value}
-                                        secondaryAction={
-                                            <Checkbox
-                                                edge="end"
-                                                onChange={handleToggle(value)}
-                                                checked={checked.indexOf(value) !== -1}
-                                                inputProps={{'aria-labelledby': labelId}}
-                                            />
-                                        }
-                                        disablePadding
-                                    >
-                                        <ListItemButton>
-                                            <ListItemAvatar>
-                                                <Avatar
-                                                    alt={`Avatar n°${value + 1}`}
-                                                    src={`/static/images/avatar/${value + 1}.jpg`}
-                                                />
-                                            </ListItemAvatar>
-                                            <ListItemText id={labelId} primary={`Line item ${value + 1}`}/>
-                                        </ListItemButton>
-                                    </ListItem>
-                                );
-                            })}
-                        </List>
-                    </Box>
-                </Container>
-            </React.Fragment>
-        </>
+                <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    alignItems="flex-end"
+                    sx={{width: '100%'}}
+                >
+                    {show &&
+                        <Button variant="contained" onClick={() => handleSave()}
+                        >Save</Button>
+                    }
+                </Box>
+            </Box>
+        </Box>
     );
 }
