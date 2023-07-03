@@ -4,6 +4,7 @@ import SettingComponentSet from '../components/Setting/SettingComponentSet'
 import SettingComponentPrevew from '../components/Setting/SettingComponentPrevew'
 
 const Setting = () => {
+  
   return (
     <Page fullWidth>
       <Grid>
