@@ -1,4 +1,5 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm"
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm"
+import {Store} from "../../store/entities/store.entity";
 
 @Entity()
 export class Product {
@@ -14,5 +15,12 @@ export class Product {
     @Column()
     productTitle: string;
 
+    @Column()
+    imageURL: string
+    // @Column()
+    // shopDomain: string
 
+    @ManyToOne(() => Store)
+    @JoinColumn({name: 'shopDomain',referencedColumnName:'shop'})
+    shopDomain: Store
 }

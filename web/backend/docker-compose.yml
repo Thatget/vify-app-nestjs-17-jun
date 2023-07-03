@@ -7,7 +7,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: vify_database
-      MYSQL_USER: vify_user
-      MYSQL_PASSWORD: vify_password
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     volumes:
       - ./data/mysql:/var/lib/mysql

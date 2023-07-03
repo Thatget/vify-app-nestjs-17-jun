@@ -8,13 +8,6 @@
       <jdbc-url>jdbc:mysql://localhost:3309/vify_database</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="@localhost [3]" uuid="0e5d689e-b193-45f6-b237-b6c1c782f08a">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="database" uuid="835605a1-d513-44d0-a168-67257934925b">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>

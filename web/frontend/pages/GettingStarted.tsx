@@ -21,11 +21,11 @@ export default function GettingStarted() {
     const selectProducts = (
         <React.Fragment>
             <CardContent>
-                <Typography variant="h5" component="div">
-                    Step 1: Select products
+                <Typography variant="body1" component="div">
+                   <b> Step 1: Select products </b>
                 </Typography>
                 <br/>
-                <Typography variant="body2">
+                <Typography variant="body1">
                     Click Add products to browser your products , select some to show quote button
                 </Typography>
             </CardContent>
@@ -37,11 +37,11 @@ export default function GettingStarted() {
     const enableApp = (
         <React.Fragment>
             <CardContent>
-                <Typography variant="h5" component="div">
-                    Step 2: Enable App
+                <Typography variant="body1" component="div">
+                    <b>Step 2: Enable App</b>
                 </Typography>
                 <br/>
-                <Typography variant="body2">
+                <Typography variant="body1">
                     Click Enable to make App functional
                 </Typography>
             </CardContent>
@@ -53,11 +53,11 @@ export default function GettingStarted() {
     const themes = (
         <React.Fragment>
             <CardContent>
-                <Typography variant="h5" component="div">
-                    Step 3: For Online Store 2.0 themes
+                <Typography variant="body1" component="div">
+                    <b>Step 3: For Online Store 2.0 themes </b>
                 </Typography>
                 <br/>
-                <Typography variant="body2">
+                <Typography variant="body1">
                     Customize your Current theme and add a block to your target page <br/>
                     Select <b>Simple Quote</b> when you find it available <br/>
                     Click <a href="#">Enable </a>to make App functional <br/>
@@ -69,18 +69,18 @@ export default function GettingStarted() {
     const otherSetting = (
         <React.Fragment>
             <CardContent>
-                <Typography variant="h5" component="div">
-                    Other settings
+                <Typography variant="body1" component="div">
+                    <b>Other settings</b>
                 </Typography>
                 <br/>
-                <Typography variant="body2">
+                <Typography variant="body1">
                     If you want to change the notification mailbox , go Email Settings.
                 </Typography>
-                <Typography variant="body2">
+                <Typography variant="body1">
                     If you want to hid prices or customize the style of the quote button, go <a href="#">General
                     Settings</a>
                 </Typography>
-                <Typography variant="body2">
+                <Typography variant="body1">
                     If you want to customize contact form or do some translation, go <a href="#">Form Settings</a>
                 </Typography>
             </CardContent>
@@ -90,10 +90,9 @@ export default function GettingStarted() {
     return (
         <>
             <React.Fragment>
-                <CssBaseline/>
                 <br/>
-                <Container>
-                    <Box sx={{minWidth: 275}}>
+                <Container >
+                    <Box sx={{minWidth: 275}} >
                         <Card variant="outlined">{selectProducts}</Card>
                     </Box>
                     <br/>
