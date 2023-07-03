@@ -13,7 +13,11 @@ const SaveSetting = () => {
   const updateSetting = () => {
     const dataPost: Object[] = [];
     let changeName = false;
+    let changeEmail = false;
+    let changeMessage = false;
     let defaultName = {name: 'name', label: setting.name_title || "", value: setting.name_placeholder || ''};
+    let defaultEmail = {name: 'email', label: setting.email_title || "", value: setting.email_placeholder || ''};
+    let defaultMessage = {name: 'message', label: setting.message_title || "", value: setting.message_placeholder || ''};
     Object.entries(currentSetting).map(([key, value]) => {
       switch (key) {
         case 'name_title':
@@ -28,6 +32,30 @@ const SaveSetting = () => {
             changeName = true;
           }
           break;
+        case 'email_title':
+          if (value !== setting.email_title) {
+            defaultEmail = {...defaultEmail, label: value};
+            changeEmail = true;
+          }
+          break;
+        case 'email_placeholder':
+          if (value !== setting.email_placeholder) {
+            defaultEmail = {...defaultEmail, value: value};
+            changeEmail = true;
+          }
+          break;
+        case 'message_title':
+          if (value !== setting.message_title) {
+            defaultMessage = {...defaultMessage, label: value};
+            changeMessage = true;
+            }
+          break;
+        case 'message_placeholder':
+          if (value !== setting.message_placeholder) {
+            defaultMessage = {...defaultMessage, value: value};
+            changeMessage = true;
+          }
+          break;
       
         default:
           if (value !== setting[key]) {
@@ -38,6 +66,12 @@ const SaveSetting = () => {
     })
     if (changeName) {
       dataPost.push(defaultName);
+    }
+    if (changeEmail) {
+      dataPost.push(defaultEmail);
+    }
+    if (changeMessage) {
+      dataPost.push(defaultMessage);
     }
 
     const data = fetch("/api/quote-entity", {

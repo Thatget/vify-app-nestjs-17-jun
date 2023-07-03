@@ -1,12 +1,16 @@
 import { LegacyCard, LegacyStack, Collapsible, Icon, Divider, Button } from '@shopify/polaris';
 import { ChevronDownMinor, ChevronUpMinor } from '@shopify/polaris-icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ConfigSetting from './ConfigSetting';
 import FormSetting from './FormSetting';
 import SaveSetting from './SaveSetting';
+import { StoreContext, actions } from '../../store';
 
 const SettingComponentSet = () => {
-  const [section, setSection] = useState('configSetting');
+  const [state, dispatch] = useContext(StoreContext)
+  const setSection = (section: string) => {
+    dispatch(actions.setSettingTab(section))
+  }
 
   return (
     <>
@@ -14,15 +18,15 @@ const SettingComponentSet = () => {
         <LegacyStack vertical>
           <div 
             style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center' }}
-            onClick={() => {section !== 'configSetting' ? setSection('configSetting') : setSection('') }} >
+            onClick={() => {state.settingTab !== 'configSetting' ? setSection('configSetting') : setSection('') }} >
             General
             <div>
-              <Icon source={ (section === 'configSetting') ? ChevronDownMinor : ChevronUpMinor } color="base" />
+              <Icon source={ (state.settingTab === 'configSetting') ? ChevronDownMinor : ChevronUpMinor } color="base" />
             </div>
           </div>
         <Divider borderColor="border-inverse" borderWidth='2' />
           <Collapsible
-            open={(section === 'configSetting') ? true : false }
+            open={(state.settingTab === 'configSetting') ? true : false }
             id="basic-collapsible"
             transition={{duration: '500ms', timingFunction: 'ease-in-out'}}
             expandOnPrint
@@ -33,15 +37,15 @@ const SettingComponentSet = () => {
         <LegacyStack vertical>
           <div 
             style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center' }}
-            onClick={() => {section !== 'formField' ? setSection('formField') : setSection('') }} >
+            onClick={() => {state.settingTab !== 'formField' ? setSection('formField') : setSection('') }} >
             FormField
             <div>
-              <Icon source={ (section === 'formField') ? ChevronDownMinor : ChevronUpMinor } color="base" />
+              <Icon source={ (state.settingTab === 'formField') ? ChevronDownMinor : ChevronUpMinor } color="base" />
             </div>
           </div>
         <Divider borderColor="border-inverse" borderWidth='2' />
           <Collapsible
-            open={(section === 'formField') ? true : false }
+            open={(state.settingTab === 'formField') ? true : false }
             id="basic-collapsible"
             transition={{duration: '500ms', timingFunction: 'ease-in-out'}}
             expandOnPrint

@@ -2,6 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { LegacyCard, TextField } from '@shopify/polaris'
 import { StoreContext, actions } from '../../store';
 
+interface State {
+  count: number;
+}
+
+
 type FormSetting = {
   name_title: string;
   name_placeholder: string;
@@ -9,10 +14,6 @@ type FormSetting = {
   email_placeholder: string;
   message_title: string;
   massage_placeholder: string;
-}
-
-interface FormSettingProps {
-  formSetting: FormSetting
 }
 
 const defaultFormSetting = { name_title: '', name_placeholder: '', email_title: '', email_placeholder: '', message_title: '', massage_placeholder: ''};
@@ -80,7 +81,7 @@ const FormSetting = () => {
           autoComplete="off"
         />
       </LegacyCard.Section>
-      <LegacyCard.Section title={"Form page"}>
+      <LegacyCard.Section title={"Form title"}>
         <TextField label="Name" onChange={() => {}} autoComplete="off" />
         <TextField
           label="Account email"
