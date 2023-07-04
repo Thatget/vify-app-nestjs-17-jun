@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateQuoteEntityDto } from './dto/create-quote_entity.dto';
-import { UpdateQuoteEntityDto } from './dto/update-quote_entity.dto';
+import { QuoteEntityDto } from './dto/quote_entity.dto';
 import { Repository } from 'typeorm';
 import { QuoteEntity } from './entities/quote_entity.entity';
 
@@ -10,19 +9,28 @@ export class QuoteEntityService {
     @Inject ('QUOTE_ENTITY_REPOSITORY')
     private quoteEntityRepository: Repository<QuoteEntity>,
   ) {}
-  async createUpdateEntity(createQuoteEntityDto: CreateQuoteEntityDto) {
-    return 'This action adds a new quoteEntity';
+  async createUpdateEntity(entities: QuoteEntityDto[]) {
+    try {
+      await this.quoteEntityRepository.upsert(entities, ['name', 'shop']);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all quoteEntity`;
+  async findByShop(shop: string) {
+    try {
+      const entities = await this.quoteEntityRepository.findBy({ shop });
+      return entities;
+    } catch (error) {
+      throw error;
+    }
   }
 
   findOne(id: number) {
     return `This action returns a #${id} quoteEntity`;
   }
 
-  update(id: number, updateQuoteEntityDto: UpdateQuoteEntityDto) {
+  update(id: number, quoteEntityDto: QuoteEntityDto) {
     return `This action updates a #${id} quoteEntity`;
   }
 

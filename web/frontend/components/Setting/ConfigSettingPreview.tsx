@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { StoreContext } from '../../store';
 
 const ConfigSettingPreview = () => {
   // const [state] = useContext(StoreContext);
@@ -18,6 +19,9 @@ const ConfigSettingPreview = () => {
           <br/>
       </>
   );
+
+  const {state} = React.useContext(StoreContext);
+  const testData = state.currentSetting.hide_price || false;
   return (
       <>
       <React.Fragment>

@@ -10,23 +10,21 @@ import { useAppQuery } from '../hooks';
 // import Quote from '../types/Quote';
 
 export default function Quotes() {
-  // const [isLoading, setIsLoading] = React.useState(true)
-  // const [quotes, setQuotes] = React.useState<Quote[]>([]);
-  // const {
-  //   data,
-  //   refetch: refetchQuote,
-  //   isLoading: isLoadingQuote,
-  //   isRefetching: isRefetchingQuote,
-  // } = useAppQuery({
-  //   url: "/api/quote",
-  //     reactQueryOptions: {
-  //       onSuccess: () => {
-  //         setIsLoading(false);
-  //       }
-  //     },
-  //   });
-  //   React.useEffect(() => {
-  //   }, [])
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [quotes, setQuotes] = React.useState<Quote[]>([]);
+  const {
+    data,
+    refetch: refetchQuote,
+    isLoading: isLoadingQuote,
+    isRefetching: isRefetchingQuote,
+  } = useAppQuery({
+    url: "/api/quote",
+      reactQueryOptions: {
+        onSuccess: () => {
+          setIsLoading(false);
+        }
+      },
+    });
 
     return (
         <>

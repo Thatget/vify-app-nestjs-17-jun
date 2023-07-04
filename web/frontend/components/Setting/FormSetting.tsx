@@ -7,6 +7,11 @@ import TextField from "@mui/material/TextField";
 import {InputLabel} from "@mui/material";
 import Box from "@mui/material/Box"
 
+interface State {
+  count: number;
+}
+
+
 type FormSetting = {
   name_title: string;
   name_placeholder: string;
@@ -16,14 +21,10 @@ type FormSetting = {
   massage_placeholder: string;
 }
 
-interface FormSettingProps {
-  formSetting: FormSetting
-}
-
 const defaultFormSetting = { name_title: '', name_placeholder: '', email_title: '', email_placeholder: '', message_title: '', massage_placeholder: ''};
 
 const FormSetting = () => {
-  const [state, dispatch] = useContext(StoreContext)
+  const {state, dispatch} = useContext(StoreContext)
   const localFormSetting = { ...defaultFormSetting, ...state.setting, ... state.currentSetting }
 
   const handleChangeField = ( value: string, id: string) => {
@@ -95,6 +96,10 @@ const FormSetting = () => {
         />
 
         <FormLabel id="demo-row-radio-buttons-group-label">{<Typography variant="body1">Form Page</Typography>} </FormLabel>
+
+      </LegacyCard.Section>
+      <LegacyCard.Section title={"Form title"}>
+
         <TextField label="Name" onChange={() => {}} autoComplete="off" />
         <TextField
           label="Account email"

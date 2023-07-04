@@ -1,5 +1,5 @@
-import React from 'react'
 import SettingComponentSet from '../components/Setting/SettingComponentSet'
+import React, { useContext } from 'react'
 import SettingComponentPrevew from '../components/Setting/SettingComponentPreview'
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -10,21 +10,51 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import ProductSelector from "../components/ProductSelector";
 
+import { useAppQuery } from '../hooks'
+import { StoreContext, actions } from '../store'
+import { StoreContextType } from '../store/type'
+
 const Setting = () => {
-  const settingComponentSet = (
-      <React.Fragment>
-        <CardContent>
-          <SettingComponentSet />
-        </CardContent>
-      </React.Fragment>
-  );
-  const settingComponentPreview = (
-      <React.Fragment>
-        <CardContent>
-          <SettingComponentPreview />
-        </CardContent>
-      </React.Fragment>
-  );
+
+  const { state, dispatch} = useContext<StoreContextType>(StoreContext);
+  const setting = {};
+  const {
+    data,
+    refetch: refetchQuote,
+    isLoading: isLoadingQuote,
+    isRefetching: isRefetchingQuote,
+  } = useAppQuery({
+    url: "/api/quote-entity",
+      reactQueryOptions: {
+        onSuccess: () => {
+          if(data) {
+            data.map((entity: any) => {
+              switch (entity.name) {
+                case 'name':
+                  setting.name_title = entity.label||'';
+                  setting.name_placeholder = entity.value||'';
+                  break;
+                case 'email':
+                  setting.email_title = entity.label||'';
+                  setting.email_placeholder = entity.value||'';
+                  break;
+                case 'message':
+                  setting.massage_title = entity.label||'';
+                  setting.massage_placeholder = entity.value||'';
+                  break;
+                
+                default:
+                  setting[entity.name] = entity.value;
+                  break;
+              }
+            })
+            dispatch(actions.setInitSetting(setting));
+          }
+        }
+      },
+    });
+  
+    console.log("data: ", data)
 
 
   return (

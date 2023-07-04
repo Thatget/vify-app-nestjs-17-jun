@@ -6,7 +6,7 @@ import { StoreContext, actions } from '../../store'
 const defaultConfigSetting = { hide_price: false, hide_buy_now: false, show_request_for_quote: false };
 
 const ConfigSetting = () => {
-  const [state, dispatch] = useContext(StoreContext)
+  const {state, dispatch} = useContext(StoreContext)
   const localConfigSetting = ({ ...defaultConfigSetting, ...state.setting, ...state.currentSetting });
 
   const handleChangeConfig = (configKey: string) => {
