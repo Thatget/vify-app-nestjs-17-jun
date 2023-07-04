@@ -7,7 +7,7 @@ import DateRangePickerValue from "../components/DateRangePicker"
 import SearchAppBar from "../components/SearchBar";
 import QuoteTable from "../components/QuoteTable"
 import { useAppQuery } from '../hooks';
-import Quote from '../types/Quote';
+// import Quote from '../types/Quote';
 
 export default function Quotes() {
   const [isLoading, setIsLoading] = React.useState(true)
@@ -41,7 +41,7 @@ export default function Quotes() {
             </Grid>
             <br/>
             <Box sx={{minWidth: 275}}>
-              <QuoteTable quotes={quotes}/>
+              {/*<QuoteTable quotes={quotes}/>*/}
             </Box>
           </Container>
         </>

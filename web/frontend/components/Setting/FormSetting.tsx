@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { LegacyCard, TextField } from '@shopify/polaris'
 import { StoreContext, actions } from '../../store';
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import {InputLabel} from "@mui/material";
+import Box from "@mui/material/Box"
 
 interface State {
   count: number;
@@ -51,44 +56,57 @@ const FormSetting = () => {
 
   return (
     <div>
-      <LegacyCard.Section title={"Field Name"}>
+      <FormControl>
+        <FormLabel id="demo-row-radio-buttons-group-label">{<Typography variant="body1">Form Fields</Typography>} </FormLabel>
+        <Box sx={{ display: 'flex', flexWrap:'wrap'}}>
+          <TextField
+          label="Name Title"
+          id="name"
+          sx={{ m:1, width: '25ch'}}
+          >
+          </TextField>
+        </Box>
         <TextField
           id="name_title"
           label="Name Title"
           value={localFormSetting.name_title}
-          onChange={handleChangeField}
+          onChange={() => handleChangeField}
           autoComplete="off"
         />
         <TextField
           id="name_placeholder"
           label="Name Placeholder"
           value={localFormSetting.name_placeholder}
-          onChange={handleChangeField}
+          onChange={() => handleChangeField}
           autoComplete="off"
         />
         <TextField
           id='email_title'
           label="Email"
           value={localFormSetting.email_title}
-          onChange={handleChangeField}
+          onChange={() => handleChangeField}
           autoComplete="off"
         />
         <TextField
           id='email_placeholder'
           label="Name Placeholder"
           value={localFormSetting.email_placeholder}
-          onChange={handleChangeField}
+          onChange={() => handleChangeField}
           autoComplete="off"
         />
+
+        <FormLabel id="demo-row-radio-buttons-group-label">{<Typography variant="body1">Form Page</Typography>} </FormLabel>
+
       </LegacyCard.Section>
       <LegacyCard.Section title={"Form title"}>
+
         <TextField label="Name" onChange={() => {}} autoComplete="off" />
         <TextField
           label="Account email"
           onChange={() => {}}
           autoComplete="off"
         />
-      </LegacyCard.Section>
+      </FormControl>
     </div>
   )
 }

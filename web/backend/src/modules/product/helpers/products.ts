@@ -1,5 +1,5 @@
 import {GraphqlQueryError} from "@shopify/shopify-api";
-import shopify from "../../../utils/shopify";
+import shopify from "../../helpers/shopify";
 // Used for creating some common functions used by the backend to format Products data
 // We are adding API layer so that the frontend can access the data
 /*

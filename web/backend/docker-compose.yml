@@ -1,13 +1,15 @@
-version: "3.9"
-services:
-  my-sql:
-    image: mysql:8.0
-    ports:
+  version: "3.9"
+  services:
+    my-sql:
+      image: mysql:8.0
+      ports:
       - "3309:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: vify_database
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    volumes:
-      - ./data/mysql:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: vify_database
+        MYSQL_USER: vify_user
+        MYSQL_PASSWORD: vify_password
+      volumes:
+          - ./data/mysql:/var/lib/mysql
+
+
