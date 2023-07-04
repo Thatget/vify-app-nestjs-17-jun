@@ -4,7 +4,7 @@ import { StoreContext } from '../../store'
 import { useAuthenticatedFetch } from '../../hooks'
 
 const SaveSetting = () => {
-  const [state, dispatch] = useContext(StoreContext);  
+  const {state, dispatch} = useContext(StoreContext);  
 
   const setting = state.setting;
   const currentSetting = state.currentSetting;

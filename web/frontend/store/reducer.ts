@@ -1,3 +1,5 @@
+import { StoreAction, StoreState } from "./type";
+
 const ActionTypes = {
   SET_INIT_SETTING: "SET_INIT_SETTING",
   SET_NEW_SETTING: "SET_NEW_SETTING",

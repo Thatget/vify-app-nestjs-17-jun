@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { initialState } from "./reducer";
+import { StoreAction, StoreContextType } from "./type";
 
 const Context = createContext<StoreContextType | undefined>({
   state: initialState,

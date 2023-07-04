@@ -4,6 +4,7 @@ import SettingComponentSet from '../components/Setting/SettingComponentSet'
 import SettingComponentPrevew from '../components/Setting/SettingComponentPrevew'
 import { useAppQuery } from '../hooks'
 import { StoreContext, actions } from '../store'
+import { StoreContextType } from '../store/type'
 
 const Setting = () => {
 

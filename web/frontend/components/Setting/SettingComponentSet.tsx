@@ -7,7 +7,7 @@ import SaveSetting from './SaveSetting';
 import { StoreContext, actions } from '../../store';
 
 const SettingComponentSet = () => {
-  const [state, dispatch] = useContext(StoreContext)
+  const {state, dispatch} = useContext(StoreContext)
   const setSection = (section: string) => {
     dispatch(actions.setSettingTab(section))
   }

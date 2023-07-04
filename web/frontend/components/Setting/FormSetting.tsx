@@ -19,7 +19,7 @@ type FormSetting = {
 const defaultFormSetting = { name_title: '', name_placeholder: '', email_title: '', email_placeholder: '', message_title: '', massage_placeholder: ''};
 
 const FormSetting = () => {
-  const [state, dispatch] = useContext(StoreContext)
+  const {state, dispatch} = useContext(StoreContext)
   const localFormSetting = { ...defaultFormSetting, ...state.setting, ... state.currentSetting }
 
   const handleChangeField = ( value: string, id: string) => {

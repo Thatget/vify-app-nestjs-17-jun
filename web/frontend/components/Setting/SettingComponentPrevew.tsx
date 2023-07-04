@@ -8,7 +8,7 @@ const PreviewComponent = () => {
 };
 
 const SettingComponentPrevew = () => {
-  const [state] = useContext(StoreContext);
+  const {state} = useContext(StoreContext);
   const tab = state.settingTab || 'configSetting';
   if (tab === 'configSetting') {
     return <ConfigSettingPreview />;
