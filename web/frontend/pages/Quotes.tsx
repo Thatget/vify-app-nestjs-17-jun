@@ -7,26 +7,26 @@ import DateRangePickerValue from "../components/DateRangePicker"
 import SearchAppBar from "../components/SearchBar";
 import QuoteTable from "../components/QuoteTable"
 import { useAppQuery } from '../hooks';
-import Quote from '../types/Quote';
+// import Quote from '../types/Quote';
 
 export default function Quotes() {
-  const [isLoading, setIsLoading] = React.useState(true)
-  const [quotes, setQuotes] = React.useState<Quote[]>([]);
-  const {
-    data,
-    refetch: refetchQuote,
-    isLoading: isLoadingQuote,
-    isRefetching: isRefetchingQuote,
-  } = useAppQuery({
-    url: "/api/quote",
-      reactQueryOptions: {
-        onSuccess: () => {
-          setIsLoading(false);
-        }
-      },
-    });
-    React.useEffect(() => {
-    }, [])
+  // const [isLoading, setIsLoading] = React.useState(true)
+  // const [quotes, setQuotes] = React.useState<Quote[]>([]);
+  // const {
+  //   data,
+  //   refetch: refetchQuote,
+  //   isLoading: isLoadingQuote,
+  //   isRefetching: isRefetchingQuote,
+  // } = useAppQuery({
+  //   url: "/api/quote",
+  //     reactQueryOptions: {
+  //       onSuccess: () => {
+  //         setIsLoading(false);
+  //       }
+  //     },
+  //   });
+  //   React.useEffect(() => {
+  //   }, [])
 
     return (
         <>
@@ -43,7 +43,7 @@ export default function Quotes() {
             </Grid>
             <br/>
             <Box sx={{minWidth: 275}}>
-              <QuoteTable quotes={quotes}/>
+              {/*<QuoteTable quotes={quotes}/>*/}
             </Box>
           </Container>
         </>

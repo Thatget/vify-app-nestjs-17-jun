@@ -4,14 +4,16 @@ import { useState } from 'react';
 import ConfigSetting from './ConfigSetting';
 import FormSetting from './FormSetting';
 import SaveSetting from './SaveSetting';
+import Box from "@mui/material/Box"
 
 const SettingComponentSet = () => {
   const [section, setSection] = useState('configSetting');
 
   return (
     <>
-      <LegacyCard sectioned>
-        <LegacyStack vertical>
+      {/*<LegacyCard sectioned>*/}
+      {/*  <LegacyStack vertical>*/}
+      <Box>
           <div 
             style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center' }}
             onClick={() => {section !== 'configSetting' ? setSection('configSetting') : setSection('') }} >
@@ -29,8 +31,8 @@ const SettingComponentSet = () => {
           >
             <ConfigSetting />
           </Collapsible>
-        </LegacyStack>
-        <LegacyStack vertical>
+        {/*</LegacyStack>*/}
+        {/*<LegacyStack vertical>*/}
           <div 
             style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center' }}
             onClick={() => {section !== 'formField' ? setSection('formField') : setSection('') }} >
@@ -48,9 +50,10 @@ const SettingComponentSet = () => {
           >
             <FormSetting />
           </Collapsible>
-        </LegacyStack>
-      </LegacyCard>
+      {/*  </LegacyStack>*/}
+      {/*</LegacyCard>*/}
       <SaveSetting />
+      </Box>
     </>
   )
 }

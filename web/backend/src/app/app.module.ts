@@ -8,10 +8,10 @@ import {
 } from "@nestjs/common";
 import {ConfigModule} from "@nestjs/config";
 import {join} from "path";
-import shopify from "../utils/shopify";
+import shopify from "../modules/helpers/shopify";
 import {Request, Response, NextFunction} from "express";
 import {readFileSync} from "fs";
-import GDPRWebhookHandlers from "../utils/gdpr";
+import GDPRWebhookHandlers from "../modules/helpers/gdpr";
 import {StoreModule} from '../modules/store/store.module';
 import {AuthModule} from '../modules/auth/auth.module';
 import {DatabaseModule} from '../modules/database/database.module';
