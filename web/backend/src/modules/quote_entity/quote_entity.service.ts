@@ -19,7 +19,8 @@ export class QuoteEntityService {
 
   async findByShop(shop: string) {
     try {
-      return await this.quoteEntityRepository.findBy({ shop });
+      const entities = await this.quoteEntityRepository.findBy({ shop });
+      return entities;
     } catch (error) {
       throw error;
     }

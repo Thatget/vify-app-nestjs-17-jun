@@ -1,15 +1,12 @@
 import React, { useContext } from 'react'
 import { StoreContext } from '../../store'
 
-const ConfigSettingPreview = () => {
+const FormSettingPreview = () => {
   const {state} = useContext(StoreContext);
   const testData = state.currentSetting.hide_price || false;
   return (
-    <div>
-      data:
-      {testData && 'OK'}
-    </div>
+    <div>;alskjdf;laksd</div>
   )
 }
 
-export default ConfigSettingPreview
+export default FormSettingPreview

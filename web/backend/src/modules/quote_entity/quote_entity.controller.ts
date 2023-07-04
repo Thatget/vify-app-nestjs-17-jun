@@ -3,7 +3,7 @@ import { QuoteEntityService } from './quote_entity.service';
 import { QuoteEntityDto } from './dto/quote_entity.dto';
 import {Request, Response} from "express";
 
-const allowedAttribute = [ 'name', 'hide_price', 'hide_add_to_cart' ];
+const allowedAttribute = [ 'name', 'hide_price', 'hide_add_to_cart', 'hide_buy_now', 'hide_request_for_quote', 'email', 'message' ];
 @Controller('api/quote-entity')
 export class QuoteEntityController {
   constructor(private readonly quoteEntityService: QuoteEntityService) {}
@@ -18,12 +18,12 @@ export class QuoteEntityController {
           .map(entity => ({ ...entity, shop: shop }));
         // Update or Save
 				await this.quoteEntityService.createUpdateEntity(passedQuoteEntities);
-        return '';
+        return res.status(HttpStatus.OK).json({ message: 'Data updated successfully' });
 			}
-      res.status(HttpStatus.BAD_REQUEST);
-      return {message: "Missing store name"};
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Missing store name' });
     } catch (error) { 
-      res.status(HttpStatus.BAD_REQUEST);
+      console.log(error)
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred' });
     }
   }
 
@@ -32,10 +32,12 @@ export class QuoteEntityController {
     try {
       const { shop } = res.locals.shopify.session;
       if (shop) {
-        return await this.quoteEntityService.findByShop(shop);
+        const settings = await this.quoteEntityService.findByShop(shop);
+        return res.status(HttpStatus.OK).json(settings);
       }
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Missing store name' });
     } catch (error) {
-      
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred' });
     }
   }
 

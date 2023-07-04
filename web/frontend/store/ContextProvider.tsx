@@ -9,7 +9,7 @@ export interface ContextProviderProps {
 const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState)
   return (
-    <Context.Provider value={[state, dispatch]}>
+    <Context.Provider value={{state, dispatch}}>
       {children}
     </Context.Provider>
   )

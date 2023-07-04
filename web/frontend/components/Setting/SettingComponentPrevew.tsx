@@ -1,24 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ConfigSettingPreview from './ConfigSettingPreview'
+import { StoreContext } from '../../store'
+import FormSettingPreview from './FormSettingPreview';
 
-// interface SettingComponentPrevewProps {
-//   setting: Setting;
-// }
-
-// const SettingComponentPrevew: React.FC<SettingComponentPrevewProps>  = ({setting}) => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
+const PreviewComponent = () => {
+  return <div>Component B</div>;
+};
 
 const SettingComponentPrevew = () => {
-  return (
-    <div>
-      <ConfigSettingPreview />
-    </div>
-  )
+  const {state} = useContext(StoreContext);
+  const tab = state.settingTab || 'configSetting';
+  if (tab === 'configSetting') {
+    return <ConfigSettingPreview />;
+  } else if (tab === 'formField') {
+    return <FormSettingPreview />;
+  }
 }
 
 export default SettingComponentPrevew
