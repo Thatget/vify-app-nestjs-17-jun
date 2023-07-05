@@ -1,0 +1,41 @@
+<div>
+  <button id="openModalBtn">Open Modal</button>
+  <div id="modalContainer">
+    <div id="modalContent">
+      <h2>{{ product.title }}</h2>
+      {{ product.featured_image | img_url: '600x600' | img_tag: product.featured_image.alt }}
+      <p>{{ product.description }}</p>
+      <div class="input-container">
+        <input type="text" id="myInput" placeholder="Enter your name" />
+        <label for="myInput">Name</label>
+      </div>
+      <div class="input-container">
+        <input type="text" id="myInput" placeholder="Enter your name" />
+        <label for="myInput">Name</label>
+      </div>
+      <div class="input-container">
+        <input type="text" id="myInput" placeholder="Enter your name" />
+        <label for="myInput">Name</label>
+      </div>
+      <div class="textarea-container">
+        <textarea class="custom-textarea" rows="4"></textarea>
+        <label class="textarea-label">Your Message</label>
+      </div>
+      <button class="save-button">Save</button>
+      <button id="closeModalBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Star Rating",
+  "target": "section",
+  "stylesheet": "app.css",
+  "javascript": "app.js",
+  "settings": [
+    { "type": "product", "id": "product", "label": "product", "autofill": true },
+    { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }
+  ]
+}
+{% endschema %}
