@@ -5,23 +5,22 @@
       <h2>{{ product.title }}</h2>
       {{ product.featured_image | img_url: '600x600' | img_tag: product.featured_image.alt }}
       <p>{{ product.description }}</p>
-      <div class="input-container">
-        <input type="text" id="myInput" placeholder="Enter your name" />
-        <label for="myInput">Name</label>
-      </div>
-      <div class="input-container">
-        <input type="text" id="myInput" placeholder="Enter your name" />
-        <label for="myInput">Name</label>
-      </div>
-      <div class="input-container">
-        <input type="text" id="myInput" placeholder="Enter your name" />
-        <label for="myInput">Name</label>
-      </div>
-      <div class="textarea-container">
-        <textarea class="custom-textarea" rows="4"></textarea>
-        <label class="textarea-label">Your Message</label>
-      </div>
-      <button class="save-button">Save</button>
+      <form>
+        <div class="input-container">
+          <input type="text" id="nameInput" placeholder="Enter your name" />
+          <label for="myInput">Name</label>
+        </div>
+        <div class="input-container">
+          <input type="text" id="emailInput" placeholder="Enter your email" />
+          <label for="myInput">Email</label>
+        </div>
+        <dele
+        <div class="textarea-container">
+          <textarea id="messageInput" class="custom-textarea" rows="4"></textarea>
+          <label class="textarea-label">Your Message</label>
+        </div>
+        <button class="save-button" type="submit">Save</button>
+      </form>
       <button id="closeModalBtn">Close</button>
     </div>
   </div>

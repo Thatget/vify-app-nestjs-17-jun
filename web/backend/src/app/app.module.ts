@@ -18,6 +18,7 @@ import {DatabaseModule} from '../modules/database/database.module';
 import {ProductModule} from "../modules/product/product.module";
 import { QuoteModule } from '../modules/quote/quote.module';  
 import { QuoteEntityModule } from '../modules/quote_entity/quote_entity.module';
+import { StoreFrontendModule } from '../modules/store-frontend/store-frontend.module';
 
 const STATIC_PATH =
     process.env.NODE_ENV === "production"
@@ -31,6 +32,7 @@ const STATIC_PATH =
         ProductModule,
         QuoteModule,
         QuoteEntityModule,
+        StoreFrontendModule,
         ConfigModule.forRoot({
             isGlobal: true,
         }),
@@ -58,7 +60,10 @@ export class AppModule implements NestModule {
             .exclude({path: "/api/auth/(.*)", method: RequestMethod.ALL}, {
                 path: "/api/webhook/(.*)",
                 method: RequestMethod.ALL
-            })
+            }, {
+              path: "/api/proxy",
+              method: RequestMethod.ALL
+          })
             .forRoutes({path: "/api/*", method: RequestMethod.ALL});
 
         // Webhooks
