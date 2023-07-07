@@ -10,7 +10,7 @@ export class StoreFrontendController {
     return this.storeFrontendService.create(createStoreFrontendDto);
   }
 
-  @Get('setting')
+  @Get('quote_setting')
   findAll() {
     return this.storeFrontendService.findAll();
   }

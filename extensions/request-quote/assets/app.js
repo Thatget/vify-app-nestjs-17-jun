@@ -2,7 +2,7 @@ const openModalBtn = document.getElementById('openModalBtn');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const modalContainer = document.getElementById('modalContainer');
 const saveButton = document.getElementById('saveButton');
-const shopOrigin = Shopify.shopOrigin || window.location.host || '';
+const shopOrigin = window.location.origin || '';
 
 openModalBtn.addEventListener('click', () => {
   modalContainer.style.display = 'flex';
@@ -12,7 +12,7 @@ closeModalBtn.addEventListener('click', () => {
   modalContainer.style.display = 'none';
 });
 
-fetch('vify_rfq-f')
+fetch(`${shopOrigin}/apps/vify_rfq-f/quote_setting`)
   .then(response => {
     if (!response.ok) {
       throw new Error('Error occurred during the request.');
@@ -39,7 +39,7 @@ saveButton.addEventListener('click', (e) => {
 
   console.log(data);
 
-  fetch(`${shopOrigin}/vify_rfq-f/new_quote`, {
+  fetch(`${shopOrigin}/apps/vify_rfq-f/new_quote`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
