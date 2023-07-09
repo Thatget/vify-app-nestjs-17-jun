@@ -4,7 +4,8 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import SettingComponentSet from './SettingComponentSet';
-import SettingComponentPrevew from './SettingComponentPreview';
+// import SettingComponentPrevew from './SettingComponentPreview';
+import SettingComponentPreview from "./SettingComponentPreview";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,8 +24,8 @@ const SettingComponent = () => {
             <SettingComponentSet />
           </Item>
         </Grid>
-        <Grid item xs={12} md={8}>
-          <SettingComponentPrevew />
+        <Grid item xs={12} md={8} >
+          <SettingComponentPreview />
         </Grid>
       </Grid>
     </Box>

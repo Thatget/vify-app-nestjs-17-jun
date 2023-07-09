@@ -1,5 +1,7 @@
+import {payloadObject} from "./actions";
+
 export type StoreState = {
-  settingTab: string;
+  settingTab: string[];
   setting: Object;
   currentSetting: Object;
 
@@ -8,7 +10,7 @@ export type StoreState = {
 export type StoreAction = {
   type: actionType
   payload?: Object;
-  tab?: string;
+  tab?: payloadObject;
 };
 
 export type StoreContextType = {

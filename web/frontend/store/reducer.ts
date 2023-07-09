@@ -10,7 +10,7 @@ const ActionTypes = {
 const initialState = {
   setting: {},
   currentSetting: {},
-  settingTab: '',
+  settingTab: ['configSetting'],
 };
 
 // Reducer
@@ -23,10 +23,20 @@ const reducer = (state: StoreState, action: StoreAction): StoreState => {
     // UPDATE NEW SETTING
     case ActionTypes.SET_NEW_SETTING:
       const currentSetting = { ...state.currentSetting, ...action.payload}
+      console.log(currentSetting)
       return { ...state, ...{ currentSetting } };
     // SET ACTIVE TAB//PREVIEW
     case ActionTypes.SET_SETTING_TAB:
-      return { ...state, settingTab: action.tab };
+      let tabs = state.settingTab;
+
+      if (action.tab.add) {
+        if (!tabs.includes(action.tab.tab)) {
+          tabs.push(action.tab.tab)
+        }
+      } else {
+          tabs = tabs.filter(tab => tab !== action.tab.tab)
+      }
+      return { ...state, settingTab: tabs };
     default:
       return state;
   }
