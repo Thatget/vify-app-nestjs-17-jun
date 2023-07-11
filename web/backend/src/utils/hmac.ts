@@ -10,8 +10,8 @@ export default class HmacValidator {
 
   private hashing(payload: crypto.BinaryLike, encoding: crypto.BinaryToTextEncoding = 'hex'): string {
     return this.hmac
-    .update(payload)
-    .digest(encoding)
+      .update(payload)
+      .digest(encoding)
   }
 
   verify(hashed: string, payload: crypto.BinaryLike) {

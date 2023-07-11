@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import HmacValidator from '../../utils/hmac';
 
 @Injectable()
 export class StoreFrontendService {
@@ -6,7 +8,7 @@ export class StoreFrontendService {
     private readonly config: ConfigService
 ) { }
 
-public verifySignature(query: ProxyQuery) {
+  public verifySignature(query) {
     const hashed = query.signature as string
     delete query.signature
     const queryString = Object.keys(query)
@@ -17,5 +19,5 @@ public verifySignature(query: ProxyQuery) {
     const hmacValidator = new HmacValidator(this.config.get<string>('shopify.api_secret') as string)
 
     return hmacValidator.verify(hashed, queryString)
-}
+  }
 }

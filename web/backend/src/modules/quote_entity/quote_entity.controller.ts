@@ -40,19 +40,4 @@ export class QuoteEntityController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred' });
     }
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.quoteEntityService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() quoteEntityDto: QuoteEntityDto) {
-    return this.quoteEntityService.update(+id, quoteEntityDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.quoteEntityService.remove(+id);
-  }
 }

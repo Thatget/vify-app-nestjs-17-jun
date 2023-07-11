@@ -25,16 +25,4 @@ export class QuoteEntityService {
       throw error;
     }
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} quoteEntity`;
-  }
-
-  update(id: number, quoteEntityDto: QuoteEntityDto) {
-    return `This action updates a #${id} quoteEntity`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} quoteEntity`;
-  }
 }

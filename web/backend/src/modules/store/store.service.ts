@@ -19,8 +19,8 @@ export class StoreService {
     return `This action returns all store`;
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} store`;
+  async findByShopDomain(shop: string) {
+    return `This action returns a #${shop} store`;
   }
 
   async update(id: number, updateStoreDto: UpdateStoreDto) {
