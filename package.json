@@ -15,7 +15,8 @@
   "dependencies": {
     "@shopify/app": "^3.44.1",
     "@shopify/cli": "^3.23.0",
-    "nodemon": "1.14.9"
+    "nodemon": "1.14.9",
+    "react-material-ui-form-validator": "^3.0.1"
   },
   "author": "Brucenguyen",
   "private": true,
@@ -23,5 +24,8 @@
     "web",
     "web/frontend",
     "extensions/*"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react-material-ui-form-validator": "^2.1.1"
+  }
 }

@@ -20,24 +20,34 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="databaseweb" uuid="3c67c430-8a77-4d4d-b87a-a3e7e5567271">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/web/database.sqlite</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.40.1/org/xerial/sqlite-jdbc/3.40.1.0/sqlite-jdbc-3.40.1.0.jar</url>
-        </library>
-      </libraries>
-    </data-source>
-    <data-source source="LOCAL" name="@db4free.net" uuid="2d0d9874-2222-426c-98ef-3a63bce9c291">
+    <data-source source="LOCAL" name="@localhost" uuid="4725cf06-bfd0-4892-af1e-327988de484d">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://db4free.net:3306/philip_nguyen</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="brucenguyen-database@brucenguyen-server.database.windows.net" uuid="0b342981-b17f-45fe-891e-b04d5c667d26">
+      <driver-ref>azure.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://brucenguyen-server.database.windows.net:1433;databaseName=brucenguyen-database;</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="@bruceserver.mysql.database.azure.com" uuid="8fcc87c8-ac6f-4ced-ac7c-79ebdc3cb999">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://bruceserver.mysql.database.azure.com:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="allowLoadLocalInfile" value="TRUE" />
+        <property name="allowMultiQueries" value="TRUE" />
+        <property name="allowNanAndInf" value="TRUE" />
+        <property name="allowPublicKeyRetrieval" value="TRUE" />
+        <property name="allowReplicaDownConnections" value="TRUE" />
+        <property name="allowSourceDownConnections" value="TRUE" />
+      </driver-properties>
     </data-source>
   </component>
 </project>

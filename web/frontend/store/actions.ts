@@ -1,5 +1,9 @@
 import { actionType } from "./type"
 
+export interface payloadObject {
+  add: boolean,
+  tab: string
+}
 export const setInitSetting = (payload: object) => ({
   type: actionType.SET_INIT_SETTING,
   payload
@@ -10,7 +14,7 @@ export const setNewSetting = (payload: object) => ({
   payload
 })
 
-export const setSettingTab = (tab: string) => ({
+export const setSettingTab = (tab: payloadObject) => ({
   type: actionType.SET_SETTING_TAB,
   tab
 })
