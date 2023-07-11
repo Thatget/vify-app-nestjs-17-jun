@@ -1,5 +1,5 @@
-import { Box, Modal, Typography, TextField } from '@mui/material';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { Box, Modal, Typography, TextField, Button } from '@mui/material';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -31,17 +31,32 @@ const DefaultForm = ({ isOpen, handleClose }: Props) => {
     email: '',
     message: ''
   })
-  const setFormData = (e) => {
-    switch (key) {
-      case value:
-        
+  const setFormData = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let field = formValue;
+    switch (e.target.name) {
+      case 'name':
+        field = {...field, name: e.target.value}
         break;
-    
+      case 'email':
+        field = {...field, email: e.target.value}
+        break;
+      case 'message':
+        field = {...field, message: e.target.value}
+        break;
+      
       default:
         break;
     }
-    setFormValue((preData) => ({...preData,  });
+    setFormValue(field);
   }
+
+  const sendQuote = () => {
+    fetch('/apps/vify_rfq-f/quote_setting', {
+      method: "POST",
+      body: JSON.stringify(formValue),
+    });
+  }
+
   return (
     <>
       <Modal
@@ -55,8 +70,9 @@ const DefaultForm = ({ isOpen, handleClose }: Props) => {
             Product Title
           </Typography>
           <TextField name='name' onChange={(e) => setFormData(e)} value={formValue.name} type="text" />
-          <TextField name='email' value={formValue.email} type="text" />
-          <TextField name='messagage' value={formValue.message} type="text" />
+          <TextField name='email' value={formValue.email} onChange={(e) => setFormData(e)} type="text" />
+          <TextField name='message' value={formValue.message} onChange={(e) => setFormData(e)} type="text" />
+          <Button onClick={() => sendQuote()} >Send</Button>
         </Box>
       </Modal>
     </>

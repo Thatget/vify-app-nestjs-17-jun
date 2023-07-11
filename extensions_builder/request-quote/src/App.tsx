@@ -17,7 +17,7 @@ function App() {
     {showRequest &&
       <div>
         <Button onClick={handleOpen}>Request For Quote</Button>
-        <FormRequest isOpen={ open } handleClose={handleClose} />
+        <FormRequest isOpen={open} handleClose={handleClose} form={''} />
       </div>
     }
     </>
