@@ -2,23 +2,20 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class StoreFrontendService {
-  create(_createStoreFrontendDto) {
-    return 'This action adds a new storeFrontend';
-  }
+  constructor(
+    private readonly config: ConfigService
+) { }
 
-  findAll() {
-    return `This action returns all storeFrontend`;
-  }
+public verifySignature(query: ProxyQuery) {
+    const hashed = query.signature as string
+    delete query.signature
+    const queryString = Object.keys(query)
+        .sort()
+        .map((key: string) => `${key}=${query[key as keyof typeof query]}`)
+        .join('')
 
-  findOne(id: number) {
-    return `This action returns a #${id} storeFrontend`;
-  }
+    const hmacValidator = new HmacValidator(this.config.get<string>('shopify.api_secret') as string)
 
-  update(id: number, updateStoreFrontendDto) {
-    return `This action updates a #${id} storeFrontend`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} storeFrontend`;
-  }
+    return hmacValidator.verify(hashed, queryString)
+}
 }

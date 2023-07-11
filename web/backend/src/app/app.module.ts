@@ -61,7 +61,7 @@ export class AppModule implements NestModule {
                 path: "/api/webhook/(.*)",
                 method: RequestMethod.ALL
             }, {
-              path: "/api/proxy",
+              path: "/api/proxy/(.*)",
               method: RequestMethod.ALL
           })
             .forRoutes({path: "/api/*", method: RequestMethod.ALL});

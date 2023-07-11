@@ -7,6 +7,7 @@ import { QuoteEntityProviders } from './quote_entity.providers';
 @Module({
   imports: [DatabaseModule],
   controllers: [QuoteEntityController],
-  providers: [ ...QuoteEntityProviders,QuoteEntityService]
+  providers: [ ...QuoteEntityProviders,QuoteEntityService],
+  exports: [QuoteEntityService]
 })
 export class QuoteEntityModule {}

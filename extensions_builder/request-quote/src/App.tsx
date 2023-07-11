@@ -10,7 +10,8 @@ function App() {
   fetch('/apps/vify_rfq-f/quote_setting')
   .then(response => response.json())
   .then(data => {
-    setShowRequest(data.show);
+    console.log(data)
+    setShowRequest(true);
   })
   return (
     <>
