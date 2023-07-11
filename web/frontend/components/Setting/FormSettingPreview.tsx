@@ -19,18 +19,20 @@ const FormSettingPreview = () => {
             <Card sx={{display: 'flex'}}>
                 <CardMedia
                     component="img"
-                    sx={{width: 200}}
+                    sx={{height: 150}}
                     image="assets/product-card.jpg.avif"
                     alt=""
                 />
                 <Typography variant="body1" sx={{m: 1}}>Product Title</Typography>
-                </Card>
+            </Card>
 
             <Box sx={{flexWrap: 'wrap', width: '100%'}}>
                 <FormControl sx={{width: '100%'}}>
                     <Typography variant="body2" sx={{m: 1}}>Request for a quote</Typography>
-                    <Box sx={{display: 'flex', width: '100%', my: 1,
-                        mr:1.3, alignItems: 'center'}}>
+                    <Box sx={{
+                        display: 'flex', width: '100%', my: 1,
+                        mr: 1.3, alignItems: 'center'
+                    }}>
                         <Typography variant="body1" sx={{}}>Name</Typography>
                         <TextField
                             id="name_preview"
@@ -40,8 +42,10 @@ const FormSettingPreview = () => {
                             sx={{width: '30ch', mr: 0, ml: 'auto'}}
                         />
                     </Box>
-                    <Box sx={{display: 'flex', width: '100%', my: 1,
-                        mr:1.3, alignItems: 'center'}}>
+                    <Box sx={{
+                        display: 'flex', width: '100%', my: 1,
+                        mr: 1.3, alignItems: 'center'
+                    }}>
                         <Typography variant="body1" sx={{}}>Email</Typography>
                         <TextField
                             id="email_preview"
@@ -55,7 +59,7 @@ const FormSettingPreview = () => {
                         display: 'flex',
                         width: '100%',
                         my: 1,
-                        mr:1.3,
+                        mr: 1.3,
                         alignContent: 'space-between',
                         alignItems: 'center'
                     }}>
@@ -68,11 +72,12 @@ const FormSettingPreview = () => {
                             sx={{width: '30ch', mr: 0, ml: 'auto'}}
                         />
                     </Box>
-                    <div>
-                        <Button style={{backgroundColor:"#212121"}} variant="contained" sx={{m: 1, width: '100%',height:40}}>
-                            <Typography variant="body2" >{localFormSetting.submit_button_text}</Typography>
-                        </Button>
-                    </div>
+
+                    <Button style={{backgroundColor: "#212121"}} variant="contained"
+                            sx={{mx: 1, mb: 0, mt: 0.5, width: '100%', height: 40}}>
+                        <Typography variant="body2">{localFormSetting.submit_button_text}</Typography>
+                    </Button>
+
                 </FormControl>
             </Box>
         </>
@@ -81,7 +86,7 @@ const FormSettingPreview = () => {
 
     return (
         <>
-            <Box sx={{mt:2,height:634}}>
+            <Box sx={{mt: 2}}>
                 {formSettingPreview}
             </Box>
         </>

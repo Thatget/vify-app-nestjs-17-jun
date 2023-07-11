@@ -48,105 +48,106 @@ const SettingComponentSet = () => {
 
     return (
         <>
-            <Box sx={{display: '', flexWrap: 'wrap'}}>
-                <div
-                    style={{display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center'}}
-                    onClick={() => {
-                        state.settingTab.includes('configSetting') ? setSection({
-                            add: false,
-                            tab: 'configSetting'
-                        }) : setSection({add: true, tab: 'configSetting'})
-                    }}>
-                    <ListItemButton
-                        sx={state.settingTab.includes('configSetting')?showColor:hideColor}>
-                        <Typography variant="body2">General Setting</Typography>
-                        {state.settingTab.includes('configSetting') && <Button sx={{marginLeft: "auto"}}>
-                            <Typography variant="body2">Hide</Typography>
-                        </Button>}
-                        {!state.settingTab.includes('configSetting') && <Button sx={{marginLeft: "auto"}}>
-                            <Typography variant="body2">Show</Typography>
-                        </Button>}
-                    </ListItemButton>
+            {/*<Box sx={{display: '', flexWrap: 'wrap'}}>*/}
+            {/*<div*/}
+            {/*    style={{display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center'}}*/}
+            {/*    onClick={() => {*/}
+            {/*        state.settingTab.includes('configSetting') ? setSection({*/}
+            {/*            add: false,*/}
+            {/*            tab: 'configSetting'*/}
+            {/*        }) : setSection({add: true, tab: 'configSetting'})*/}
+            {/*    }}>*/}
+            {/*<ListItemButton*/}
+            {/*    sx={state.settingTab.includes('configSetting')?showColor:hideColor}>*/}
 
-                </div>
-                <Collapsible
-                    open={(state.settingTab.includes('configSetting')) ? true : false}
-                    id="basic-collapsible"
-                    transition={{duration: '500ms', timingFunction: 'ease-in-out'}}
-                    expandOnPrint
-                >
-                    <ConfigSetting/>
-                </Collapsible>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        cursor: 'pointer',
-                        alignItems: 'center'
-                    }}
-                    onClick={() => {
-                        state.settingTab.includes('formField') ? setSection({
-                            add: false,
-                            tab: 'formField'
-                        }) : setSection({add: true, tab: 'formField'})
-                    }}>
-                    {/*<ListItemButton*/}
-                    {/*    sx={state.settingTab.includes('formField')?showColor:hideColor}>*/}
-                    {/*    <Typography variant="body2">Form Fields</Typography>*/}
-                    {/*    {state.settingTab.includes('formField') && <Button sx={{marginLeft: "auto"}}>*/}
-                    {/*        <Typography variant="body2">Hide</Typography>*/}
-                    {/*    </Button>}*/}
-                    {/*    {!state.settingTab.includes('formField') && <Button sx={{marginLeft: "auto"}}>*/}
-                    {/*        <Typography variant="body2">Show</Typography>*/}
-                    {/*    </Button>}*/}
-                    {/*</ListItemButton>*/}
-                </div>
-                <div>
-                    <Collapsible
-                        open={state.settingTab.includes('formField') ? true : false}
-                        id="basic-collapsible"
-                        transition={{duration: '500ms', timingFunction: 'ease-in-out'}}
-                        expandOnPrint
-                    >
-                        <FormSetting/>
-                    </Collapsible>
-                </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        cursor: 'pointer',
-                        alignItems: 'center'
-                    }}
-                    onClick={() => {
-                        state.settingTab.includes('thanksForm') ? setSection({
-                            add: false,
-                            tab: 'thanksForm'
-                        }) : setSection({add: true, tab: 'thanksForm'})
-                    }}>
+            {/*    {state.settingTab.includes('configSetting') && <Button sx={{marginLeft: "auto"}}>*/}
+            {/*        <Typography variant="body2">Hide</Typography>*/}
+            {/*    </Button>}*/}
+            {/*    {!state.settingTab.includes('configSetting') && <Button sx={{marginLeft: "auto"}}>*/}
+            {/*        <Typography variant="body2">Show</Typography>*/}
+            {/*    </Button>}*/}
+            {/*</ListItemButton>*/}
 
-                    {/*<ListItemButton*/}
-                    {/*    sx={state.settingTab.includes('thanksForm')?showColor:hideColor}>*/}
-                    {/*    <Typography variant="body2">Thanks Page Setting</Typography>*/}
-                    {/*    {state.settingTab.includes('thanksForm') && <Button sx={{marginLeft: "auto"}}>*/}
-                    {/*        <Typography variant="body2">Hide</Typography>*/}
-                    {/*    </Button>}*/}
-                    {/*    {!state.settingTab.includes('thanksForm') && <Button sx={{marginLeft: "auto"}}>*/}
-                    {/*        <Typography variant="body2">Show</Typography>*/}
-                    {/*    </Button>}*/}
-                    {/*</ListItemButton>*/}
-                </div>
-                <div style={{ marginTop: 4}}>
-                    <Collapsible
-                        open={state.settingTab.includes('thanksForm') ? true : false}
-                        id="basic-collapsible"
-                        transition={{duration: '500ms', timingFunction: 'ease-in-out'}}
-                        expandOnPrint
-                    >
-                        <ThanksFormSetting/>
-                    </Collapsible>
-                </div>
-            </Box>
+            {/*</div>*/}
+            {/*<Collapsible*/}
+            {/*    open={(state.settingTab.includes('configSetting')) ? true : false}*/}
+            {/*    id="basic-collapsible"*/}
+            {/*    transition={{duration: '500ms', timingFunction: 'ease-in-out'}}*/}
+            {/*    expandOnPrint*/}
+            {/*>*/}
+            {state.settingTab.includes('configSetting') && <ConfigSetting/>}
+            {/*</Collapsible>*/}
+            {/*<div*/}
+            {/*    style={{*/}
+            {/*        display: 'flex',*/}
+            {/*        justifyContent: 'space-between',*/}
+            {/*        cursor: 'pointer',*/}
+            {/*        alignItems: 'center'*/}
+            {/*    }}*/}
+            {/*    onClick={() => {*/}
+            {/*        state.settingTab.includes('formField') ? setSection({*/}
+            {/*            add: false,*/}
+            {/*            tab: 'formField'*/}
+            {/*        }) : setSection({add: true, tab: 'formField'})*/}
+            {/*    }}>*/}
+            {/*<ListItemButton*/}
+            {/*    sx={state.settingTab.includes('formField')?showColor:hideColor}>*/}
+            {/*    <Typography variant="body2">Form Fields</Typography>*/}
+            {/*    {state.settingTab.includes('formField') && <Button sx={{marginLeft: "auto"}}>*/}
+            {/*        <Typography variant="body2">Hide</Typography>*/}
+            {/*    </Button>}*/}
+            {/*    {!state.settingTab.includes('formField') && <Button sx={{marginLeft: "auto"}}>*/}
+            {/*        <Typography variant="body2">Show</Typography>*/}
+            {/*    </Button>}*/}
+            {/*</ListItemButton>*/}
+            {/*</div>*/}
+            {/*<div>*/}
+            {/*    <Collapsible*/}
+            {/*        open={state.settingTab.includes('formField') ? true : false}*/}
+            {/*        id="basic-collapsible"*/}
+            {/*        transition={{duration: '500ms', timingFunction: 'ease-in-out'}}*/}
+            {/*        expandOnPrint*/}
+            {/*    >*/}
+            {state.settingTab.includes('formSetting') && <FormSetting/>}
+            {/*</Collapsible>*/}
+            {/*</div>*/}
+            {/*<div*/}
+            {/*    style={{*/}
+            {/*        display: 'flex',*/}
+            {/*        justifyContent: 'space-between',*/}
+            {/*        cursor: 'pointer',*/}
+            {/*        alignItems: 'center'*/}
+            {/*    }}*/}
+            {/*    onClick={() => {*/}
+            {/*        state.settingTab.includes('thanksForm') ? setSection({*/}
+            {/*            add: false,*/}
+            {/*            tab: 'thanksForm'*/}
+            {/*        }) : setSection({add: true, tab: 'thanksForm'})*/}
+            {/*    }}>*/}
+
+            {/*<ListItemButton*/}
+            {/*    sx={state.settingTab.includes('thanksForm')?showColor:hideColor}>*/}
+            {/*    <Typography variant="body2">Thanks Page Setting</Typography>*/}
+            {/*    {state.settingTab.includes('thanksForm') && <Button sx={{marginLeft: "auto"}}>*/}
+            {/*        <Typography variant="body2">Hide</Typography>*/}
+            {/*    </Button>}*/}
+            {/*    {!state.settingTab.includes('thanksForm') && <Button sx={{marginLeft: "auto"}}>*/}
+            {/*        <Typography variant="body2">Show</Typography>*/}
+            {/*    </Button>}*/}
+            {/*</ListItemButton>*/}
+            {/*</div>*/}
+            {/*<div style={{marginTop: 4}}>*/}
+            {/*    <Collapsible*/}
+            {/*        open={state.settingTab.includes('thanksForm') ? true : false}*/}
+            {/*        id="basic-collapsible"*/}
+            {/*        transition={{duration: '500ms', timingFunction: 'ease-in-out'}}*/}
+            {/*        expandOnPrint*/}
+            {/*    >*/}
+            {/*<ThanksFormSetting/>*/}
+            {state.settingTab.includes('thanksSetting') && <ThanksFormSetting/>}
+            {/*    </Collapsible>*/}
+            {/*</div>*/}
+            {/*</Box>*/}
 
         </>
     )
