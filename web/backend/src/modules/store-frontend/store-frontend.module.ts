@@ -3,9 +3,10 @@ import { StoreFrontendService } from './store-frontend.service';
 import { StoreFrontendController } from './store-frontend.controller';
 import { QuoteEntityModule } from '../quote_entity/quote_entity.module';
 import { StoreModule } from '../store/store.module';
+import { QuoteModule } from '../quote/quote.module';
 
 @Module({
-  imports: [QuoteEntityModule, StoreModule],
+  imports: [QuoteEntityModule, StoreModule, QuoteModule],
   controllers: [StoreFrontendController],
   providers: [StoreFrontendService]
 })

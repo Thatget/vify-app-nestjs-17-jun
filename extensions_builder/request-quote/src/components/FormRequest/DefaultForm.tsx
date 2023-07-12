@@ -51,7 +51,7 @@ const DefaultForm = ({ isOpen, handleClose }: Props) => {
   }
 
   const sendQuote = () => {
-    fetch('/apps/vify_rfq-f/quote_setting', {
+    fetch('/apps/vify_rfq-f/new_quote', {
       method: "POST",
       body: JSON.stringify(formValue),
     });

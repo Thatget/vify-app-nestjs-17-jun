@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req, Res, Htt
 import { QuoteEntityService } from '../quote_entity/quote_entity.service';
 import { StoreFrontendService } from './store-frontend.service';
 import { StoreService } from '../store/store.service';
+import { QuoteService } from '../quote/quote.service';
 
 @Controller('api/proxy')
 export class StoreFrontendController {
@@ -9,10 +10,16 @@ export class StoreFrontendController {
     private readonly storeServer: StoreService,
     private readonly storeFrontendService: StoreFrontendService,
     private readonly quoteEntityService: QuoteEntityService,
+    private readonly quoteService: QuoteService,
     ) {}
 
   @Post('new_quote')
-  create(@Body() createStoreFrontendDto) {
+  create(@Body() quote) {
+    try {
+      console.log(quote);
+    } catch (quoteService) {
+      
+    }
     // return this.storeFrontendService.create(createStoreFrontendDto);
   }
 
@@ -25,7 +32,7 @@ export class StoreFrontendController {
         throw new HttpException('Failed to authenticate', 401)
       }
       const setting = await this.quoteEntityService.findByShop(shopDomain);
-      console.log(setting);
+      console.log("setting1: ", setting);
       return {show: true}
     } catch(e) {
       throw new HttpException('Failed to authenticate', 500)
