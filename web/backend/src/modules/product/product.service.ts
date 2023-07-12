@@ -17,7 +17,7 @@ export class ProductService {
      async insertAll(products: Product[]): Promise<InsertResult> {
          return await this.productRepository.insert(products)
     }
-    async insert(product: Product): Promise<InsertResult> {
+    async insert(product: Object): Promise<InsertResult> {
         return await this.productRepository.insert(product)
     }
 

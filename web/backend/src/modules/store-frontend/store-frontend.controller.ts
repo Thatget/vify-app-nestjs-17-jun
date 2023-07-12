@@ -3,6 +3,7 @@ import { QuoteEntityService } from '../quote_entity/quote_entity.service';
 import { StoreFrontendService } from './store-frontend.service';
 import { StoreService } from '../store/store.service';
 import { QuoteService } from '../quote/quote.service';
+import { CreateQuoteDto } from '../quote/dto/create-quote.dto';
 
 @Controller('api/proxy')
 export class StoreFrontendController {
@@ -14,13 +15,12 @@ export class StoreFrontendController {
     ) {}
 
   @Post('new_quote')
-  create(@Body() quote) {
+  create(@Body() quote: CreateQuoteDto) {
     try {
-      console.log(quote);
-    } catch (quoteService) {
+      return this.quoteService.create(quote);
+    } catch (error) {
       
     }
-    // return this.storeFrontendService.create(createStoreFrontendDto);
   }
 
   @Get('quote_setting')
