@@ -8,6 +8,22 @@ import CardContent from "@mui/material/CardContent";
 import {actions, StoreContext} from '../store'
 import Button from "@mui/material/Button";
 import {payloadObject} from "../store/actions";
+import {makeStyles} from "@mui/styles";
+import Typography from "@mui/material/Typography";
+
+const useStyles = makeStyles({
+    root: {
+        position: "sticky",
+        // top: "1rem",
+        // maxWidth: "600"
+    },
+    title: {
+        fontSize: 14
+    },
+    pos: {
+        marginBottom: 12
+    }
+})
 
 const Setting = () => {
     const {state, dispatch} = useContext(StoreContext)
@@ -65,12 +81,33 @@ const Setting = () => {
             <SettingComponentPreview/>
         </CardContent>
     );
+
+    const classes = useStyles()
     return (
         <React.Fragment>
             {/*<Box sx={{flexDirection: 'row', flexWrap: 'wrap'}}>*/}
-            <Grid container spacing={1} sx={{}}>
-                <Grid container item sx={{mt: 1, position: "fixed", justifyContent: "flex-end", width: "100%"}}>
-                    <Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end"}}>
+            <Grid container spacing={1} sx={{width: '100%'}}>
+                <Grid container item
+                      sx={{
+                          mt: 1,
+                          position: "fixed",
+                          justifyContent: "flex-end",
+                          width: "100%",
+                      }}>
+                    {/*<Card*/}
+                    {/*    className={classes.root} elevation={15}>*/}
+                    {/*    <CardContent>*/}
+                    {/*        <Typography*/}
+                    {/*            className={classes.title}*/}
+                    {/*            color="textSecondary"*/}
+                    {/*            gutterBottom*/}
+                    {/*        >*/}
+                    {/*            Shopping Cart*/}
+                    {/*        </Typography>*/}
+                    {/*    </CardContent>*/}
+                    {/*</Card>*/}
+
+                    <Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end", width: '100%'}}>
                         {/*// <Card variant="outlined" sx={{ display:"flex" ,justifyContent:"flex-end" ,alignItems :"flex-end" }} >*/}
                         <Button variant="contained" sx={{m: 0.2}}
                                 onClick={() => {
@@ -126,21 +163,25 @@ const Setting = () => {
                         {/*</Card>*/}
                     </Box>
                 </Grid>
-                <Grid container item spacing={1} sx={{mt: 6.2, mx: 0.5, width: '100%'}}>
+
+                <Grid container item spacing={1}
+                      sx={{mt: 6.2, mx: 0.5, width: '100%'}}>
                     <Grid item xs={7} sx={{width: '100%'}}>
-                        <div style={{
-                            maxHeight: '80vh',
-                            position: 'fixed',
-                            width: '57%',
-                            overflow: "auto",
-                        }}>
-                            <Card variant="outlined">{settingComponentSet}</Card>
-                        </div>
+                        {/*<div style={{*/}
+                        {/*    maxHeight: '80vh',*/}
+                        {/*    position: 'fixed',*/}
+                        {/*    width: '57%',*/}
+                        {/*    overflow: "auto",*/}
+                        {/*    marginBottom: 0.2*/}
+                        {/*}}>*/}
+                        <Card className={classes.root}>{settingComponentSet}</Card>
+                        {/*</div>*/}
                     </Grid>
-                    <Grid item xs={5}>
-                        <div style={{maxHeight: '80vh', position: 'fixed', overflow: "auto"}}>
-                            <Card variant="outlined">{settingComponentPreview}</Card>
-                        </div>
+                    <Grid item xs={5}
+                          sx={{width: '100%', overflow: 'auto'}}>
+                        {/*<div style={{maxHeight: '80vh', position: 'fixed', overflow: "auto"}}>*/}
+                        <Card variant="outlined">{settingComponentPreview}</Card>
+                        {/*</div>*/}
                     </Grid>
                 </Grid>
 

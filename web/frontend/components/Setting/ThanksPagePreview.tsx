@@ -16,7 +16,6 @@ const ThanksPagePreview = () => {
     // const testData = state.currentSetting.hide_price || false;
     return (
         <>
-
             <Card sx={{display: 'flex', m: 0.5, width: '100%'}}>
                 <CardMedia
                     component="img"
@@ -30,16 +29,15 @@ const ThanksPagePreview = () => {
                 </div>
             </Card>
             {/*<Box sx={{flexWrap: 'wrap', width: '100%'}}>*/}
-            <FormControl sx={{width: '100%'}}>
-                {/*<div>*/}
-                <Button style={{backgroundColor: "#212121"}} variant="contained"
-                        sx={{ml: 0.2, mt: 2, width: '100%'}}>
-                    <Typography variant="body2">{localFormSetting.continue_shopping_button_text}</Typography>
-                </Button>
-                {/*</div>*/}
-            </FormControl>
+            {/*<FormControl sx={{width: '100%'}}>*/}
+            {/*<div>*/}
+            <Button style={{backgroundColor: "#212121"}} variant="contained"
+                    sx={{ml: 0.4, mt: 2, width: '100%'}}>
+                <Typography variant="body2">{localFormSetting.continue_shopping_button_text}</Typography>
+            </Button>
+            {/*</div>*/}
+            {/*</FormControl>*/}
             {/*</Box>*/}
-
         </>
     )
 }
