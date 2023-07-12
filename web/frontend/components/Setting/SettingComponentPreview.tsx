@@ -42,7 +42,7 @@ const SettingComponentPreview = () => {
     }
 
     return (
-        <Container>
+        <Box sx={{mr: 0.5, width: '100%'}}>
             {/*<Box sx={{display: '', flexWrap: 'wrap'}}>*/}
             {/*<div*/}
             {/*    style={{display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center'}}*/}
@@ -135,7 +135,7 @@ const SettingComponentPreview = () => {
             {/*</Collapsible>*/}
             {/*</Box>*/}
 
-        </Container>
+        </Box>
     );
 }
 

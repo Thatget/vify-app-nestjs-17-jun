@@ -10,39 +10,55 @@ import Container from '@mui/material/Container';
 import ProductSelector from "../components/ProductSelector";
 import {useAuthenticatedFetch} from "../hooks/useAuthenticatedFetch";
 import {useEffect} from "react";
+import {makeStyles} from "@mui/styles";
+
+const useStyles = makeStyles({
+    root: {
+        position: "sticky",
+        top: "1rem",
+        minWidth: "275"
+    },
+    title: {
+        fontSize: 14
+    },
+    pos: {
+        marginBottom: 12
+    }
+})
 
 export default function Products() {
-    // @ts-ignore
     const fetch = useAuthenticatedFetch()
-    console.log("fetch",fetch)
-    // @ts-ignore
+    console.log("fetch", fetch)
     const selectProducts = (
         <React.Fragment>
             <CardContent>
-                <Typography variant="body1" >
+                <Typography variant="body1">
                     <b>Products Quotes Setting: </b>
                 </Typography>
                 <br/>
-                <ProductSelector />
+                <ProductSelector/>
             </CardContent>
         </React.Fragment>
     );
 
     useEffect(() => {
-        fetch("/api/products",{method:"Get"}).then((data: Response): void => {
-            console.log("data",data)
-            const res:Promise<Response> = new Promise((resolve, reject) => {
+        fetch("/api/products", {method: "Get"}).then((data: Response): void => {
+            console.log("data", data)
+            const res: Promise<Response> = new Promise((resolve, reject) => {
                 resolve(data.json())
             })
-            res.then((value: Response) => console.log("value:",value))
+            res.then((value: Response) => console.log("value:", value))
         });
-    },[])
+    }, [])
+    const classes = useStyles()
 
     return (
         <>
             <React.Fragment>
                 <br/>
                 <Container>
+
+
                     <Box sx={{minWidth: 275}}>
                         <Card variant="outlined">{selectProducts}</Card>
                     </Box>
