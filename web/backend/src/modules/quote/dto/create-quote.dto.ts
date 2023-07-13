@@ -3,4 +3,5 @@ export class CreateQuoteDto {
   name: string;
   email: string;
   message: string;
+  store_id: number;
 }

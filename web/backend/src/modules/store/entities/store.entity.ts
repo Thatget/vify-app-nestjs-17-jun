@@ -8,15 +8,15 @@ export class Store {
   id: number;
   @Column({ unique: true })
   shop: string;
-  @Column()
+  @Column({ nullable: true })
   name: string;
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   email: string;
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   accessToken: string;
   @Column({ default: true })
   isActive: boolean;
-  @Column()
+  @Column({ default: '' })
   role: string
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   created_at: Date;

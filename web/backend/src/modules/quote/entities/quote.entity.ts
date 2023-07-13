@@ -6,14 +6,11 @@ export class Quote {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  shop: string;
-  @Column()
   name: string;
   @Column()
   email: string;
-  @Column('tinyint')
+  @Column('tinyint', { default: 0 })
   status: number;
-  user: Store;
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   created_at: Date;
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })

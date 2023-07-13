@@ -42,7 +42,7 @@ export class ProductController {
         const store = 
         req.body.map(async (result: any) => {
             let found = await this.productService.findOne(result.id)
-            if (found !== true) {
+            if (found) {
                 rawData = {
                   id:result.id,
                   productId: result.id,
