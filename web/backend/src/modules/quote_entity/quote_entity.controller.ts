@@ -21,8 +21,9 @@ export class QuoteEntityController {
                 const passedQuoteEntities = quoteEntities.filter((entity) => (allowedAttribute.includes(entity.name)))
                     .map(entity => ({...entity, shop: shop}));
                 // Update or Save
+                console.log("passedQuoteEntities", passedQuoteEntities)
                 await this.quoteEntityService.createUpdateEntity(passedQuoteEntities);
-                console.log("respond from Quote_entiy", res)
+                // console.log("respond from Quote_entiy", res)
                 return res.status(HttpStatus.OK).json({message: 'Data updated successfully'});
             }
             // const response = {
@@ -60,18 +61,18 @@ export class QuoteEntityController {
         }
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.quoteEntityService.findOne(+id);
-    }
+    // @Get(':id')
+    // findOne(@Param('id') id: string) {
+    //     return this.quoteEntityService.findOne(+id);
+    // }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() quoteEntityDto: QuoteEntityDto) {
-        return this.quoteEntityService.update(+id, quoteEntityDto);
-    }
+    // @Patch(':id')
+    // update(@Param('id') id: string, @Body() quoteEntityDto: QuoteEntityDto) {
+    //     return this.quoteEntityService.update(+id, quoteEntityDto);
+    // }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.quoteEntityService.remove(+id);
-    }
+    // @Delete(':id')
+    // remove(@Param('id') id: string) {
+    //     return this.quoteEntityService.remove(+id);
+    // }
 }

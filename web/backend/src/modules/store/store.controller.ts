@@ -18,24 +18,13 @@ export class StoreController {
     }
 
     @Get()
-    async getStoreInfor(@Req() req: Request, @Res() res: Response): Promise<Store[]> {
-        try {
-            let status = 200;
-            const storeSession = res.locals.shopify.session
-            return storeSession
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    @Get()
     findAll() {
         return this.storeService.findAll();
     }
 
     @Get(':id')
     findOne(@Param('id') id: string) {
-        return this.storeService.findOne(+id);
+        // return this.storeService.fin(+id);
     }
 
     @Patch(':id')
