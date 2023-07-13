@@ -10,10 +10,19 @@ import Button from "@mui/material/Button";
 import {payloadObject} from "../store/actions";
 import {makeStyles} from "@mui/styles";
 import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import {useAppQuery, useAuthenticatedFetch} from "../hooks";
+import FormControl from "@mui/material/FormControl";
+import {useCallback} from "react";
+import {ValidatorForm} from "react-material-ui-form-validator";
+import SaveSetting from "../components/Setting/SaveSetting";
+import {defaultFormSetting} from "../components/Setting/FormSetting";
+
 
 const useStyles = makeStyles({
     root: {
         position: "sticky",
+        overflow: "auto"
         // top: "1rem",
         // maxWidth: "600"
     },
@@ -26,51 +35,17 @@ const useStyles = makeStyles({
 })
 
 const Setting = () => {
+    const fetch = useAuthenticatedFetch()
     const {state, dispatch} = useContext(StoreContext)
+    const localFormSetting = {...defaultFormSetting, ...state.setting, ...state.currentSetting}
+    // console.log("LocalFormSetting", localFormSetting)
     const setSection = (sections: payloadObject[]) => {
         sections.map(section => {
             dispatch(actions.setSettingTab(section))
         })
     }
 
-    // const setting = {};
-    // const {
-    //   data,
-    //   refetch: refetchQuote,
-    //   isLoading: isLoadingQuote,
-    //   isRefetching: isRefetchingQuote,
-    // } = useAppQuery({
-    //   url: "/api/quote-entity",
-    //     reactQueryOptions: {
-    //       onSuccess: () => {
-    //         if(data) {
-    //           data.map((entity: any) => {
-    //             switch (entity.name) {
-    //               case 'name':
-    //                 setting.name_title = entity.label||'';
-    //                 setting.name_placeholder = entity.value||'';
-    //                 break;
-    //               case 'email':
-    //                 setting.email_title = entity.label||'';
-    //                 setting.email_placeholder = entity.value||'';
-    //                 break;
-    //               case 'message':
-    //                 setting.massage_title = entity.label||'';
-    //                 setting.massage_placeholder = entity.value||'';
-    //                 break;
-    //
-    //               default:
-    //                 setting[entity.name] = entity.value;
-    //                 break;
-    //             }
-    //           })
-    //           dispatch(actions.setInitSetting(setting));
-    //         }
-    //       }
-    //     },
-    //   });
-    //
-    //   console.log("data: ", data)
+
     const settingComponentSet = (
         <CardContent>
             <SettingComponentSet/>
@@ -81,11 +56,80 @@ const Setting = () => {
             <SettingComponentPreview/>
         </CardContent>
     );
+    // const handleSubmit = useCallback(() => {
+    //     const data = localFormSetting
+    //     console.log("handleSubmit")
+    //     console.log("data frontend", data)
+    // }, [])
+    // const handleSubmit = () => {
+    //     const data = localFormSetting
+    //     console.log("handleSubmit")
+    //     console.log("data frontend", data)
+    // }
+
+
+    // const data = fetch("/api/quote-entity", {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(dataPost)
+    // })
+    // fetch("/api/quote-entity", {method: "Post"}).then((data: Response): void => {
+    //     console.log("data", data)
+    //     const res: Promise<Response> = new Promise((resolve, reject) => {
+    //         resolve(data.json())
+    //     })
+    //     res.then((value: Response) => console.log("value:", value))
+    // });
+    const setting = state.setting
+    // const data =localFormSetting
+    const {
+        data: data,
+        refetch: refetchQuote,
+        isLoading: isLoadingQuote,
+        isRefetching: isRefetchingQuote,
+    } = useAppQuery({
+        url: "/api/quote-entity",
+        reactQueryOptions: {
+            onSuccess: () => {
+                let returnData = data as Object[]
+                console.log("returnData", returnData)
+                if (returnData) {
+                    returnData.map((entity: any) => {
+                        console.log("entity", entity)
+                        switch (entity.name) {
+                            case 'name':
+                                setting.name_title = entity.label || '';
+                                setting.name_placeholder = entity.value || '';
+                                break;
+                            case 'email':
+                                setting.email_title = entity.label || '';
+                                setting.email_placeholder = entity.value || '';
+                                break;
+                            case 'message':
+                                // setting.massage_title = entity.label || '';
+                                // setting.massage_placeholder = entity.value || '';
+                                break;
+
+                            default:
+                                // setting[data.name] = entity.value;
+                                break;
+                        }
+
+                        // console.log("data", data)
+                        dispatch(actions.setInitSetting(setting));
+                    })
+                }
+            }
+        }
+    })
 
     const classes = useStyles()
     return (
         <React.Fragment>
-            {/*<Box sx={{flexDirection: 'row', flexWrap: 'wrap'}}>*/}
+            {/*<ValidatorForm onSubmit={handleSubmit}>*/}
             <Grid container spacing={1} sx={{width: '100%'}}>
                 <Grid container item
                       sx={{
@@ -107,8 +151,15 @@ const Setting = () => {
                     {/*    </CardContent>*/}
                     {/*</Card>*/}
 
-                    <Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end", width: '100%'}}>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "flex-end",
+                        width: '100%'
+                    }}>
                         {/*// <Card variant="outlined" sx={{ display:"flex" ,justifyContent:"flex-end" ,alignItems :"flex-end" }} >*/}
+                        <SaveSetting/>
+                        {/*<Button variant="contained" sx={{m: 0.2}} type="submit">Save all</Button>*/}
                         <Button variant="contained" sx={{m: 0.2}}
                                 onClick={() => {
                                     console.log("click")
@@ -180,15 +231,16 @@ const Setting = () => {
                     <Grid item xs={5}
                           sx={{width: '100%', overflow: 'auto'}}>
                         {/*<div style={{maxHeight: '80vh', position: 'fixed', overflow: "auto"}}>*/}
-                        <Card variant="outlined">{settingComponentPreview}</Card>
+                        <Card className={classes.root}>{settingComponentPreview}</Card>
                         {/*</div>*/}
                     </Grid>
                 </Grid>
 
             </Grid>
+            {/*</Container>*/}
             {/*</Box>*/}
 
-
+            {/*</ValidatorForm>*/}
         </React.Fragment>
     )
 }
