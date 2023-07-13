@@ -20,7 +20,7 @@ export class Product {
     // @Column()
     // shopDomain: string
 
-    @ManyToOne(() => Store)
-    @JoinColumn({name: 'shopDomain',referencedColumnName:'shop'})
-    shopDomain: Store
+    @ManyToOne(() => Store, store => store.products)
+    @JoinColumn({name: 'store_id'})
+    store: Store
 }

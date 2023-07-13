@@ -1,7 +1,7 @@
-import {Button, Label} from '@shopify/polaris'
 import React, {useContext} from 'react'
 import {StoreContext} from '../../store'
 import {useAuthenticatedFetch} from '../../hooks'
+import Button from "@mui/material/Button"
 
 const SaveSetting = () => {
     const {state, dispatch} = useContext(StoreContext);
@@ -100,12 +100,10 @@ const SaveSetting = () => {
     }
     const saveAble = (Object.entries(state.currentSetting).length === 0)
     return (
-        <div>
-            <Button disabled={saveAble} fullWidth monochrome outline onClick={updateSetting}>
-                Save
-            </Button>
+        <Button variant="contained" onClick={updateSetting} sx={{m: 0.2}}>
+            Save
+        </Button>
 
-        </div>
     )
 
 }
