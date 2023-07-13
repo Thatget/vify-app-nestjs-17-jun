@@ -28,7 +28,6 @@ const useStyles = makeStyles({
 
 export default function Products() {
     const fetch = useAuthenticatedFetch()
-    console.log("fetch", fetch)
     const selectProducts = (
         <React.Fragment>
             <CardContent>
@@ -57,8 +56,6 @@ export default function Products() {
             <React.Fragment>
                 <br/>
                 <Container>
-
-
                     <Box sx={{minWidth: 275}}>
                         <Card variant="outlined">{selectProducts}</Card>
                     </Box>
