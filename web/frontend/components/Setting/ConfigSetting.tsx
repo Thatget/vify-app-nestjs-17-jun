@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack'
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box"
 
-const defaultConfigSetting = {hide_price: false, hide_buy_now: false, show_request_for_quote: false};
+export const defaultConfigSetting = {hide_price: false, hide_buy_now: false, show_request_for_quote: false};
 
 const ConfigSetting = () => {
     const {state, dispatch} = useContext(StoreContext)
