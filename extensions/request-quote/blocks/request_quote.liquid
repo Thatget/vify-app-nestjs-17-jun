@@ -1,5 +1,25 @@
+<script>
+  var 
+  roduct = {{ product | json }}
+  {% if customer %}
+    var jsCustomerId = {{ customer.id }}
+  {% endif %}
+  var jsVariants = [];
+  {% for variant in product.variants %}
+    jsVariants.push({
+      ...{{ variant | json }},
+      price_formatted: `{{ variant.price | money }}`
+    })
+  {% endfor %}
+  if (jsProduct) {
+    jsProduct.variants = jsVariants
+    {% if customer %}
+      jsProduct.customerId = jsCustomerId
+    {% endif %}
+    window.vifyProduct = jsProduct
+  }
+</script>
 <div id="vify_rfq-f"></div>
-<div>FASDFASDF</div>
 {% schema %}
 {
   "name": "Vify Request Quote",

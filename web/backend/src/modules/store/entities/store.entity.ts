@@ -20,5 +20,4 @@ export class Store {
     quotes: Quote[];
     @OneToMany(() => Product, (product) => product.store)
     products: Product[]
-
 }
