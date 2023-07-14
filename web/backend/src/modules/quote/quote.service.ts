@@ -11,7 +11,7 @@ export class QuoteService {
     private quoteRepository: Repository<Quote>,
   ) {}
   create(createQuoteDto: CreateQuoteDto) {
-    this.quoteRepository.insert(createQuoteDto);
+    return this.quoteRepository.insert(createQuoteDto);
   }
 
   async findAll() {
