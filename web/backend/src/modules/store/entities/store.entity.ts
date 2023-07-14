@@ -39,8 +39,6 @@ export class Store {
   updated_at: Date;
   @OneToMany(() => Quote, (quote) => quote.store)
   quotes: Quote[];
-  // @OneToMany(() => Product, (product) => product.store)
-  // products: Product[];
   @OneToMany(() => QuoteEntity, (quote_entity) => quote_entity.store)
   quote_entities: QuoteEntity[];
   @OneToMany(() => Product, (product) => product.store) products: Product[];
