@@ -1,5 +1,22 @@
+<script>
+  var vifyRequestFQ = {};
+  vifyRequestFQ.product = {{ product | json }}
+  {% if customer %}
+    vifyRequestFQ.customer = {{ customer | json }}
+  {% endif %}
+  var jsVariants = [];
+  {% for variant in product.variants %}
+    jsVariants.push({
+      ...{{ variant | json }},
+      price_formatted: `{{ variant.price | money }}`
+    })
+  {% endfor %}
+  if (vifyRequestFQ) {
+    vifyRequestFQ.product.variants = jsVariants;
+    window.vifyRequestFQ = vifyRequestFQ;
+  }
+</script>
 <div id="vify_rfq-f"></div>
-<div>FASDFASDF</div>
 {% schema %}
 {
   "name": "Vify Request Quote",

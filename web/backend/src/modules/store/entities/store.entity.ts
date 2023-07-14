@@ -16,6 +16,12 @@ export class Store {
   id: number;
   @Column({ unique: true })
   shop: string;
+  @Column({ nullable: true })
+  name: string;
+  @Column({ nullable: true })
+  email: string;
+  @Column({ nullable: true })
+  accessToken: string;
   @Column({ default: true })
   isActive: boolean;
   @Column({ nullable: true })

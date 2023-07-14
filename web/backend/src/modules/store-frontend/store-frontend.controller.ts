@@ -15,6 +15,8 @@ import { QuoteEntityService } from '../quote_entity/quote_entity.service';
 import { StoreFrontendService } from './store-frontend.service';
 import { StoreService } from '../store/store.service';
 import { QuoteService } from '../quote/quote.service';
+import { CreateQuoteDto } from '../quote/dto/create-quote.dto';
+import { ProductService } from '../product/product.service';
 
 @Controller('api/proxy')
 export class StoreFrontendController {
@@ -26,11 +28,21 @@ export class StoreFrontendController {
   ) {}
 
   @Post('new_quote')
-  create(@Body() quote) {
+  async create(@Body() quote: CreateQuoteDto) {
     try {
+      const { product_id } = quote;
+      const product = await this.productService.findOne(product_id);
+      const store_id = product.store.id;
+      if (!store_id) {
+        return {}
+      }
+      quote = {...quote, store_id}
       console.log(quote);
-    } catch (quoteService) {}
-    // return this.storeFrontendService.create(createStoreFrontendDto);
+      return this.quoteService.create(quote);
+    } catch (error) {
+      console.log(error.message)
+      return error;
+    }
   }
 
   @Get('quote_setting')

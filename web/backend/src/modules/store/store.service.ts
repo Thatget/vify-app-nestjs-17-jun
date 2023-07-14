@@ -11,9 +11,9 @@ export class StoreService {
     private storesRepository: Repository<Store>,
   ) {}
 
-  async create(createStoreDto: CreateStoreDto) {
-    const store = this.storesRepository.create(createStoreDto);
-    return await this.storesRepository.save(store);
+  async createOrUpdate(createStoreDto: CreateStoreDto) {
+    const store = await this.storesRepository.upsert(createStoreDto, ['shop']);
+    return store;
   }
 
   async findAll() {
