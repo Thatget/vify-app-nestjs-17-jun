@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req, Res, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  Req,
+  Res,
+  HttpException,
+} from '@nestjs/common';
 import { QuoteEntityService } from '../quote_entity/quote_entity.service';
 import { StoreFrontendService } from './store-frontend.service';
 import { StoreService } from '../store/store.service';
@@ -13,8 +25,7 @@ export class StoreFrontendController {
     private readonly storeFrontendService: StoreFrontendService,
     private readonly quoteEntityService: QuoteEntityService,
     private readonly quoteService: QuoteService,
-    private readonly productService: ProductService,
-    ) {}
+  ) {}
 
   @Post('new_quote')
   async create(@Body() quote: CreateQuoteDto) {
@@ -35,18 +46,23 @@ export class StoreFrontendController {
   }
 
   @Get('quote_setting')
-  async findSetting (@Param() params, @Query() query, @Req() req: Request, @Res() res: Response) {
+  async findSetting(
+    @Param() params,
+    @Query() query,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     try {
       const shopDomain = query.shop;
       const store = await this.storeServer.findByShopDomain(query.shop);
       if (!store || !this.storeFrontendService.verifySignature(query)) {
-        throw new HttpException('Failed to authenticate', 401)
+        throw new HttpException('Failed to authenticate', 401);
       }
-      const setting = await this.quoteEntityService.findByShop(shopDomain);
-      console.log("setting1: ", setting);
-      return {show: true}
-    } catch(e) {
-      throw new HttpException('Failed to authenticate', 500)
+      const setting = await this.quoteEntityService.findByStore(shopDomain);
+      console.log('setting1: ', setting);
+      return { show: true };
+    } catch (e) {
+      throw new HttpException('Failed to authenticate', 500);
     }
   }
 

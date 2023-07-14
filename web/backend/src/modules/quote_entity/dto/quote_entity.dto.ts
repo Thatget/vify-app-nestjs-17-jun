@@ -1,6 +1,6 @@
 export class QuoteEntityDto {
   name: string;
   label: string;
-  productTitle: string;
-  shop: string;
+  value: string;
+  store_id: number;
 }

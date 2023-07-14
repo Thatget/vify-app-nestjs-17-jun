@@ -10,6 +10,7 @@ export class StoreService {
     @Inject('STORE_REPOSITORY')
     private storesRepository: Repository<Store>,
   ) {}
+
   async createOrUpdate(createStoreDto: CreateStoreDto) {
     const store = await this.storesRepository.upsert(createStoreDto, ['shop']);
     return store;
@@ -19,8 +20,8 @@ export class StoreService {
     return `This action returns all store`;
   }
 
-  async findByShopDomain(shop: string) {
-    return `This action returns a #${shop} store`;
+  async findByShopDomain(shop: string): Promise<Store> {
+    return await this.storesRepository.findOne({ where: { shop: shop } });
   }
 
   async update(id: number, updateStoreDto: UpdateStoreDto) {
