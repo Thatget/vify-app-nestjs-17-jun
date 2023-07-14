@@ -9,8 +9,20 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {useAuthenticatedFetch} from "../hooks";
+import {useEffect} from "react";
 
 export default function GettingStarted() {
+    const fetch = useAuthenticatedFetch()
+    useEffect(() => {
+        fetch("/api/store", {method: "Get"}).then((data: Response): void => {
+            console.log("data", data)
+            const res: Promise<Response> = new Promise((resolve, reject) => {
+                resolve(data.json())
+            })
+            res.then((value: Response) => console.log("value:", value))
+        });
+    }, [])
     const Item = styled(Paper)(({theme}) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -22,7 +34,7 @@ export default function GettingStarted() {
         <React.Fragment>
             <CardContent>
                 <Typography variant="body1" component="div">
-                   <b> Step 1: Select products </b>
+                    <b> Step 1: Select products </b>
                 </Typography>
                 <br/>
                 <Typography variant="body1">
@@ -91,8 +103,8 @@ export default function GettingStarted() {
         <>
             <React.Fragment>
                 <br/>
-                <Container >
-                    <Box sx={{minWidth: 275}} >
+                <Container>
+                    <Box sx={{minWidth: 275}}>
                         <Card variant="outlined">{selectProducts}</Card>
                     </Box>
                     <br/>

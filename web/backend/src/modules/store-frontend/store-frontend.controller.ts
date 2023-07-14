@@ -26,9 +26,11 @@ export class StoreFrontendController {
         return {}
       }
       quote = {...quote, store_id}
+      console.log(quote);
       return this.quoteService.create(quote);
     } catch (error) {
-      
+      console.log(error.message)
+      return error;
     }
   }
 
