@@ -20,7 +20,7 @@ export class ProductService {
     return await this.productRepository.insert(product);
   }
 
-  async insert(product: Product): Promise<InsertResult> {
+  async insert(product: CreateProductDto): Promise<InsertResult> {
     return await this.productRepository.insert(product);
   }
 

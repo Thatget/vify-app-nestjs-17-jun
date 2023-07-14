@@ -25,6 +25,7 @@ export class StoreFrontendController {
     private readonly storeFrontendService: StoreFrontendService,
     private readonly quoteEntityService: QuoteEntityService,
     private readonly quoteService: QuoteService,
+    private readonly productService: ProductService,
   ) {}
 
   @Post('new_quote')
@@ -32,11 +33,11 @@ export class StoreFrontendController {
     try {
       const { product_id } = quote;
       const product = await this.productService.findOne(product_id);
-      const store_id = product.store.id;
-      if (!store_id) {
-        return {}
-      }
-      quote = {...quote, store_id}
+      // const store_id = product.store.id;
+      // if (!store_id) {
+        // return {}
+      // }
+      // quote = {...quote, store_id}
       console.log(quote);
       return this.quoteService.create(quote);
     } catch (error) {
