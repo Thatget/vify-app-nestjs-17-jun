@@ -16,6 +16,10 @@ export class ProductService {
     return await this.productRepository.insert(products);
   }
 
+  async create(product: CreateProductDto): Promise<InsertResult> {
+    return await this.productRepository.insert(product);
+  }
+
   async insert(product: Product): Promise<InsertResult> {
     return await this.productRepository.insert(product);
   }

@@ -16,7 +16,7 @@ export class QuoteEntityService {
     try {
       // await this.quoteEntityRepository.insert(entities)
       // await this.quoteEntityRepository.update()
-      await this.quoteEntityRepository.upsert(entities, ['name', 'storeId']);
+      await this.quoteEntityRepository.upsert(entities, ['name', 'store_id']);
     } catch (error) {
       throw error;
     }

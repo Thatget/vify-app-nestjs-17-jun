@@ -42,7 +42,7 @@ export class QuoteEntityController {
         // Filter allowed quote entities
         const passedQuoteEntities = quoteEntities
           .filter((entity) => allowedAttribute.includes(entity.name))
-          .map((entity) => ({ ...entity, storeId: foundStore.id }));
+          .map((entity) => ({ ...entity, store_id: foundStore.id }));
         // Update or Save
         console.log('passedQuoteEntities', passedQuoteEntities);
 

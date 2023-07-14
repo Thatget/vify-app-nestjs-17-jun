@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   Body,
   Controller,
@@ -13,16 +12,6 @@ import {
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-=======
-import {Body, Controller, Delete, Get, Param, Patch, Post, Req, Res} from '@nestjs/common';
-import {ProductService} from "./product.service";
-import {CreateProductDto} from "./dto/create-product.dto";
-import {UpdateProductDto} from "./dto/update-product.dto";
-
-import fetchProducts from "./helpers/products";
-import {raw, Request, Response} from "express";
-import {Product} from "./entities/product.entity";
->>>>>>> developer
 import { StoreService } from '../store/store.service';
 
 import fetchProducts from '../helpers/products';
