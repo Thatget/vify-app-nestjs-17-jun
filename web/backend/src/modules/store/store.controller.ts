@@ -12,10 +12,10 @@ export class StoreController {
     constructor(private readonly storeService: StoreService) {
     }
 
-    @Post()
-    create(@Body() createStoreDto: CreateStoreDto) {
-        return this.storeService.create(createStoreDto);
-    }
+  @Post()
+  create(@Body() createStoreDto: CreateStoreDto) {
+    return this.storeService.createOrUpdate(createStoreDto);
+  }
 
     @Get()
     findAll() {

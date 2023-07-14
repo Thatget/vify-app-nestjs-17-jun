@@ -4,6 +4,7 @@ import { StoreFrontendService } from './store-frontend.service';
 import { StoreService } from '../store/store.service';
 import { QuoteService } from '../quote/quote.service';
 import { CreateQuoteDto } from '../quote/dto/create-quote.dto';
+import { ProductService } from '../product/product.service';
 
 @Controller('api/proxy')
 export class StoreFrontendController {
@@ -12,14 +13,24 @@ export class StoreFrontendController {
     private readonly storeFrontendService: StoreFrontendService,
     private readonly quoteEntityService: QuoteEntityService,
     private readonly quoteService: QuoteService,
+    private readonly productService: ProductService,
     ) {}
 
   @Post('new_quote')
-  create(@Body() quote: CreateQuoteDto) {
+  async create(@Body() quote: CreateQuoteDto) {
     try {
+      const { product_id } = quote;
+      const product = await this.productService.findOne(product_id);
+      const store_id = product.store.id;
+      if (!store_id) {
+        return {}
+      }
+      quote = {...quote, store_id}
+      console.log(quote);
       return this.quoteService.create(quote);
     } catch (error) {
-      
+      console.log(error.message)
+      return error;
     }
   }
 

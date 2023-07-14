@@ -25,14 +25,8 @@ export class ProductService {
         return await this.productRepository.find();
     }
 
-   async findOne(id: string): Promise<boolean> {
-        let found = false
-         await this.productRepository.findOne({where: {productId: id}}).then(r =>{
-            if(r !== null) {
-                found = true
-            }
-        });
-        return found
+   async findOne(id: string): Promise<Product> {
+      return await this.productRepository.findOne({where: {productId: id}})
     }
 
    async  update(id: string, updateProductDto: UpdateProductDto) {

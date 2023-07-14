@@ -1,8 +1,8 @@
 <script>
-  var 
-  roduct = {{ product | json }}
+  var vifyRequestFQ = {};
+  vifyRequestFQ.product = {{ product | json }}
   {% if customer %}
-    var jsCustomerId = {{ customer.id }}
+    vifyRequestFQ.customer = {{ customer | json }}
   {% endif %}
   var jsVariants = [];
   {% for variant in product.variants %}
@@ -11,12 +11,9 @@
       price_formatted: `{{ variant.price | money }}`
     })
   {% endfor %}
-  if (jsProduct) {
-    jsProduct.variants = jsVariants
-    {% if customer %}
-      jsProduct.customerId = jsCustomerId
-    {% endif %}
-    window.vifyProduct = jsProduct
+  if (vifyRequestFQ) {
+    vifyRequestFQ.product.variants = jsVariants;
+    window.vifyRequestFQ = vifyRequestFQ;
   }
 </script>
 <div id="vify_rfq-f"></div>

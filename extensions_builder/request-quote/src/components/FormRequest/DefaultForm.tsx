@@ -29,7 +29,7 @@ const DefaultForm = ({ isOpen, handleClose }: Props) => {
   const [formValue, setFormValue] = useState<FormValue>({
     name: '',
     email: '',
-    message: ''
+    message: '',
   })
   const setFormData = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     let field = formValue;
@@ -51,13 +51,14 @@ const DefaultForm = ({ isOpen, handleClose }: Props) => {
   }
 
   const sendQuote = () => {
+    const product = window.vifyRequestFQ.product;
     fetch('/apps/vify_rfq-f/new_quote', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(formValue),
+      body: JSON.stringify({...formValue, product_id: product.id}),
     });
   }
 
