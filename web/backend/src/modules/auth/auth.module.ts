@@ -4,6 +4,6 @@ import { StoreModule } from '../store/store.module';
 
 @Module({
   imports: [StoreModule],
-  controllers: [AuthController]
+  controllers: [AuthController],
 })
 export class AuthModule {}

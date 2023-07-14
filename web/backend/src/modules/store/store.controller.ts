@@ -4,7 +4,7 @@ import {CreateStoreDto} from './dto/create-store.dto';
 import {UpdateStoreDto} from './dto/update-store.dto';
 import {Request, Response} from "express";
 import {Product} from "../product/entities/product.entity";
-import fetchProducts from "../product/helpers/products";
+import fetchProducts from "../helpers/products";
 import {Store} from "./entities/store.entity";
 
 @Controller('/api/store')

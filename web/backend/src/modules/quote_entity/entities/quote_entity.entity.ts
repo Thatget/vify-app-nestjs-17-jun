@@ -1,20 +1,26 @@
 import { Store } from '../../store/entities/store.entity';
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, Index } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToOne,
+  Index,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity()
-@Index(['name', 'shop'], { unique: true })
+// @Index(['name'], { unique: true })
 export class QuoteEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  shop: string;
-  @Column()
   name: string;
   @Column({ default: null })
   label: string;
-	@Column('text', { default: null })
+  @Column('text', { default: null })
   value: string;
-  @OneToOne(() => Store)
-  @JoinColumn({ name: 'store_id' })
-  user: Store;
+  @ManyToOne(() => Store, (store) => store.quote_entities)
+  @JoinColumn({ name: 'storeId' })
+  store: Store;
 }

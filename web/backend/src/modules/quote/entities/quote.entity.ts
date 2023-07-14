@@ -16,9 +16,9 @@ export class Quote {
     id: number;
     @Column()
     shop: string;
-    @Column()
+    @Column({nullable: true})
     name: string;
-    @Column()
+    @Column({nullable: true})
     email: string;
     @Column('tinyint')
     status: number;
