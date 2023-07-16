@@ -8,6 +8,7 @@ import {
   Delete,
   Res,
   HttpStatus,
+  Inject,
 } from '@nestjs/common';
 import { QuoteEntityService } from './quote_entity.service';
 import { QuoteEntityDto } from './dto/quote_entity.dto';
@@ -16,21 +17,13 @@ import { Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Store } from '../store/entities/store.entity';
 import { StoreService } from '../store/store.service';
 
-const allowedAttribute = [
-  'name',
-  'hide_price',
-  'hide_add_to_cart',
-  'hide_buy_now',
-  'show_request_for_quote',
-  'email',
-  'message',
-];
 
 @Controller('api/quote-entity')
 export class QuoteEntityController {
   constructor(
     private readonly quoteEntityService: QuoteEntityService,
     private readonly storeService: StoreService,
+    @Inject('DefaultQuoteEntity') private defaultQuoteEntity: string[]
   ) {}
 
   @Post()
@@ -41,7 +34,7 @@ export class QuoteEntityController {
         const foundStore = await this.storeService.findByShopDomain(shop);
         // Filter allowed quote entities
         const passedQuoteEntities = quoteEntities
-          .filter((entity) => allowedAttribute.includes(entity.name))
+          .filter((entity) => this.defaultQuoteEntity.includes(entity.name))
           .map((entity) => ({ ...entity, store_id: foundStore.id }));
         // Update or Save
         console.log('passedQuoteEntities', passedQuoteEntities);

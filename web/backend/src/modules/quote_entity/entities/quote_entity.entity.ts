@@ -4,13 +4,12 @@ import {
   Column,
   PrimaryGeneratedColumn,
   JoinColumn,
-  OneToOne,
-  Index,
   ManyToOne,
+  Unique,
 } from 'typeorm';
 
 @Entity()
-// @Index(['name'], { unique: true })
+@Unique(['name', 'store_id'])
 export class QuoteEntity {
   @PrimaryGeneratedColumn()
   id: number;
