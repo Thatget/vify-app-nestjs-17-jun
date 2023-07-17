@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import FormRequest from './components/FormRequest/Index';
 
 function App() {
-  const [setting, setSetting] = React.useState({show: false});
+  const [setting, setSetting] = React.useState({show: true});
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
