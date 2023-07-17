@@ -19,7 +19,7 @@ export class QuoteEntity {
   label: string;
   @Column('text', { default: null })
   value: string;
-  @Column()
+  @Column({ nullable: false })
   store_id: number;
   @ManyToOne(() => Store, (store) => store.quote_entities)
   @JoinColumn({ name: 'store_id' })

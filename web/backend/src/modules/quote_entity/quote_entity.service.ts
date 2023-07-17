@@ -3,7 +3,6 @@ import { QuoteEntityDto } from './dto/quote_entity.dto';
 import { In, Repository } from 'typeorm';
 import { QuoteEntity } from './entities/quote_entity.entity';
 import { Store } from '../store/entities/store.entity';
-import { UpdateProductDto } from '../product/dto/update-product.dto';
 
 @Injectable()
 export class QuoteEntityService {

@@ -25,7 +25,6 @@ export default function Quotes() {
         }
       },
     });
-
     return (
         <>
           <CssBaseline/>
@@ -41,7 +40,7 @@ export default function Quotes() {
             </Grid>
             <br/>
             <Box sx={{minWidth: 275}}>
-              {/*<QuoteTable quotes={quotes}/>*/}
+              { data && <QuoteTable quotes={data.quotes}/> }
             </Box>
           </Container>
         </>

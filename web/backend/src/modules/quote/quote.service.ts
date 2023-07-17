@@ -14,8 +14,8 @@ export class QuoteService {
     return this.quoteRepository.insert(createQuoteDto);
   }
 
-  async findAll() {
-    return await this.quoteRepository.findAndCount();
+  async findByStore(store_id: number) {
+    return await this.quoteRepository.findBy({store_id});
   }
 
   findOne(id: number) {
