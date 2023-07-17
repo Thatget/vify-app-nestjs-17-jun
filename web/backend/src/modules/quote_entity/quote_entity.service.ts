@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { QuoteEntityDto } from './dto/quote_entity.dto';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { QuoteEntity } from './entities/quote_entity.entity';
 import { Store } from '../store/entities/store.entity';
 import { UpdateProductDto } from '../product/dto/update-product.dto';
@@ -29,10 +29,11 @@ export class QuoteEntityService {
       throw error;
     }
   }
-  async findByStoreId(store_id: number):Promise<QuoteEntity[]> {
+  async findByStoreId(store_id: number, attributes: string[]):Promise<QuoteEntity[]> {
     try {
       return await this.quoteEntityRepository.findBy({
-        store_id
+        store_id,
+        name: In(attributes)
       });
     } catch (error) {
       throw error;

@@ -10,6 +10,7 @@ import {
   Req,
   Res,
   HttpException,
+  Inject,
 } from '@nestjs/common';
 import { QuoteEntityService } from '../quote_entity/quote_entity.service';
 import { StoreFrontendService } from './store-frontend.service';
@@ -26,6 +27,7 @@ export class StoreFrontendController {
     private readonly quoteEntityService: QuoteEntityService,
     private readonly quoteService: QuoteService,
     private readonly productService: ProductService,
+    @Inject('DefaultQuoteEntity') private defaultQuoteEntity: string[],
   ) {}
 
   @Post('new_quote')
@@ -38,7 +40,6 @@ export class StoreFrontendController {
         // return {}
       // }
       // quote = {...quote, store_id}
-      console.log(quote);
       return this.quoteService.create(quote);
     } catch (error) {
       console.log(error.message)
@@ -53,16 +54,36 @@ export class StoreFrontendController {
     @Req() req: Request,
     @Res() res: Response,
   ) {
+    let show = true;
     try {
-      const shopDomain = query.shop;
-      const store = await this.storeServer.findByShopDomain(query.shop);
+      const { shop, product_id } = query.shop;
+      const store = await this.storeServer.findByShopDomain(shop);
       if (!store || !this.storeFrontendService.verifySignature(query)) {
         throw new HttpException('Failed to authenticate', 401);
       }
-      const setting = await this.quoteEntityService.findByStore(shopDomain);
-      console.log('setting1: ', setting);
+      const store_id = store.id;
+      const settings = await this.quoteEntityService.findByStoreId(store_id, this.defaultQuoteEntity);
+      this.defaultQuoteEntity.forEach(entity => {
+        switch (entity) {
+          case 'all_product':
+            settings.map(setting => {
+              if (setting.name === 'all_product') {
+                if (setting.value) {
+                  show = true;
+                } else show = false;
+              }
+            })
+            break;
+          default:
+            break;
+        }
+      })
+      if (!show) {
+        
+      }
       return { show: true };
     } catch (e) {
+      return { show};
       throw new HttpException('Failed to authenticate', 500);
     }
   }
