@@ -73,7 +73,7 @@ const FormSetting = () => {
         dispatch(actions.setNewSetting({...field}))
     }
     const handleSubmit = (data: any) => {
-        data = localFormSetting
+        data = state.currentSetting
         console.log("data from From submit", data)
         alert("Submit")
         console.log("submitted")
@@ -158,15 +158,15 @@ const FormSetting = () => {
                     autoComplete="off"
                     sx={{m: 1, width: '100%'}}
                 />
-                <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    mr: 1, ml: 1
-                }}
-                >
-                    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto'}}>Save Form
-                        Setting</Button>
-                </Box>
+                {/*<Box sx={{*/}
+                {/*    display: 'flex',*/}
+                {/*    width: '100%',*/}
+                {/*    mr: 1, ml: 1*/}
+                {/*}}*/}
+                {/*>*/}
+                {/*    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto'}}>Save Form*/}
+                {/*        Setting</Button>*/}
+                {/*</Box>*/}
             </ValidatorForm>
         </Box>
     )

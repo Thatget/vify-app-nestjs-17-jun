@@ -6,43 +6,59 @@ import Container from '@mui/material/Container';
 import DateRangePickerValue from "../components/DateRangePicker"
 import SearchAppBar from "../components/SearchBar";
 import QuoteTable from "../components/QuoteTable"
-import { useAppQuery } from '../hooks';
+import {useAppQuery} from '../hooks';
 import Quote from "../types/Quote";
+// import CardContent from "@mui/material/CardContent";
+// import Card from "@mui/material/Card"
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Typography,
+    Button
+} from "@material-tailwind/react";
 
 export default function Quotes() {
-  const [isLoading, setIsLoading] = React.useState(true)
-  const [quotes, setQuotes] = React.useState<Quote[]>([]);
-  const {
-    data,
-    refetch: refetchQuote,
-    isLoading: isLoadingQuote,
-    isRefetching: isRefetchingQuote,
-  } = useAppQuery({
-    url: "/api/quote",
-      reactQueryOptions: {
-        onSuccess: () => {
-          setIsLoading(false);
-        }
-      },
+    const [isLoading, setIsLoading] = React.useState(true)
+    const [quotes, setQuotes] = React.useState<Quote[]>([]);
+    const {
+        data,
+        refetch: refetchQuote,
+        isLoading: isLoadingQuote,
+        isRefetching: isRefetchingQuote,
+    } = useAppQuery({
+        url: "/api/quote",
+        reactQueryOptions: {
+            onSuccess: () => {
+                setIsLoading(false);
+            }
+        },
     });
     return (
         <>
-          <CssBaseline/>
-          <br/>
-          <Container>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <DateRangePickerValue />
-              </Grid>
-              <Grid item xs={6}>
-                <SearchAppBar />
-              </Grid>
-            </Grid>
             <br/>
-            <Box sx={{minWidth: 275}}>
-              { data && <QuoteTable quotes={data.quotes}/> }
-            </Box>
-          </Container>
+            <Container>
+                <Card>
+                    <CardBody>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+
+                                <DateRangePickerValue/>
+
+
+                            </Grid>
+                            <Grid item xs={6}>
+                                <SearchAppBar/>
+                            </Grid>
+                        </Grid>
+                        <br/>
+                        <Box sx={{minWidth: 275}}>
+                            <QuoteTable quotes={quotes}/>
+                        </Box>
+                    </CardBody>
+                </Card>
+            </Container>
         </>
     );
 };

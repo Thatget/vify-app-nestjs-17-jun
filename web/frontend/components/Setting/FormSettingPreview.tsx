@@ -19,7 +19,7 @@ const FormSettingPreview = () => {
             <Card sx={{display: 'flex'}}>
                 <CardMedia
                     component="img"
-                    sx={{height: 150}}
+                    sx={{height: 180, width: 180}}
                     image="assets/product-card.jpg.avif"
                     alt=""
                 />
