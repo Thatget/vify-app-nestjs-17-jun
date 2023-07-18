@@ -8,8 +8,6 @@ import SearchAppBar from "../components/SearchBar";
 import QuoteTable from "../components/QuoteTable"
 import {useAppQuery} from '../hooks';
 import Quote from "../types/Quote";
-// import CardContent from "@mui/material/CardContent";
-// import Card from "@mui/material/Card"
 import {
     Card,
     CardHeader,

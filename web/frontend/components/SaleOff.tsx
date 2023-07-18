@@ -13,14 +13,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-const Sales =(
+const Sales = (
     <React.Fragment>
 
         <Grid container spacing={2}>
             <Grid item xs={8}>
                 <CardContent>
                     <Typography gutterBottom variant="body1" component="div">
-                        <a href="#">Willdesk</a> boosts sales and efficiency by streamlining customer service through its effective helpdesk solution
+                        <a href="#">Willdesk</a> boosts sales and efficiency by streamlining customer service through
+                        its effective helpdesk solution
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
                         A powerful, all-in-one eCommerce customer service tool, trusted by over 30000+brands
@@ -38,15 +39,15 @@ const Sales =(
         </Grid>
     </React.Fragment>
 )
-export default function SaleOff(){
+export default function SaleOff() {
     return (
         <>
             <React.Fragment>
                 <CssBaseline/>
                 <br/>
-                <Container sx={{ width: "fit-content"}} >
+                <Container sx={{width: "fit-content"}}>
                     <Box sx={{minWidth: 275}}>
-                        <Card variant="outlined">{Sales}</Card>
+                        <Card>{Sales}</Card>
                     </Box>
                 </Container>
             </React.Fragment>

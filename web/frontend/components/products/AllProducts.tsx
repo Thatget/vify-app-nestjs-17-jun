@@ -38,7 +38,7 @@ export default function AllProducts() {
                 <br/>
                 <Container>
                     <Box sx={{minWidth: 275}}>
-                        <Card variant="outlined">{AllProductsSelected}</Card>
+                        <Card>{AllProductsSelected}</Card>
                         <br/>
                         <Box
                             display="flex"

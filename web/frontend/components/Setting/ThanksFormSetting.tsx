@@ -21,8 +21,8 @@ export default function ThanksFormSetting() {
             case 'thank_content':
                 field = {thank_content: value}
                 break;
-            case 'continue_shopping_button_text':
-                field = {continue_shopping_button_text: value}
+            case 'shopping_button':
+                field = {shopping_button: value}
                 break;
             default:
                 break;
@@ -61,10 +61,10 @@ export default function ThanksFormSetting() {
                 sx={{m: 1, width: '100%'}}
             />
             <TextField
-                id='continue_shopping_button_text'
+                id='shopping_button'
                 label="Continue Shopping button text"
-                value={localFormSetting.continue_shopping_button_text}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleChangeField(e.target.value, "continue_shopping_button_text")}
+                value={localFormSetting.shopping_button}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleChangeField(e.target.value, "shopping_button")}
                 autoComplete="off"
                 placeholder="Continue Shopping button text"
                 sx={{m: 1, width: '100%'}}
