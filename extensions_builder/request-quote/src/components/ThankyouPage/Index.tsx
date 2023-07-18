@@ -1,17 +1,17 @@
-import DefaultThankYouPage from "./DefaultThankYouPage";
+import DefaultThankYouPage from "./DefaultThankYou";
 
 type Props = {
   form: string;
   isOpen: boolean;
-  handleClose: () => void;
+  handleModal: (modal: string) => void;
 
 }
 
-const FormRequest = ({ form, isOpen, handleClose }: Props) => {
+const Thankyou = ({ form, isOpen, handleModal }: Props) => {
   switch(form) {
     default:
-      return <DefaultThankYouPage isOpen={isOpen} handleClose={handleClose} />
+      return <DefaultThankYouPage isOpen={isOpen} handleModal={handleModal} />
   }
 }
 
-export default FormRequest
+export default Thankyou

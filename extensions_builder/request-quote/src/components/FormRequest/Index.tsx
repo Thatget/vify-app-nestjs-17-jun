@@ -4,14 +4,14 @@ import DefaultForm from './DefaultForm';
 type Props = {
   form: string;
   isOpen: boolean;
-  handleClose: () => void;
+  handleModal: () => void;
 
 }
 
-const FormRequest = ({ form, isOpen, handleClose }: Props) => {
+const FormRequest = ({ form, isOpen, handleModal }: Props) => {
   switch(form) {
     default:
-      return <DefaultForm isOpen={isOpen} handleClose={handleClose} />
+      return <DefaultForm isOpen={isOpen} handleModal={handleModal} />
   }
 }
 

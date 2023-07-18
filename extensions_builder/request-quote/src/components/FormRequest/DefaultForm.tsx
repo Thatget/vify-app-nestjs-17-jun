@@ -15,7 +15,7 @@ const style = {
 
 type Props = {
   isOpen: boolean;
-  handleClose: () => void;
+  handleModal: (modal: string) => void;
 
 }
 
@@ -25,7 +25,7 @@ type FormValue = {
   message: string;
 }
 
-const DefaultForm = ({ isOpen, handleClose }: Props) => {
+const DefaultForm = ({ isOpen, handleModal }: Props) => {
   const [formValue, setFormValue] = useState<FormValue>({
     name: '',
     email: '',
@@ -59,14 +59,34 @@ const DefaultForm = ({ isOpen, handleClose }: Props) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({...formValue, product_id: product.id}),
+    }).then(response => {
+      // Check if the response was successful (status code in the range of 200-299)
+      if (response.ok) {
+        handleModal('thankyou');
+        return response.json(); // Parse the response data as JSON
+      } else {
+        throw new Error('Request failed with status ' + response.status);
+      }
+    })
+    // .then(data => {
+    //   // Process the data returned from the server
+    //   console.log(data);
+    // })
+    .catch(error => {
+      // Handle any errors that occurred during the request
+      handleModal('');
+      console.error('Error:', error);
     });
   }
 
+  const closeRequest = () => {
+    handleModal('');
+  }
   return (
     <>
       <Modal
         open={isOpen}
-        onClose={handleClose}
+        onClose={closeRequest}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
