@@ -131,7 +131,7 @@ const SaveSetting = () => {
     const saveAble = (Object.entries(state.currentSetting).length === 0)
     return (
         <Button variant="contained" onClick={updateSetting} sx={{m: 0.2}}>
-            Save
+            Save All Setting
         </Button>
     )
 }

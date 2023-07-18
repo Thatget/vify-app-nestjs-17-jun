@@ -41,7 +41,7 @@ export default function ThanksFormSetting() {
             onError={(errors: any) => console.log(errors)}
             sx={{width: '100%', m: 0.5}}
         >
-            <Typography variant="body2">Thanks Form Setting</Typography>
+            <Typography variant="body2" sx={{mb: 1}}>Thanks Form Setting</Typography>
             <TextField
                 id='thank_title'
                 label="ThankYou Page Title"
@@ -69,14 +69,14 @@ export default function ThanksFormSetting() {
                 placeholder="Continue Shopping button text"
                 sx={{m: 1, width: '100%'}}
             />
-            <Box sx={{
-                display: 'flex',
-                width: '100%',
-                mx: 1,
-            }}
-            >
-                <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto'}}>Save Thanks Page Setting</Button>
-            </Box>
+            {/*<Box sx={{*/}
+            {/*    display: 'flex',*/}
+            {/*    width: '100%',*/}
+            {/*    mx: 1,*/}
+            {/*}}*/}
+            {/*>*/}
+            {/*    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto'}}>Save Thanks Page Setting</Button>*/}
+            {/*</Box>*/}
         </ValidatorForm>
         // </Box>
     )

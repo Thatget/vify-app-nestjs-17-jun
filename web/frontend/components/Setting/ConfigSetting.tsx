@@ -51,10 +51,10 @@ const ConfigSetting = () => {
                             sx={{mr: 2}}/>
                 </div>
             </Stack>
-            <Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end"}}>
-                <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto', my: 0.5}}>
-                    Save General Setting</Button>
-            </Box>
+            {/*<Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end"}}>*/}
+            {/*    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto', my: 0.5}}>*/}
+            {/*        Save General Setting</Button>*/}
+            {/*</Box>*/}
         </>
 
 
