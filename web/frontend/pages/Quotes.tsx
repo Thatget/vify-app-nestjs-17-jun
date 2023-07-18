@@ -17,46 +17,43 @@ import {
     Button
 } from "@material-tailwind/react";
 
+interface QuoteData { quotes: Quote[]; }
+
 export default function Quotes() {
     const [isLoading, setIsLoading] = React.useState(true)
-    const [quotes, setQuotes] = React.useState<Quote[]>([]);
     const {
-        data,
+        data: data,
         refetch: refetchQuote,
         isLoading: isLoadingQuote,
         isRefetching: isRefetchingQuote,
-    } = useAppQuery({
+    } = useAppQuery<QuoteData>({
         url: "/api/quote",
         reactQueryOptions: {
             onSuccess: () => {
-                setIsLoading(false);
+              setIsLoading(false);
             }
         },
     });
     return (
         <>
+          <br/>
+          <Container>
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+
+                    <DateRangePickerValue/>
+
+
+                </Grid>
+                <Grid item xs={6}>
+                    <SearchAppBar/>
+                </Grid>
+            </Grid>
             <br/>
-            <Container>
-                <Card>
-                    <CardBody>
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-
-                                <DateRangePickerValue/>
-
-
-                            </Grid>
-                            <Grid item xs={6}>
-                                <SearchAppBar/>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <Box sx={{minWidth: 275}}>
-                            <QuoteTable quotes={quotes}/>
-                        </Box>
-                    </CardBody>
-                </Card>
-            </Container>
+            <Box sx={{minWidth: 275}}>
+              { data && <QuoteTable quotes={data.quotes}/> }
+            </Box>
+          </Container>
         </>
     );
 };
