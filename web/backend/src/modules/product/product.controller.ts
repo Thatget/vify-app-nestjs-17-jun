@@ -63,7 +63,7 @@ export class ProductController {
   async insert(@Req() req: Request, @Res() res: Response): Promise<void> {
     console.log('insert API 1');
     // console.log("Body data ", req.body)
-    let rawData: Product;
+    let rawData: CreateProductDto;
     const shopDomain = res.locals.shopify.session.shop;
     const foundStore = await this.storeService.findByShopDomain(shopDomain);
     // console.log("foundStore", foundStore)
@@ -77,8 +77,8 @@ export class ProductController {
           productId: result.id,
           productDescription: result.descriptionHtml,
           productTitle: result.title,
-          imageURL: result.images[0].originalSrc || null,
-          store: foundStore,
+          store_id: foundStore.id,
+          imageUrl: result.images[0].originalSrc,
         };
         await this.productService.insert(rawData);
       }

@@ -20,7 +20,7 @@ export class ProductService {
     return await this.productRepository.insert(product);
   }
 
-  async insert(product: Product): Promise<InsertResult> {
+  async insert(product: CreateProductDto): Promise<InsertResult> {
     return await this.productRepository.insert(product);
   }
 
@@ -47,5 +47,9 @@ export class ProductService {
 
   async delete(id: string): Promise<void> {
     await this.productRepository.delete(id);
+  }
+  async findByProductId(product_id: string) {
+    const product = await this.productRepository.findOneBy({productId: product_id});
+    return product;
   }
 }

@@ -4,4 +4,5 @@ export class CreateProductDto {
   productDescription: string;
   productTitle: string;
   imageUrl: string;
+  store_id: number;
 }
