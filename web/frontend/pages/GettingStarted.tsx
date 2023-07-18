@@ -1,16 +1,25 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
+import {useEffect} from 'react';
 import {styled} from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {useAuthenticatedFetch} from "../hooks";
 
 export default function GettingStarted() {
+    const fetch = useAuthenticatedFetch()
+    useEffect(() => {
+        fetch("/api/store", {method: "Get"}).then((data: Response): void => {
+            console.log("data", data)
+            const res: Promise<Response> = new Promise((resolve, reject) => {
+                resolve(data.json())
+            })
+            res.then((value: Response) => console.log("value:", value))
+        });
+    }, [])
     const Item = styled(Paper)(({theme}) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -19,10 +28,10 @@ export default function GettingStarted() {
         color: theme.palette.text.secondary,
     }));
     const selectProducts = (
-        <React.Fragment>
+        <>
             <CardContent>
                 <Typography variant="body1" component="div">
-                   <b> Step 1: Select products </b>
+                    <b> Step 1: Select products </b>
                 </Typography>
                 <br/>
                 <Typography variant="body1">
@@ -30,12 +39,15 @@ export default function GettingStarted() {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Add Products</Button>
+                {/*<Button>ABC</Button>*/}
+                {/*<Button size="small">Add Products</Button>*/}
             </CardActions>
-        </React.Fragment>
+
+        </>
     );
+
     const enableApp = (
-        <React.Fragment>
+        <>
             <CardContent>
                 <Typography variant="body1" component="div">
                     <b>Step 2: Enable App</b>
@@ -46,12 +58,12 @@ export default function GettingStarted() {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Enable</Button>
+                {/*<Button size="small">Enable</Button>*/}
             </CardActions>
-        </React.Fragment>
+        </>
     );
     const themes = (
-        <React.Fragment>
+        <>
             <CardContent>
                 <Typography variant="body1" component="div">
                     <b>Step 3: For Online Store 2.0 themes </b>
@@ -64,10 +76,10 @@ export default function GettingStarted() {
                     <a href="#">Contact us if the button doesn't show</a> <br/>
                 </Typography>
             </CardContent>
-        </React.Fragment>
+        </>
     );
     const otherSetting = (
-        <React.Fragment>
+        <>
             <CardContent>
                 <Typography variant="body1" component="div">
                     <b>Other settings</b>
@@ -84,31 +96,31 @@ export default function GettingStarted() {
                     If you want to customize contact form or do some translation, go <a href="#">Form Settings</a>
                 </Typography>
             </CardContent>
-        </React.Fragment>
+        </>
     );
 
     return (
         <>
-            <React.Fragment>
+            <>
                 <br/>
-                <Container >
-                    <Box sx={{minWidth: 275}} >
-                        <Card variant="outlined">{selectProducts}</Card>
-                    </Box>
+                <Container>
+                    {/*<Box sx={{minWidth: 275}}>*/}
+                    <Card variant="outlined">{selectProducts}</Card>
+                    {/*</Box>*/}
                     <br/>
-                    <Box sx={{minWidth: 275}}>
-                        <Card variant="outlined">{enableApp}</Card>
-                    </Box>
+                    {/*<Box sx={{minWidth: 275}}>*/}
+                    <Card variant="outlined">{enableApp}</Card>
+                    {/*</Box>*/}
                     <br/>
-                    <Box sx={{minWidth: 275}}>
-                        <Card variant="outlined">{themes}</Card>
-                    </Box>
+                    {/*<Box sx={{minWidth: 275}}>*/}
+                    <Card variant="outlined">{themes}</Card>
+                    {/*</Box>*/}
                     <br/>
-                    <Box sx={{minWidth: 275}}>
-                        <Card variant="outlined">{otherSetting}</Card>
-                    </Box>
+                    {/*<Box sx={{minWidth: 275}}>*/}
+                    <Card variant="outlined">{otherSetting}</Card>
+                    {/*</Box>*/}
                 </Container>
-            </React.Fragment>
+            </>
         </>
     );
 

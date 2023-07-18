@@ -1,27 +1,27 @@
 import * as React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs, {Dayjs} from 'dayjs';
+import {DemoContainer, DemoItem} from '@mui/x-date-pickers/internals/demo';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 // import { DateRange } from '@mui/x-date-pickers-pro';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import {DateRangePicker} from '@mui/x-date-pickers-pro/DateRangePicker';
 
 export default function DateRangePickerValue() {
-    // const [value, setValue] = React.useState<DateRange<Dayjs>>([
-    //     dayjs('2022-04-17'),
-    //     dayjs('2022-04-21'),
-    // ]);
+    const [value, setValue] = React.useState<DateRange<Dayjs>>([
+        dayjs('2022-04-17'),
+        dayjs('2022-04-21'),
+    ]);
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            {/*<DemoContainer components={['DateRangePicker', 'DateRangePicker']}>*/}
-            {/*    <DemoItem label="Select Date Range" component="DateRangePicker">*/}
-            {/*        <DateRangePicker*/}
-            {/*            value={value}*/}
-            {/*            onChange={(newValue) => setValue(newValue)}*/}
-            {/*        />*/}
-            {/*    </DemoItem>*/}
-            {/*</DemoContainer>*/}
+            <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
+                <DemoItem label="Select Date Range" component="DateRangePicker">
+                    <DateRangePicker
+                        value={value}
+                        onChange={(newValue) => setValue(newValue)}
+                    />
+                </DemoItem>
+            </DemoContainer>
         </LocalizationProvider>
     );
 }

@@ -34,7 +34,7 @@ export const defaultFormSetting = {
 const FormSetting = () => {
     const {state, dispatch} = useContext(StoreContext)
     const localFormSetting = {...defaultFormSetting, ...state.setting, ...state.currentSetting}
-    console.log(state.currentSetting)
+    // console.log(state.currentSetting)
 
     const handleChangeField = (value: string, id: string) => {
         let field = {}
@@ -69,10 +69,12 @@ const FormSetting = () => {
             default:
                 break;
         }
-        console.log("field", field)
+        // console.log("field", field)
         dispatch(actions.setNewSetting({...field}))
     }
-    const handleSubmit = () => {
+    const handleSubmit = (data: any) => {
+        data = state.currentSetting
+        console.log("data from From submit", data)
         alert("Submit")
         console.log("submitted")
     }
@@ -81,7 +83,7 @@ const FormSetting = () => {
         <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%'}}>
             <Typography variant="body2" sx={{m: 0.5}}>Form Setting</Typography>
             <ValidatorForm
-                onSubmit={() => handleSubmit}
+                onSubmit={handleSubmit}
                 onError={(errors: any) => console.log(errors)}
                 style={{width: '100%'}}
             >
@@ -156,15 +158,15 @@ const FormSetting = () => {
                     autoComplete="off"
                     sx={{m: 1, width: '100%'}}
                 />
-                <Box sx={{
-                    display: 'flex',
-                    width: '100%',
-                    mr: 1, ml: 1
-                }}
-                >
-                    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto'}}>Save Form
-                        Setting</Button>
-                </Box>
+                {/*<Box sx={{*/}
+                {/*    display: 'flex',*/}
+                {/*    width: '100%',*/}
+                {/*    mr: 1, ml: 1*/}
+                {/*}}*/}
+                {/*>*/}
+                {/*    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto'}}>Save Form*/}
+                {/*        Setting</Button>*/}
+                {/*</Box>*/}
             </ValidatorForm>
         </Box>
     )

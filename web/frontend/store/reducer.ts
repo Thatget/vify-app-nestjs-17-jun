@@ -6,10 +6,10 @@ const ActionTypes = {
     SET_SETTING_TAB: 'SET_SETTING_TAB',
 };
 
-// Khởi tạo state ban đầu
+// initial state
 const initialState = {
-    setting: {},
-    currentSetting: {},
+    setting: {hide_price: false, hide_buy_now: false, show_request_for_quote: false},
+    currentSetting: {hide_price: false, hide_buy_now: false, show_request_for_quote: false},
     settingTab: ['configSetting'],
 };
 
@@ -23,7 +23,7 @@ const reducer = (state: StoreState, action: StoreAction): StoreState => {
         // UPDATE NEW SETTING
         case ActionTypes.SET_NEW_SETTING:
             const currentSetting = {...state.currentSetting, ...action.payload}
-            console.log(currentSetting)
+            // console.log(currentSetting)
             return {...state, ...{currentSetting}};
         // SET ACTIVE TAB//PREVIEW
         case ActionTypes.SET_SETTING_TAB:

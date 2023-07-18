@@ -161,165 +161,165 @@ function ResponsiveAppBar(props: any) {
 
 
     return (
-            <AppBar position="sticky" className="app-bar">
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters variant="dense">
-                        <IconButton
-                            edge="end"
-                            aria-label="delete"
-                            onClick={toggleDrawer(true)}
+        <AppBar position="sticky" className="app-bar">
+            <Container maxWidth="xl">
+                <Toolbar disableGutters variant="dense">
+                    <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={toggleDrawer(true)}
+                    >
+                        <DensityMediumIcon sx={{color: 'secondary'}}/>
+                        <SwipeableDrawer
+                            // anchor={{'left'}}
+                            open={state}
+                            onClose={toggleDrawer(false)}
+                            onOpen={toggleDrawer(true)}
                         >
-                            <DensityMediumIcon sx={{ color: 'secondary' }}/>
-                            <SwipeableDrawer
-                                // anchor={{'left'}}
-                                open={state}
-                                onClose={toggleDrawer(false)}
-                                onOpen={toggleDrawer(true)}
-                            >
-                                {list()}
-                            </SwipeableDrawer>
+                            {list()}
+                        </SwipeableDrawer>
+                    </IconButton>
+                    <Typography> &nbsp;&nbsp;&nbsp;</Typography>
+                    <Avatar
+                        alt="Remy Sharp"
+                        src="/assets/vifylog.png"
+                        sx={{width: 24, height: 24}}
+                    />
+
+                    <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleOpenNavMenu}
+                            color="inherit"
+                        >
+                            <MenuIcon/>
                         </IconButton>
-                        <Typography> &nbsp;&nbsp;&nbsp;</Typography>
-                        <Avatar
-                            alt="Remy Sharp"
-                            src="/assets/vifylog.png"
-                            sx={{ width: 24, height: 24 }}
-                        />
-
-                        <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon/>
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
-                                sx={{
-                                    display: {xs: 'block', md: 'none'},
-                                }}
-                            >
-                                {pages.map((page) => (
-                                    <MenuItem key={page.title}
-                                              onClick={() => handleCloseNavMenu(page.href)}
-                                              divider={true}
-                                    >
-
-                                        <Typography textAlign="center"
-                                                    variant="h5"
-                                                    noWrap
-                                                    component="a"
-                                                    sx={{
-                                                        mr: 2,
-                                                        display: {xs: 'flex', md: 'none'},
-                                                        flexGrow: 1,
-                                                        fontFamily: 'Apple LiSung',
-                                                        fontWeight: 200,
-                                                        letterSpacing: '.3rem',
-                                                        color: 'primary',
-                                                        textDecoration: 'none',
-                                                    }}
-
-                                        >{page.title}</Typography>
-                                        {/*<Typography textAlign="center"*/}
-                                        {/*            sx={{*/}
-                                        {/*                mr: 2,*/}
-                                        {/*                // display: {xs: 'flex', md: 'none'},*/}
-                                        {/*                flexGrow: 1,*/}
-                                        {/*                fontFamily: 'Apple LiSung',*/}
-                                        {/*                fontWeight: 200,*/}
-                                        {/*                letterSpacing: '.3rem',*/}
-                                        {/*                color: 'primary',*/}
-                                        {/*            }}*/}
-
-                                        {/*>ABC Test</Typography>*/}
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
-                        <AdbIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href=""
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElNav}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}
+                            open={Boolean(anchorElNav)}
+                            onClose={handleCloseNavMenu}
                             sx={{
-                                mr: 2,
-                                display: {xs: 'flex', md: 'none'},
-                                flexGrow: 1,
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
+                                display: {xs: 'block', md: 'none'},
                             }}
                         >
-                            LOGO
-                        </Typography>
-                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                             {pages.map((page) => (
-
-                                <Button
-                                    key={page.title}
-                                    onClick={() => handleCloseNavMenu(page.href)}
-                                    sx={{my: 0.5, color: 'white', display: 'block', fontweight: 'medium'}}
+                                <MenuItem key={page.title}
+                                          onClick={() => handleCloseNavMenu(page.href)}
+                                          divider={true}
                                 >
-                                    {page.title}&nbsp;&nbsp;
-                                </Button>
-                                // <Divider orientation="vertical" variant="middle" flexItem sx={{ bgcolor: "#1a237e",height:2 }}/>
 
+                                    <Typography textAlign="center"
+                                                variant="h5"
+                                                noWrap
+                                                component="a"
+                                                sx={{
+                                                    mr: 2,
+                                                    display: {xs: 'flex', md: 'none'},
+                                                    flexGrow: 1,
+                                                    fontFamily: 'Apple LiSung',
+                                                    fontWeight: 200,
+                                                    letterSpacing: '.3rem',
+                                                    color: 'primary',
+                                                    textDecoration: 'none',
+                                                }}
+
+                                    >{page.title}</Typography>
+                                    {/*<Typography textAlign="center"*/}
+                                    {/*            sx={{*/}
+                                    {/*                mr: 2,*/}
+                                    {/*                // display: {xs: 'flex', md: 'none'},*/}
+                                    {/*                flexGrow: 1,*/}
+                                    {/*                fontFamily: 'Apple LiSung',*/}
+                                    {/*                fontWeight: 200,*/}
+                                    {/*                letterSpacing: '.3rem',*/}
+                                    {/*                color: 'primary',*/}
+                                    {/*            }}*/}
+
+                                    {/*>ABC Test</Typography>*/}
+                                </MenuItem>
                             ))}
-                        </Box>
+                        </Menu>
+                    </Box>
+                    <AdbIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
+                    <Typography
+                        variant="h5"
+                        noWrap
+                        component="a"
+                        href=""
+                        sx={{
+                            mr: 2,
+                            display: {xs: 'flex', md: 'none'},
+                            flexGrow: 1,
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            letterSpacing: '.3rem',
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        LOGO
+                    </Typography>
+                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                        {pages.map((page) => (
+
+                            <Button
+                                key={page.title}
+                                onClick={() => handleCloseNavMenu(page.href)}
+                                sx={{my: 0.5, color: 'white', display: 'block', fontweight: 'medium'}}
+                            >
+                                {page.title}&nbsp;&nbsp;
+                            </Button>
+                            // <Divider orientation="vertical" variant="middle" flexItem sx={{ bgcolor: "#1a237e",height:2 }}/>
+
+                        ))}
+                    </Box>
 
 
-                        {/*<Box sx={{flexGrow: 0}}>*/}
-                        {/*    <Tooltip title="Open settings">*/}
-                        {/*        <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>*/}
-                        {/*            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
-                        {/*        </IconButton>*/}
-                        {/*    </Tooltip>*/}
-                        {/*    <Menu*/}
-                        {/*        sx={{mt: '45px'}}*/}
-                        {/*        id="menu-appbar"*/}
-                        {/*        anchorEl={anchorElUser}*/}
-                        {/*        anchorOrigin={{*/}
-                        {/*            vertical: 'top',*/}
-                        {/*            horizontal: 'right',*/}
-                        {/*        }}*/}
-                        {/*        keepMounted*/}
-                        {/*        transformOrigin={{*/}
-                        {/*            vertical: 'top',*/}
-                        {/*            horizontal: 'right',*/}
-                        {/*        }}*/}
-                        {/*        open={Boolean(anchorElUser)}*/}
-                        {/*        onClose={handleCloseUserMenu}*/}
-                        {/*    >*/}
-                        {/*        {settings.map((setting) => (*/}
-                        {/*            <MenuItem key={setting} onClick={handleCloseUserMenu}>*/}
-                        {/*                <Typography textAlign="center">{setting}</Typography>*/}
-                        {/*            </MenuItem>*/}
-                        {/*        ))}*/}
-                        {/*    </Menu>*/}
-                        {/*</Box>*/}
-                    </Toolbar>
-                </Container>
-            </AppBar>
+                    {/*<Box sx={{flexGrow: 0}}>*/}
+                    {/*    <Tooltip title="Open settings">*/}
+                    {/*        <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>*/}
+                    {/*            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
+                    {/*        </IconButton>*/}
+                    {/*    </Tooltip>*/}
+                    {/*    <Menu*/}
+                    {/*        sx={{mt: '45px'}}*/}
+                    {/*        id="menu-appbar"*/}
+                    {/*        anchorEl={anchorElUser}*/}
+                    {/*        anchorOrigin={{*/}
+                    {/*            vertical: 'top',*/}
+                    {/*            horizontal: 'right',*/}
+                    {/*        }}*/}
+                    {/*        keepMounted*/}
+                    {/*        transformOrigin={{*/}
+                    {/*            vertical: 'top',*/}
+                    {/*            horizontal: 'right',*/}
+                    {/*        }}*/}
+                    {/*        open={Boolean(anchorElUser)}*/}
+                    {/*        onClose={handleCloseUserMenu}*/}
+                    {/*    >*/}
+                    {/*        {settings.map((setting) => (*/}
+                    {/*            <MenuItem key={setting} onClick={handleCloseUserMenu}>*/}
+                    {/*                <Typography textAlign="center">{setting}</Typography>*/}
+                    {/*            </MenuItem>*/}
+                    {/*        ))}*/}
+                    {/*    </Menu>*/}
+                    {/*</Box>*/}
+                </Toolbar>
+            </Container>
+        </AppBar>
     );
 }
 

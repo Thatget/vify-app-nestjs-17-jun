@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { QuoteService } from './quote.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { UpdateQuoteDto } from './dto/update-quote.dto';
@@ -14,7 +22,7 @@ export class QuoteController {
 
   @Get()
   async findAll() {
-    const a = await this.quoteService.findAll()
+    const a = await this.quoteService.findAll();
     return a;
   }
 

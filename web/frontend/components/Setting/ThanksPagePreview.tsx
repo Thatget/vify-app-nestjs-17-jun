@@ -19,7 +19,7 @@ const ThanksPagePreview = () => {
             <Card sx={{display: 'flex', m: 0.5, width: '100%'}}>
                 <CardMedia
                     component="img"
-                    sx={{width: 200}}
+                    sx={{width: 200, m: 1}}
                     image="assets/thankyou.jpg"
                     alt=""
                 />

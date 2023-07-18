@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack'
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box"
 
-const defaultConfigSetting = {hide_price: false, hide_buy_now: false, show_request_for_quote: false};
+export const defaultConfigSetting = {hide_price: false, hide_buy_now: false, show_request_for_quote: false};
 
 const ConfigSetting = () => {
     const {state, dispatch} = useContext(StoreContext)
@@ -51,10 +51,10 @@ const ConfigSetting = () => {
                             sx={{mr: 2}}/>
                 </div>
             </Stack>
-            <Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end"}}>
-                <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto', my: 0.5}}>
-                    Save General Setting</Button>
-            </Box>
+            {/*<Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end"}}>*/}
+            {/*    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto', my: 0.5}}>*/}
+            {/*        Save General Setting</Button>*/}
+            {/*</Box>*/}
         </>
 
 
