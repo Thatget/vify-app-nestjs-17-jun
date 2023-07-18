@@ -46,7 +46,7 @@ export default function Products() {
                 <br/>
                 <Container>
                     {/*<Box sx={{minWidth: 275}}>*/}
-                    <Card variant="outlined">{selectProducts}</Card>
+                    <Card>{selectProducts}</Card>
                     {/*</Box>*/}
                     <br/>
                 </Container>

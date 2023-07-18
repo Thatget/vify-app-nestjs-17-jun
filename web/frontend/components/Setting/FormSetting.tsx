@@ -9,10 +9,6 @@ import Box from "@mui/material/Box"
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 import Button from "@mui/material/Button";
 
-interface State {
-    count: number;
-}
-
 export const thank_page_content: string = "We've received your request. We are going to reply to you within 24 hours"
 export const defaultFormSetting = {
     form_title: '',
@@ -25,10 +21,8 @@ export const defaultFormSetting = {
     massage_placeholder: '',
     thank_title: 'Thank you for your quote',
     thank_content: thank_page_content,
-    continue_shopping_button_text: 'Continue Shopping',
+    shopping_button: 'Continue Shopping',
     submit_button_text: 'Submit',
-
-
 };
 
 const FormSetting = () => {
@@ -56,16 +50,23 @@ const FormSetting = () => {
                 break;
             case 'message_placeholder':
                 field = {message_placeholder: value}
+                console.log(field)
                 break;
-            case 'thank_title':
-                field = {thank_title: value}
-                break;
-            case 'thank_content':
-                field = {thank_content: value}
-                break;
+            // case 'thank_title':
+            //     field = {thank_title: value}
+            //     break;
+            // case 'thank_content':
+            //     field = {thank_content: value}
+            //     break;
             case 'submit_button_text':
                 field = {submit_button_text: value}
                 break;
+            case 'form_title':
+                field = {form_title: value}
+                break;
+            // case 'shopping_button':
+            //     field={shopping_button:value}
+
             default:
                 break;
         }
@@ -125,7 +126,7 @@ const FormSetting = () => {
                 <TextField
                     id='message_placeholder'
                     label="Message Placeholder"
-                    value={localFormSetting.massage_placeholder}
+                    value={localFormSetting.message_placeholder}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleChangeField(e.target.value, "message_placeholder")}
                     autoComplete="off"
                     sx={{m: 1, width: '100%'}}
@@ -147,7 +148,7 @@ const FormSetting = () => {
                     value={localFormSetting.form_title}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleChangeField(e.target.value, "form_title")}
                     autoComplete="off"
-                    placeholder="Request for a quote"
+                    // placeholder="Request for a quote"
                     sx={{m: 1, width: '100%'}}
                 />
                 <TextField

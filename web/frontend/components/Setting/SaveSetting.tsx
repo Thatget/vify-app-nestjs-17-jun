@@ -13,17 +13,31 @@ const SaveSetting = () => {
     const updateSetting = () => {
         const dataPost: Object[] = [];
         let changedName = false;
+        let changeNamePlaceholder = false;
         let changedEmail = false;
+        let changeEmailPlaceholder = false;
         let changedMessage = false;
+        let changeMessagePlaceholder = false;
         let changedHidePrice = false;
         let changedHideByNow = false;
         let changedRequestQuote = false;
-        let defaultName = {name: 'name', label: setting.name_title || "", value: setting.name_placeholder || ''};
-        let defaultEmail = {name: 'email', label: setting.email_title || "", value: setting.email_placeholder || ''};
+        let changeThankTitle = false;
+        let changeThankContent = false;
+        let changeShoppingButton = false;
+        let defaultName = {name: 'name', value: setting.name_title || ''};
+        let defaultEmail = {name: 'email', value: setting.email_title || ''};
+        let defaultEmailPlaceholder = {name: 'email_placeholder', value: setting.email_placeholder || ''};
         let defaultMessage = {
             name: 'message',
-            label: setting.message_title || "",
+            value: setting.message_title || ''
+        };
+        let defaultMessagePlaceholder = {
+            name: 'message_placeholder',
             value: setting.message_placeholder || ''
+        };
+        let defaultNamePlaceholder = {
+            name: 'name_placeholder',
+            value: setting.message_title || ''
         };
 
         let defaultHidePrice = {
@@ -38,62 +52,84 @@ const SaveSetting = () => {
             name: 'show_request_for_quote',
             value: setting.show_request_for_quote || ''
         };
-
+        let defaultThankTitle = {name: 'thank_title', value: setting.thank_title || ''};
+        let defaultThankContent = {name: 'thank_content', value: setting.thank_content || ''};
+        let defaultContinueShoppingButton = {name: 'shopping_button', value: setting.shopping_button || ''};
 
         Object.entries(currentSetting).map(([key, value]) => {
             switch (key) {
                 case 'name_title':
                     if (value !== setting.name_title) {
-                        defaultName = {...defaultName, label: value};
+                        defaultName = {...defaultName, value: value};
                         changedName = true;
                     }
                     break;
                 case 'name_placeholder':
                     if (value !== setting.name_placeholder) {
-                        defaultName = {...defaultName, value: value};
-                        changedName = true;
+                        defaultNamePlaceholder = {...defaultNamePlaceholder, value: value};
+                        changeNamePlaceholder = true;
                     }
                     break;
                 case 'email_title':
                     if (value !== setting.email_title) {
-                        defaultEmail = {...defaultEmail, label: value};
+                        defaultEmail = {...defaultEmail, value: value};
                         changedEmail = true;
                     }
                     break;
                 case 'email_placeholder':
                     if (value !== setting.email_placeholder) {
-                        defaultEmail = {...defaultEmail, value: value};
-                        changedEmail = true;
+                        defaultEmailPlaceholder = {...defaultEmailPlaceholder, value: value};
+                        changeEmailPlaceholder = true;
                     }
                     break;
                 case 'message_title':
                     if (value !== setting.message_title) {
-                        defaultMessage = {...defaultMessage, label: value};
-                        changedMessage = true;
-                    }
-                    break;
-                case 'message_placeholder':
-                    if (value !== setting.message_placeholder) {
                         defaultMessage = {...defaultMessage, value: value};
                         changedMessage = true;
                     }
                     break;
+
+                case 'message_placeholder':
+                    if (value !== setting.message_placeholder) {
+                        defaultMessagePlaceholder = {...defaultMessagePlaceholder, value: value};
+                        changeMessagePlaceholder = true;
+                    }
+                    break;
                 case 'hide_price':
                     if (value !== setting.hide_price) {
-                        dataPost.push({name: key, value});
+                        defaultHidePrice = {...defaultHidePrice, value: value};
+                        console.log("defaultHidePrice", defaultHidePrice)
                         changedHidePrice = true;
                     }
                     break;
                 case 'hide_buy_now':
                     if (value !== setting.hide_buy_now) {
-                        dataPost.push({name: key, value});
+                        defaultHideByNow = {...defaultHideByNow, value: value};
                         changedHideByNow = true;
                     }
                     break;
                 case 'show_request_for_quote':
                     if (value !== setting.show_request_for_quote) {
-                        dataPost.push({name: key, value});
+                        defaultRequestQuote = {...defaultRequestQuote, value: value};
                         changedRequestQuote = true;
+                    }
+                    break;
+                case 'thank_title':
+                    if (value !== setting.thank_title) {
+                        defaultThankTitle = {...defaultThankTitle, value: value};
+                        changeThankTitle = true;
+                    }
+                    break;
+                case 'thank_content':
+                    if (value !== setting.thank_content) {
+                        defaultThankContent = {...defaultThankContent, value: value};
+                        changeThankTitle = true;
+                    }
+                    break;
+                case 'shopping_button':
+                    if (value !== setting.shopping_button) {
+                        defaultContinueShoppingButton = {...defaultContinueShoppingButton, value: value};
+                        changeShoppingButton = true;
                     }
                     break;
                 default:
@@ -103,11 +139,20 @@ const SaveSetting = () => {
         if (changedName) {
             dataPost.push(defaultName);
         }
+        if (changeNamePlaceholder) {
+            dataPost.push(defaultNamePlaceholder);
+        }
         if (changedEmail) {
             dataPost.push(defaultEmail);
         }
+        if (changeEmailPlaceholder) {
+            dataPost.push(defaultEmailPlaceholder);
+        }
         if (changedMessage) {
             dataPost.push(defaultMessage);
+        }
+        if (changeMessagePlaceholder) {
+            dataPost.push(defaultMessagePlaceholder);
         }
         if (changedHidePrice) {
             dataPost.push(defaultHidePrice)
@@ -117,6 +162,15 @@ const SaveSetting = () => {
         }
         if (changedRequestQuote) {
             dataPost.push(defaultRequestQuote)
+        }
+        if (changeThankTitle) {
+            dataPost.push(defaultThankTitle)
+        }
+        if (changeThankContent) {
+            dataPost.push(defaultThankContent)
+        }
+        if (changeShoppingButton) {
+            dataPost.push(defaultContinueShoppingButton)
         }
 
         const data = fetch("/api/quote-entity", {
@@ -133,6 +187,7 @@ const SaveSetting = () => {
         <Button variant="contained" onClick={updateSetting} sx={{m: 0.2}}>
             Save All Setting
         </Button>
+
     )
 }
 

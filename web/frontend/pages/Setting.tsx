@@ -112,45 +112,45 @@ const Setting = () => {
     const setting = state.currentSetting;
     console.log("state.currentSetting", state.currentSetting);
     // const data =localFormSetting
-    const {
-        data: data,
-        refetch: refetchQuote,
-        isLoading: isLoadingQuote,
-        isRefetching: isRefetchingQuote,
-    } = useAppQuery({
-        url: "/api/quote-entity",
-        reactQueryOptions: {
-            onSuccess: () => {
-                let returnData = data as Object[];
-                console.log("returnData", returnData);
-                if (returnData) {
-                    returnData.map((entity: any) => {
-                        console.log("entity", entity);
-                        switch (entity.name) {
-                            case "name":
-                                setting.name_title = entity.label || "";
-                                setting.name_placeholder = entity.value || "";
-                                break;
-                            case "email":
-                                setting.email_title = entity.label || "";
-                                setting.email_placeholder = entity.value || "";
-                                break;
-                            case "message":
-                                setting.message_title = entity.label || "";
-                                setting.message_placeholder = entity.value || "";
-                                break;
-
-                            default:
-                                // setting[data.name] = entity.value;
-                                break;
-                        }
-                        // console.log("data", data)
-                        dispatch(actions.setInitSetting(setting));
-                    });
-                }
-            },
-        },
-    });
+    // const {
+    //     data: data,
+    //     refetch: refetchQuote,
+    //     isLoading: isLoadingQuote,
+    //     isRefetching: isRefetchingQuote,
+    // } = useAppQuery({
+    //     url: "/api/quote-entity",
+    //     reactQueryOptions: {
+    //         onSuccess: () => {
+    //             let returnData = data as Object[];
+    //             console.log("returnData", returnData);
+    //             if (returnData) {
+    //                 returnData.map((entity: any) => {
+    //                     console.log("entity", entity);
+    //                     switch (entity.name) {
+    //                         case "name":
+    //                             setting.name_title = entity.label || "";
+    //                             setting.name_placeholder = entity.value || "";
+    //                             break;
+    //                         case "email":
+    //                             setting.email_title = entity.label || "";
+    //                             setting.email_placeholder = entity.value || "";
+    //                             break;
+    //                         case "message":
+    //                             setting.message_title = entity.label || "";
+    //                             setting.message_placeholder = entity.value || "";
+    //                             break;
+    //
+    //                         default:
+    //                             // setting[data.name] = entity.value;
+    //                             break;
+    //                     }
+    //                     // console.log("data", data)
+    //                     dispatch(actions.setInitSetting(setting));
+    //                 });
+    //             }
+    //         },
+    //     },
+    // });
     const configSetting = (
         <Grid
             container

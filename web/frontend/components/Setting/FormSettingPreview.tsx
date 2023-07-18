@@ -28,7 +28,7 @@ const FormSettingPreview = () => {
 
             <Box sx={{flexWrap: 'wrap', width: '100%'}}>
                 <FormControl sx={{width: '100%'}}>
-                    <Typography variant="body2" sx={{m: 1}}>Request for a quote</Typography>
+                    <Typography variant="body2" sx={{m: 1}}>{localFormSetting.form_title}</Typography>
                     <Box sx={{
                         display: 'flex', width: '100%', my: 1,
                         mr: 1.3, alignItems: 'center'

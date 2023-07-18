@@ -33,7 +33,7 @@ const ThanksPagePreview = () => {
             {/*<div>*/}
             <Button style={{backgroundColor: "#212121"}} variant="contained"
                     sx={{ml: 0.4, mt: 2, width: '100%'}}>
-                <Typography variant="body2">{localFormSetting.continue_shopping_button_text}</Typography>
+                <Typography variant="body2">{localFormSetting.shopping_button}</Typography>
             </Button>
             {/*</div>*/}
             {/*</FormControl>*/}

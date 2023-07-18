@@ -15,6 +15,7 @@
   "dependencies": {
     "@shopify/app": "^3.44.1",
     "@shopify/cli": "^3.23.0",
+    "@shopify/shopify-api": "^7.5.0",
     "kill": "^0.0.2",
     "nodemon": "1.14.9",
     "react-material-ui-form-validator": "^3.0.1"
