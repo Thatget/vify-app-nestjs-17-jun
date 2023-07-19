@@ -88,6 +88,18 @@ const headCells: readonly HeadCell[] = [
     disablePadding: false,
     label: 'Message',
   },
+  {
+    id: 'status',
+    numeric: true,
+    disablePadding: false,
+    label: 'Status',
+  },
+  {
+    id: 'id',
+    numeric: true,
+    disablePadding: false,
+    label: 'Action',
+  },
 ];
 
 interface EnhancedTableProps {
@@ -181,7 +193,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Quotes
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -209,7 +221,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
   const rows = quotes;
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Quote>('id');
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
+  const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -225,19 +237,19 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
+  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected: readonly number[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -265,7 +277,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -300,7 +312,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.name);
+                const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
@@ -310,7 +322,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.name}
+                    key={row.id}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
@@ -333,6 +345,15 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
                     </TableCell>
                     <TableCell align="right">{row.email}</TableCell>
                     <TableCell align="right">{row.message}</TableCell>
+                    <TableCell align="right">{row.status}</TableCell>
+                    <TableCell align="right">
+                      <a onClick={() => alert("??? !")}>View | </a>
+                      <Tooltip title="Delete" onClick={() => alert(row.id)}>
+                        <IconButton>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
                   </TableRow>
                 );
               })}

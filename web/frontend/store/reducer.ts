@@ -9,7 +9,7 @@ const ActionTypes = {
 // initial state
 const initialState = {
     setting: {hide_price: false, hide_buy_now: false, show_request_for_quote: false},
-    currentSetting: {hide_price: false, hide_buy_now: false, show_request_for_quote: false},
+    currentSetting: {},
     settingTab: ['configSetting'],
 };
 

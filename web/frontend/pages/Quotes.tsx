@@ -22,7 +22,7 @@ interface QuoteData { quotes: Quote[]; }
 export default function Quotes() {
     const [isLoading, setIsLoading] = React.useState(true)
     const {
-        data: data,
+        data,
         refetch: refetchQuote,
         isLoading: isLoadingQuote,
         isRefetching: isRefetchingQuote,
@@ -40,13 +40,10 @@ export default function Quotes() {
           <Container>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-
-                    <DateRangePickerValue/>
-
-
+                  <DateRangePickerValue/>
                 </Grid>
                 <Grid item xs={6}>
-                    <SearchAppBar/>
+                  <SearchAppBar/>
                 </Grid>
             </Grid>
             <br/>
