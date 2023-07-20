@@ -20,13 +20,13 @@ export default function Products() {
     const fetch = useAuthenticatedFetch()
     const selectProducts = (
         <>
-            <CardBody>
-                <Typography variant="body1">
-                  <b>Products Quotes Setting: </b>
-                </Typography>
-                <br/>
-                <ProductSelector/>
-            </CardBody>
+          <CardBody>
+              <Typography variant="body1">
+                <b>Products Quotes Setting: </b>
+              </Typography>
+              <br/>
+              <ProductSelector/>
+          </CardBody>
         </>
     );
 
@@ -42,15 +42,13 @@ export default function Products() {
 
     return (
         <>
-            <React.Fragment>
-                <br/>
-                <Container>
-                    {/*<Box sx={{minWidth: 275}}>*/}
-                    <Card>{selectProducts}</Card>
-                    {/*</Box>*/}
-                    <br/>
-                </Container>
-            </React.Fragment>
+          <br/>
+          <Container>
+              {/*<Box sx={{minWidth: 275}}>*/}
+              <Card>{selectProducts}</Card>
+              {/*</Box>*/}
+              <br/>
+          </Container>
         </>
     );
 

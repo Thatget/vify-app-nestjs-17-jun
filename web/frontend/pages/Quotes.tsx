@@ -31,11 +31,13 @@ export default function Quotes() {
         url: "/api/quote",
         reactQueryOptions: {
             onSuccess: () => {
-              setQuote(data.quotes);
               setIsLoading(false);
             }
         },
     });
+    React.useEffect(() => {
+      setQuote(data?.quotes || []);
+    }, [data]);
     return (
         <>
           <br/>

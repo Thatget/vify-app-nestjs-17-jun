@@ -33,7 +33,6 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
     const [path, setPath] = useState("")
     const getPath = (childData: string) => {
         setPath(childData)
-        console.log("path", childData)
     }
     // const { palette } = createTheme()
     // const { augmentColor } = palette
@@ -112,7 +111,7 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
                                 <Route path="Quotes" element={<Quotes/>}/>
                                 <Route path="Products" element={<Products/>}/>
                                 <Route path="Setting" element={<Setting/>}/>
-                                {/*<Route path="*" element={<NotFound/>}/>*/}
+                                <Route path="*" element={<NotFound/>}/>
                             </Routes>
                         </ContextProvider>
                         {/*</ThemeProvider>*/}

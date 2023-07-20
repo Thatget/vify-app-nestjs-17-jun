@@ -13,17 +13,11 @@ export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   productId: string;
 
-  @Column()
-  productDescription: string;
-
-  @Column()
-  productTitle: string;
-
-  @Column()
-  imageURL: string
+  @Column('text')
+  variants: string
 
   @Column({ nullable: false })
   store_id: number;

@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 export const thank_page_content: string = "We've received your request. We are going to reply to you within 24 hours"
 export const defaultFormSetting = {
     form_title: '',
-    name_title: '',
+    name: '',
     name_placeholder: '',
     email_title: '',
     email_placeholder: '',
@@ -32,8 +32,8 @@ const FormSetting = () => {
     const handleChangeField = (value: string, id: string) => {
         let field = {}
         switch (id) {
-            case 'name_title':
-                field = {name_title: value}
+            case 'name':
+                field = {name: value}
                 break;
             case 'name_placeholder':
                 field = {name_placeholder: value}
@@ -96,10 +96,10 @@ const FormSetting = () => {
                     sx={{m: 1, width: '100%'}}
                 />
                 <TextValidator
-                    name="name_title"
+                    name="name"
                     label="Name Title"
-                    value={localFormSetting.name_title}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleChangeField(e.target.value, "name_title")}
+                    value={localFormSetting.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleChangeField(e.target.value, "name")}
                     autoComplete="off"
                     validators={['required']}
                     errorMessages={['You must enter a name']}

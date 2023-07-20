@@ -29,7 +29,7 @@ const SaveSetting = ({ isFetchingQuoteEntity, refetchQuoteEntity }: SaveSettingP
         let changeThankTitle = false;
         let changeThankContent = false;
         let changeShoppingButton = false;
-        let defaultName = {name: 'name', value: setting.name_title || ''};
+        let defaultName = {name: 'name', value: setting.name || ''};
         let defaultEmail = {name: 'email', value: setting.email_title || ''};
         let defaultEmailPlaceholder = {name: 'email_placeholder', value: setting.email_placeholder || ''};
         let defaultMessage = {
@@ -63,8 +63,8 @@ const SaveSetting = ({ isFetchingQuoteEntity, refetchQuoteEntity }: SaveSettingP
 
         Object.entries(currentSetting).map(([key, value]) => {
             switch (key) {
-                case 'name_title':
-                    if (value !== setting.name_title) {
+                case 'name':
+                    if (value !== setting.name) {
                         defaultName = {...defaultName, value: value};
                         changedName = true;
                     }
