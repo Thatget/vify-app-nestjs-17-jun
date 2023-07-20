@@ -32,11 +32,9 @@ export class QuoteEntityController {
         try {
             const {shop} = res.locals.shopify.session;
             if (shop) {
-                console.log("QuoteEntity from frontend", quoteEntities)
-                console.log("comehere")
                 const foundStore = await this.storeService.findByShopDomain(shop);
                 // Filter allowed quote entities
-                let value;
+                // let value;
                 const passedQuoteEntities = quoteEntities
                     .filter((entity) => this.defaultQuoteEntity.includes(entity.name))
                     .map((entity) => (
@@ -50,7 +48,7 @@ export class QuoteEntityController {
                         // // {...entity, store_id: foundStore.id}
                         // return (
                         {
-                            ...entity, store_id: foundStore.id
+                            ...entity, store_id: foundStore.id, id: null
                         }
                         // )
 

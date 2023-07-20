@@ -19,15 +19,15 @@ import {
 export default function Products() {
     const fetch = useAuthenticatedFetch()
     const selectProducts = (
-        <React.Fragment>
+        <>
             <CardBody>
                 <Typography variant="body1">
-                    <b>Products Quotes Setting: </b>
+                  <b>Products Quotes Setting: </b>
                 </Typography>
                 <br/>
                 <ProductSelector/>
             </CardBody>
-        </React.Fragment>
+        </>
     );
 
     useEffect(() => {

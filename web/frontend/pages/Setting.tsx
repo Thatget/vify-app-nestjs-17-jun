@@ -27,6 +27,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import PhoneMissedIcon from '@mui/icons-material/PhoneMissed';
 import SvgIcon, {SvgIconProps} from '@mui/material/SvgIcon';
+import QuoteEntity from "../types/QuoteEntity";
 
 const HomeIcon = (props: SvgIconProps) => {
     return (
@@ -52,15 +53,12 @@ const useStyles = makeStyles({
     },
 });
 
+interface SettingX {
+  [key: string]: string | number | boolean;
+}
+
 const Setting = () => {
-    const fetch = useAuthenticatedFetch();
     const {state, dispatch} = useContext(StoreContext);
-    const localFormSetting = {
-        ...defaultFormSetting,
-        ...state.setting,
-        ...state.currentSetting,
-    };
-    // console.log("LocalFormSetting", localFormSetting)
     const setSection = (sections: payloadObject[]) => {
         sections.map((section) => {
             dispatch(actions.setSettingTab(section));
@@ -83,74 +81,35 @@ const Setting = () => {
             <SettingComponentPreview/>
         </CardContent>
     );
-    // const handleSubmit = useCallback(() => {
-    //     const data = localFormSetting
-    //     console.log("handleSubmit")
-    //     console.log("data frontend", data)
-    // }, [])
-    // const handleSubmit = () => {
-    //     const data = localFormSetting
-    //     console.log("handleSubmit")
-    //     console.log("data frontend", data)
-    // }
-
-    // const data = fetch("/api/quote-entity", {
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(dataPost)
-    // })
-    // fetch("/api/quote-entity", {method: "Post"}).then((data: Response): void => {
-    //     console.log("data", data)
-    //     const res: Promise<Response> = new Promise((resolve, reject) => {
-    //         resolve(data.json())
-    //     })
-    //     res.then((value: Response) => console.log("value:", value))
-    // });
-    const setting = state.currentSetting;
-    console.log("state.currentSetting", state.currentSetting);
-    // const data =localFormSetting
-    // const {
-    //     data: data,
-    //     refetch: refetchQuote,
-    //     isLoading: isLoadingQuote,
-    //     isRefetching: isRefetchingQuote,
-    // } = useAppQuery({
-    //     url: "/api/quote-entity",
-    //     reactQueryOptions: {
-    //         onSuccess: () => {
-    //             let returnData = data as Object[];
-    //             console.log("returnData", returnData);
-    //             if (returnData) {
-    //                 returnData.map((entity: any) => {
-    //                     console.log("entity", entity);
-    //                     switch (entity.name) {
-    //                         case "name":
-    //                             setting.name_title = entity.label || "";
-    //                             setting.name_placeholder = entity.value || "";
-    //                             break;
-    //                         case "email":
-    //                             setting.email_title = entity.label || "";
-    //                             setting.email_placeholder = entity.value || "";
-    //                             break;
-    //                         case "message":
-    //                             setting.message_title = entity.label || "";
-    //                             setting.message_placeholder = entity.value || "";
-    //                             break;
-    //
-    //                         default:
-    //                             // setting[data.name] = entity.value;
-    //                             break;
-    //                     }
-    //                     // console.log("data", data)
-    //                     dispatch(actions.setInitSetting(setting));
-    //                 });
-    //             }
-    //         },
-    //     },
-    // });
+    const {
+        data,
+        refetch: refetchQuoteEntity,
+        isLoading: isLoadingQuoteEntity,
+        isRefetching: isRefetchingQuoteEntity,
+    } = useAppQuery<QuoteEntity[]>({
+        url: "/api/quote-entity",
+        reactQueryOptions: {
+            onSuccess: () => {
+                if (data) {
+                  let setting:SettingX = {};
+                  data.map((entity: QuoteEntity) => {
+                    switch (entity.name) {
+                      case 'hide_price':
+                      case 'hide_buy_now':
+                      case 'show_request_for_quote':
+                        if (entity.value === '1') setting = {...setting, [entity.name]: true};
+                        else setting = {...setting, [entity.name]: false};
+                        break;
+                      default:
+                        setting = {...setting, [entity.name]: entity.value};
+                        break;
+                      }
+                    });
+                    dispatch(actions.setInitSetting(setting));
+                  }
+            },
+        },
+    });
     const configSetting = (
         <Grid
             container
@@ -292,7 +251,7 @@ const Setting = () => {
                                 </TabList>
                             </Box>
                             <Box sx={{mr: 2}}>
-                                <SaveSetting/>
+                                <SaveSetting isFetchingQuoteEntity={isRefetchingQuoteEntity || isLoadingQuoteEntity} refetchQuoteEntity={refetchQuoteEntity} />
                             </Box>
                         </Box>
 

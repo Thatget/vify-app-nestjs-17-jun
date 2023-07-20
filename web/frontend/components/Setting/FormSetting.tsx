@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 export const thank_page_content: string = "We've received your request. We are going to reply to you within 24 hours"
 export const defaultFormSetting = {
     form_title: '',
-
     name_title: '',
     name_placeholder: '',
     email_title: '',
@@ -28,7 +27,7 @@ export const defaultFormSetting = {
 const FormSetting = () => {
     const {state, dispatch} = useContext(StoreContext)
     const localFormSetting = {...defaultFormSetting, ...state.setting, ...state.currentSetting}
-    // console.log(state.currentSetting)
+    console.log(state.currentSetting);
 
     const handleChangeField = (value: string, id: string) => {
         let field = {}

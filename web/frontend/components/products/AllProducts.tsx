@@ -34,7 +34,6 @@ export default function AllProducts() {
     }
     return (
         <>
-            <React.Fragment>
                 <br/>
                 <Container>
                     <Box sx={{minWidth: 275}}>
@@ -55,7 +54,6 @@ export default function AllProducts() {
                         </Box>
                     </Box>
                 </Container>
-            </React.Fragment>
         </>
     );
 }
