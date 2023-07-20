@@ -19,8 +19,8 @@ export class Quote {
   email: string;
   @Column({nullable: true})
   message: string;
-  @Column({nullable: true})
-  product_id: string;
+  @Column('text', {nullable: true})
+  product: string;
   @Column('tinyint', {default: 0})
   status: number;
   @CreateDateColumn({type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)"})

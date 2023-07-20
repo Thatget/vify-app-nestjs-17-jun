@@ -15,9 +15,22 @@ import {
     CardBody,
     CardFooter,
 } from "@material-tailwind/react";
+import { useAppQuery } from '../hooks';
+import Product from '../types/Product';
 
 export default function Products() {
-    const fetch = useAuthenticatedFetch()
+    const {
+      data,
+      refetch: refetchQuote,
+      isLoading: isLoadingQuote,
+      isRefetching: isRefetchingQuote,
+  } = useAppQuery<Product[]>({
+      url: "/api/products",
+      reactQueryOptions: {
+          onSuccess: () => {
+          }
+      },
+  });
     const selectProducts = (
         <>
           <CardBody>
@@ -31,14 +44,8 @@ export default function Products() {
     );
 
     useEffect(() => {
-        fetch("/api/products", {method: "Get"}).then((data: Response): void => {
-            console.log("data", data)
-            const res: Promise<Response> = new Promise((resolve, reject) => {
-                resolve(data.json())
-            })
-            res.then((value: Response) => console.log("value:", value))
-        });
-    }, [])
+      console.log(data);
+    }, [data])
 
     return (
         <>

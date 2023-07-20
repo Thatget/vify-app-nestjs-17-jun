@@ -13,6 +13,7 @@ import Button from '@mui/material/Button'
 import {useAuthenticatedFetch} from "../../hooks";
 import {makeStyles} from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import Product from '../../types/Product';
 
 
 export default function SelectedProductsList() {
@@ -33,17 +34,30 @@ export default function SelectedProductsList() {
         deselect.push(chosenProduct)
         setDeselect(deselect)
     }
-    console.log(selectedProducts);
     const handleSave = () => {
-      const productIds = selectedProducts.map(selectedProduct => {
-        selectedProduct.variants.map(variant => {
-          variant.id;
-        })
+      const productList = selectedProducts.map(selectedProduct => {
+        let currentProduct: Product = {
+          id: '',
+          productId: '',
+          productDescription: '',
+          imageURL: '',
+          title: '',
+          variants: ''
+        };
+        let variants = selectedProduct.variants.map((variant: { id: any; title: any; }) => ({ id: variant.id, title: variant.title }))
+        currentProduct.variants = variants;
+        currentProduct.id = selectedProduct.id;
+        currentProduct.title = selectedProduct.title;
+        currentProduct.productDescription = selectedProduct.descriptionHtml;
+        currentProduct.imageURL = selectedProduct.images[0]?.originalSrc || null;
+
+        return currentProduct;
       })
+      console.log(productList);
         fetch("/api/products/insert",
             {
                 method: "Post",
-                body: JSON.stringify(selectedProducts),
+                body: JSON.stringify(productList),
                 headers: {"Content-Type": "application/json"}
             }
         ).then((data: Response): void => {
@@ -89,10 +103,10 @@ export default function SelectedProductsList() {
                                     <ListItemAvatar>
                                         <Avatar
                                             alt={''}
-                                            src={`${product.images[0].originalSrc}`}
+                                            src={`${product.images[0]?.originalSrc || ''}`}
                                         />
                                     </ListItemAvatar>
-                                    <ListItemText id={labelId}   primary={<Typography variant="body1">{`${product.title}`}</Typography>}/>
+                                    <ListItemText id={labelId} primary={<Typography variant="body1">{`${product.title}`}</Typography>}/>
                                 </ListItem>
                             </ListItem>
                         );

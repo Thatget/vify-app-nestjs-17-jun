@@ -30,59 +30,37 @@ export class ProductController {
     async getAllProducts(
         @Req() req: Request,
         @Res() res: Response,
-    ): Promise<Product[]> {
+    ) {
         try {
             const status = 200;
-            const products = await fetchProducts(res.locals.shopify.session);
-            return this.productService.findAll();
+            // const products = await fetchProducts(res.locals.shopify.session);
+            const products = await this.productService.findAll();
+            return res.status(200).send(products);
         } catch (e) {
-            console.log(e);
+          return res.status(500).send({message: 'Failed when get products'});
         }
     }
 
-    @Post()
-    create(@Body() createProductDto: CreateProductDto) {
-        return this.productService.create(createProductDto);
-    }
-
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.productService.findOne(id);
-    }
-
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-        return this.productService.update(id, updateProductDto);
-    }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.productService.delete(id);
-    }
-
     @Post('/insert')
-    async insert(@Req() req: Request, @Res() res: Response): Promise<void> {
-        console.log('insert API 1');
-        // console.log("Body data ", req.body)
+    async insert(@Req() req: Request, @Res() res: Response) {
         let rawData: CreateProductDto;
         const shopDomain = res.locals.shopify.session.shop;
         const foundStore = await this.storeService.findByShopDomain(shopDomain);
-        // console.log("foundStore", foundStore)
-        // console.log("req", req.body)
-
         await req.body.map(async (result: any) => {
             const found = await this.productService.findOne(result.id);
             if (found !== true) {
                 rawData = {
                     id: result.id,
                     productId: result.id,
+                    title: result.title || '',
                     productDescription: result.descriptionHtml,
-                    productTitle: result.title,
                     store_id: foundStore.id,
-                    imageURL: result.images[0].originalSrc || null,
+                    imageURL: result.imageURL || null,
+                    variants: JSON.stringify(result.variants) || '',
                 };
                 await this.productService.insert(rawData);
             }
         });
+      return res.status(200).send("OK");
     }
 }

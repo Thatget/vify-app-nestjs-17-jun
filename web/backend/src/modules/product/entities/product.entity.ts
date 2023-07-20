@@ -3,7 +3,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Store } from '../../store/entities/store.entity';
@@ -15,6 +14,15 @@ export class Product {
 
   @Column({ unique: true })
   productId: string;
+
+  @Column({ nullable: true })
+  productDescription: string;
+
+  @Column()
+  title: string;
+
+  @Column({ nullable: true })
+  imageURL: string
 
   @Column('text')
   variants: string

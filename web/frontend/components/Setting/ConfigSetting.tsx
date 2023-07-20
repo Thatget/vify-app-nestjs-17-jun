@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack'
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box"
 
-export const defaultConfigSetting = {hide_price: false, hide_buy_now: false, show_request_for_quote: false};
+export const defaultConfigSetting = {hide_price: false, hide_buy_now: false, show_request_for_quote: false, all_product: true};
 
 const ConfigSetting = () => {
     const {state, dispatch} = useContext(StoreContext)
@@ -48,6 +48,12 @@ const ConfigSetting = () => {
                      onClick={() => handleChangeConfig('show_request_for_quote')}>
                     <Typography variant="body1" sx={{ml: 2}}>Show Request For Quote</Typography>
                     <Switch checked={localConfigSetting.show_request_for_quote} name='show_request_for_quote'
+                            sx={{mr: 2}}/>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center'}}
+                     onClick={() => handleChangeConfig('all_product')}>
+                    <Typography variant="body1" sx={{ml: 2}}>Apply to all product</Typography>
+                    <Switch checked={localConfigSetting.all_product} name='all_product'
                             sx={{mr: 2}}/>
                 </div>
             </Stack>

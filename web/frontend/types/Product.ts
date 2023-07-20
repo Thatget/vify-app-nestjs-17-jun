@@ -2,7 +2,9 @@ interface Product {
     id: string;
     productId: string;
     productDescription: string;
-    productTitle: string;
+    imageURL: string;
+    title: string;
+    variants: string;
 }
 
 export default Product;

@@ -58,7 +58,6 @@ export class StoreFrontendController {
     ) {
         let show = true;
         try {
-            console.log("quoteSeting ")
             const {shop, product_id} = query.shop;
             const store = await this.storeService.findByShopDomain(shop);
             if (!store || !this.storeFrontendService.verifySignature(query)) {
@@ -84,7 +83,7 @@ export class StoreFrontendController {
             if (!show) {
                 const product = await this.productService.findByProductId(product_id);
                 if (product) {
-                    show = true;
+                  show = true;
                 }
             }
             return res.status(200).send({show, settings});
