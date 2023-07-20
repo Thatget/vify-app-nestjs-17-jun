@@ -251,7 +251,7 @@ const Setting = () => {
                                 </TabList>
                             </Box>
                             <Box sx={{mr: 2}}>
-                                <SaveSetting isRefetchingQuoteEntity={isRefetchingQuoteEntity}/>
+                                <SaveSetting isFetchingQuoteEntity={isRefetchingQuoteEntity || isLoadingQuoteEntity} refetchQuoteEntity={refetchQuoteEntity} />
                             </Box>
                         </Box>
 

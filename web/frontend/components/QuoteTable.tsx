@@ -218,7 +218,10 @@ interface PropQuoteTable {
 }
 
 export default function QuoteTable({quotes}: PropQuoteTable) {
-  const rows = quotes;
+  const [rows, setRows] = React.useState<Quote[]>([]);
+  React.useEffect(() => {
+    setRows(quotes)
+  }, [quotes])
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Quote>('id');
   const [selected, setSelected] = React.useState<readonly number[]>([]);

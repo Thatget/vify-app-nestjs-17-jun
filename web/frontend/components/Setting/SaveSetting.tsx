@@ -4,10 +4,11 @@ import {useAuthenticatedFetch} from '../../hooks'
 import Button from "@mui/material/Button"
 
 interface SaveSettingProps {
-  isRefetchingQuoteEntity: boolean;
+  isFetchingQuoteEntity: boolean;
+  refetchQuoteEntity: () => void;
 }
 
-const SaveSetting = ({ isRefetchingQuoteEntity }: SaveSettingProps) => {
+const SaveSetting = ({ isFetchingQuoteEntity, refetchQuoteEntity }: SaveSettingProps) => {
     const {state, dispatch} = useContext(StoreContext);
 
     const setting = state.setting;
@@ -187,24 +188,13 @@ const SaveSetting = ({ isRefetchingQuoteEntity }: SaveSettingProps) => {
         })
 
         if (data.ok) {
-          await refetchProductCount();
-          setToastProps({
-            content: t("ProductsCard.productsCreatedToast", {
-              count: productsCount,
-            }),
-          });
-        } else {
-          setIsLoading(false);
-          setToastProps({
-            content: t("ProductsCard.errorCreatingProductsToast"),
-            error: true,
-          });
+          refetchQuoteEntity();
         }
     }
     const saveAble = (Object.entries(state.currentSetting).length === 0)
     return (
-        <Button variant="contained" disabled={isRefetchingQuoteEntity} onClick={updateSetting} sx={{m: 0.2}}>
-            {!isRefetchingQuoteEntity && <>Save All Setting</> }
+        <Button variant="contained" disabled={isFetchingQuoteEntity} onClick={updateSetting} sx={{m: 0.2}}>
+            {!isFetchingQuoteEntity && <>Save All Setting</> }
         </Button>
 
     )

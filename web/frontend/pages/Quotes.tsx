@@ -21,6 +21,7 @@ interface QuoteData { quotes: Quote[]; }
 
 export default function Quotes() {
     const [isLoading, setIsLoading] = React.useState(true)
+    const [quotes, setQuote] = React.useState<Quote[]>([])
     const {
         data,
         refetch: refetchQuote,
@@ -30,6 +31,7 @@ export default function Quotes() {
         url: "/api/quote",
         reactQueryOptions: {
             onSuccess: () => {
+              setQuote(data.quotes);
               setIsLoading(false);
             }
         },
@@ -48,7 +50,7 @@ export default function Quotes() {
             </Grid>
             <br/>
             <Box sx={{minWidth: 275}}>
-              { data && <QuoteTable quotes={data.quotes}/> }
+              <QuoteTable quotes={quotes}/>
             </Box>
           </Container>
         </>
