@@ -1,21 +1,23 @@
 <script>
-  var vifyRequestFQ = {};
-  vifyRequestFQ.product = {{ product | json }}
-  {% if customer %}
-    vifyRequestFQ.customer = {{ customer | json }}
-  {% endif %}
-  var jsVariants = [];
-  {% for variant in product.variants %}
+    var vifyRequestFQ = {};
+    vifyRequestFQ.product = {{ product | json }}
+            {% if customer %}
+        vifyRequestFQ.customer = {{ customer | json }}
+    {% endif %}
+    var jsVariants = [];
+    {% for variant in product.variants %}
     jsVariants.push({
-      ...{{ variant | json }},
-      price_formatted: `{{ variant.price | money }}`
+        ...{{ variant | json }},
+        price_formatted: `{{ variant.price | money }}`
     })
-  {% endfor %}
-  if (vifyRequestFQ) {
-    vifyRequestFQ.product.variants = jsVariants;
-    window.vifyRequestFQ = vifyRequestFQ;
-  }
+    {% endfor %}
+    if (vifyRequestFQ) {
+        vifyRequestFQ.product.variants = jsVariants;
+        window.vifyRequestFQ = vifyRequestFQ;
+    }
 </script>
+<div>Abc new</div>
+<div>abc</div>
 <div id="vify_rfq-f"></div>
 {% schema %}
 {
@@ -24,8 +26,18 @@
   "stylesheet": "index.css",
   "javascript": "index.js",
   "settings": [
-    { "type": "product", "id": "product", "label": "product", "autofill": true },
-    { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }
+    {
+      "type": "product",
+      "id": "product",
+      "label": "product",
+      "autofill": true
+    },
+    {
+      "type": "color",
+      "id": "colour",
+      "label": "Star Colour",
+      "default": "#ff0000"
+    }
   ]
 }
 {% endschema %}
