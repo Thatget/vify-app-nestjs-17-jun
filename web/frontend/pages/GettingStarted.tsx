@@ -7,7 +7,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useAuthenticatedFetch} from "../hooks";
-import Card from '@mui/material/Card';
 import { Card } from '@mui/material';
 
 export default function GettingStarted() {

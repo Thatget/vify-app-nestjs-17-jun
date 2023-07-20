@@ -90,26 +90,29 @@ const Setting = () => {
         url: "/api/quote-entity",
         reactQueryOptions: {
             onSuccess: () => {
-                if (data) {
-                  let setting:SettingX = {};
-                  data.map((entity: QuoteEntity) => {
-                    switch (entity.name) {
-                      case 'hide_price':
-                      case 'hide_buy_now':
-                      case 'show_request_for_quote':
-                        if (entity.value === '1') setting = {...setting, [entity.name]: true};
-                        else setting = {...setting, [entity.name]: false};
-                        break;
-                      default:
-                        setting = {...setting, [entity.name]: entity.value};
-                        break;
-                      }
-                    });
-                    dispatch(actions.setInitSetting(setting));
-                  }
             },
         },
     });
+    React.useEffect(() => {
+      if (data) {
+        let setting:SettingX = {};
+        data.map((entity: QuoteEntity) => {
+          switch (entity.name) {
+            case 'hide_price':
+            case 'hide_buy_now':
+            case 'show_request_for_quote':
+              if (entity.value === '1') setting = {...setting, [entity.name]: true};
+              else setting = {...setting, [entity.name]: false};
+              break;
+            default:
+              setting = {...setting, [entity.name]: entity.value};
+              break;
+          }
+        });
+        dispatch(actions.setInitSetting(setting));
+      }
+    }, [data])
+    
     const configSetting = (
         <Grid
             container

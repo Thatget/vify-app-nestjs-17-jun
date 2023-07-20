@@ -1,5 +1,5 @@
 interface Setting {
-    name_title: string,
+    name: string,
     name_placeholder: string,
     email_title: string,
     email_placeholder: string,

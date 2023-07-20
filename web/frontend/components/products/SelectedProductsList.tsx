@@ -29,14 +29,17 @@ export default function SelectedProductsList() {
         setSelectedProducts(newList)
     }
     const handleClick = (chosenProduct: any): void => {
-        console.log("abc")
         setDeselect(null)
         deselect.push(chosenProduct)
         setDeselect(deselect)
-        console.log("chosenProduct", chosenProduct)
-        console.log("deselect", deselect)
     }
+    console.log(selectedProducts);
     const handleSave = () => {
+      const productIds = selectedProducts.map(selectedProduct => {
+        selectedProduct.variants.map(variant => {
+          variant.id;
+        })
+      })
         fetch("/api/products/insert",
             {
                 method: "Post",

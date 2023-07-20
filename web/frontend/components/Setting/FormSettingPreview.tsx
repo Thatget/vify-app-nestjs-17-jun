@@ -36,7 +36,7 @@ const FormSettingPreview = () => {
                         <Typography variant="body1" sx={{}}>Name</Typography>
                         <TextField
                             id="name_preview"
-                            value={localFormSetting.name_title}
+                            value={localFormSetting.name}
                             placeholder={localFormSetting.name_placeholder}
                             autoComplete="off"
                             sx={{width: '30ch', mr: 0, ml: 'auto'}}
