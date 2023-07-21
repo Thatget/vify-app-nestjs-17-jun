@@ -21,7 +21,6 @@ export class ProductService {
   }
 
   async insert(product: CreateProductDto): Promise<InsertResult> {
-    console.log(product)
     return await this.productRepository.insert(product);
   }
 

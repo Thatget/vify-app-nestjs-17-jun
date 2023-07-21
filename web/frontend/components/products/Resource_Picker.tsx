@@ -1,8 +1,8 @@
 import {ResourcePicker} from "@shopify/app-bridge-react";
 import React, {useEffect, useState} from "react";
 import '../../css/style.css'
-// import Button from "@mui/material/Button";
-import {Button} from "@material-tailwind/react"
+import Button from "@mui/material/Button";
+// import {Button} from "@material-tailwind/react"
 import Box from "@mui/material/Box";
 import {useAuthenticatedFetch} from "../../hooks";
 
@@ -11,11 +11,11 @@ export default function Resource_Picker(props: any) {
     const [open, setOpen] = useState(false)
     const [selectedProducts, setSelectedProducts] = useState([])
     useEffect(() => {
+      alert("Fuck");
         // selectedProducts.filter(props.chosenProducts)
         const newList = selectedProducts.filter((item: any) => item.id !== props.chosenProducts.id)
         // setSelectedProducts((current:any) => current.filter((deselect:any) => deselect.id = props.chosenProducs.id))
         setSelectedProducts(newList)
-        console.log("Selected Products from ResourcePicekr", selectedProducts)
     }, [props.chosenProducts])
     const handleSelection = (resources: any) => {
         props.parentCallback(resources.selection)
@@ -24,7 +24,7 @@ export default function Resource_Picker(props: any) {
         setOpen(false)
     }
     return (
-        <React.Fragment>
+        <>
             <Box
                 display="flex"
                 justifyContent="flex-end"
@@ -42,9 +42,8 @@ export default function Resource_Picker(props: any) {
                 onSelection={(resources) => handleSelection(resources)}
                 selectMultiple={true}
                 initialSelectionIds={selectedProducts}
-
             />
-        </React.Fragment>
+        </>
 
     )
 }

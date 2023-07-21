@@ -50,12 +50,6 @@ const ConfigSetting = () => {
                     <Switch checked={localConfigSetting.show_request_for_quote} name='show_request_for_quote'
                             sx={{mr: 2}}/>
                 </div>
-                <div style={{display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center'}}
-                     onClick={() => handleChangeConfig('all_product')}>
-                    <Typography variant="body1" sx={{ml: 2}}>Apply to all product</Typography>
-                    <Switch checked={localConfigSetting.all_product} name='all_product'
-                            sx={{mr: 2}}/>
-                </div>
             </Stack>
             {/*<Box sx={{display: "flex", justifyContent: "flex-end", alignItems: "flex-end"}}>*/}
             {/*    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto', my: 0.5}}>*/}

@@ -32,11 +32,12 @@ export class ProductController {
         @Res() res: Response,
     ) {
         try {
-            const status = 200;
-            // const products = await fetchProducts(res.locals.shopify.session);
+            const productsx = await fetchProducts(res.locals.shopify.session);
+            console.log("variants: ", productsx[0].variants);
             const products = await this.productService.findAll();
             return res.status(200).send(products);
         } catch (e) {
+          console.log(e.message);
           return res.status(500).send({message: 'Failed when get products'});
         }
     }
