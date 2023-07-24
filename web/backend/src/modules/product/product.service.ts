@@ -24,7 +24,7 @@ export class ProductService {
     return await this.productRepository.insert(product);
   }
 
-  async findAll(): Promise<Product[]> {
+  async findAll(store_id: number): Promise<Product[]> {
     return await this.productRepository.find();
   }
 

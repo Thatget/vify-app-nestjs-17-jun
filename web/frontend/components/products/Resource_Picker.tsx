@@ -11,7 +11,6 @@ export default function Resource_Picker(props: any) {
     const [open, setOpen] = useState(false)
     const [selectedProducts, setSelectedProducts] = useState([])
     useEffect(() => {
-      alert("Fuck");
         // selectedProducts.filter(props.chosenProducts)
         const newList = selectedProducts.filter((item: any) => item.id !== props.chosenProducts.id)
         // setSelectedProducts((current:any) => current.filter((deselect:any) => deselect.id = props.chosenProducs.id))

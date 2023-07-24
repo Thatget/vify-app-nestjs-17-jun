@@ -5,7 +5,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Box from "@mui/material/Box";
-import Resource_Picker from "./Resource_Picker";
 import Divider from "@mui/material/Divider";
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +13,7 @@ import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
 import {makeStyles} from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Product from '../../types/Product';
+import ProductPicker from './ProductPicker';
 
 
 export default function SelectedProductsList() {
@@ -90,7 +90,7 @@ export default function SelectedProductsList() {
     return (
         <Box sx={{width: '100%'}}>
             <Box sx={{width: '100%'}}>
-                <Resource_Picker chosenProducts={selectedProductList} parentCallback={getSelectedProducts}/>
+                <ProductPicker chosenProducts={selectedProductList} parentCallback={getSelectedProducts}/>
             </Box>
             <Box sx={{width: '100%'}}>
                 <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>

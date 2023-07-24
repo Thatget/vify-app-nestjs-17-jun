@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     Req,
     Res,
 } from '@nestjs/common';
@@ -32,10 +33,26 @@ export class ProductController {
         @Res() res: Response,
     ) {
         try {
-            const productsx = await fetchProducts(res.locals.shopify.session);
-            console.log("variants: ", productsx[0].variants);
-            const products = await this.productService.findAll();
+          const { shop } = res.locals.shopify.session;
+          const foundStore = await this.storeService.findByShopDomain(shop);
+            const products = await this.productService.findAll(foundStore.id);
             return res.status(200).send(products);
+        } catch (e) {
+          console.log(e.message);
+          return res.status(500).send({message: 'Failed when get products'});
+        }
+    }
+
+    @Get('/select')
+    async storeProduct(
+      @Query() query,
+      @Res() res: Response,
+    ) {
+        try {
+          const { title, page } = query;
+          const products = await fetchProducts(res.locals.shopify.session);
+          console.log("variants: ", products[0].variants);
+          return res.status(200).send(products);
         } catch (e) {
           console.log(e.message);
           return res.status(500).send({message: 'Failed when get products'});
