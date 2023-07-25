@@ -18,6 +18,7 @@ import {StoreService} from '../store/store.service';
 import fetchProducts from '../helpers/products';
 import {Request, Response} from 'express';
 import {Product} from './entities/product.entity';
+import ProductResponse, { ProductVariant } from '../../types/ProductResponse';
 
 @Controller('api/products')
 export class ProductController {
@@ -49,10 +50,42 @@ export class ProductController {
       @Res() res: Response,
     ) {
         try {
-          const { title, page } = query;
-          const products = await fetchProducts(res.locals.shopify.session);
-          console.log("variants: ", title, page);
-          return res.status(200).send(products);
+          const list: ProductResponse[] = [];
+          let { title, page } = query;
+          if (!title) title = '';
+          if (!page) page = 0;
+          const shopProducts = await fetchProducts(res.locals.shopify.session, title, page);
+          const shopProductIds = shopProducts.map(product => product.id);
+          const products = await this.productService.findByProductIds(shopProductIds) || [];
+          if (shopProducts) {
+            shopProducts.forEach(shopProduct => {
+              const subList: ProductResponse = {
+                id: shopProduct.id,
+                title: shopProduct.title,
+                image: shopProduct.image,
+                variants: [],
+              };
+              let matchedProduct = products.find((product) => product.productId === shopProduct.id);
+              const variants: ProductVariant[] = [];
+              shopProduct.variants.map((shopVariant: ProductVariant) => {
+                let selected = false;
+                if (matchedProduct) {
+                  const matchedVariant = JSON.parse(matchedProduct.variants) || [];
+                  if (matchedVariant.find((variant: ProductVariant) => variant.id === shopVariant.id)) selected = true;
+                }
+                const variant: ProductVariant = {
+                  id: shopVariant.id,
+                  title: shopVariant.title,
+                  price: shopVariant.price,
+                  selected
+                }
+                variants.push(variant);
+                subList.variants = variants;
+              })
+              list.push(subList);
+            })
+          }
+          return res.status(200).send(list);
         } catch (e) {
           console.log(e.message);
           return res.status(500).send({message: 'Failed when get products'});

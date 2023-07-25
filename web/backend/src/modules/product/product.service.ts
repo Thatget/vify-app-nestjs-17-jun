@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InsertResult, Repository } from 'typeorm';
+import { In, InsertResult, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -25,7 +25,11 @@ export class ProductService {
   }
 
   async findAll(store_id: number): Promise<Product[]> {
-    return await this.productRepository.find();
+    return await this.productRepository.findBy({store_id});
+  }
+
+  async findByProductIds(productIds:string[]) {
+    return await this.productRepository.findBy({ productId: In(productIds) });
   }
 
   async findOne(id: string): Promise<boolean> {
@@ -40,14 +44,6 @@ export class ProductService {
     return found;
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
-    const Product = this.findOne(id);
-    return this.productRepository.update(id, updateProductDto);
-  }
-
-  async delete(id: string): Promise<void> {
-    await this.productRepository.delete(id);
-  }
   async findByProductId(product_id: string) {
     const product = await this.productRepository.findOneBy({productId: product_id});
     return product;

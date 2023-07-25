@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import '../../css/style.css'
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import {useAppQuery} from "../../hooks";
+import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
 import { Modal, TextField, Typography } from "@mui/material";
 import Product from "../../types/Product";
 
@@ -21,68 +21,65 @@ const style = {
 };
 
 export default function ProductPicker() {
+  const fetch = useAuthenticatedFetch();
   const [open, setOpen] = useState(false)
   const [list, setList] = useState([]);
   const [title, setTitle] = useState<string>('');
   const [page, setPage] = useState<number>(0);
-  const modalContentRef = useRef<HTMLDivElement | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   let url = '';
   if (title) {
     url = `/api/products/select?title=${title}&page=${page}`;
   } else {
     url = `/api/products/select?page=${page}`;
   }
-  const { data, isLoading } = useAppQuery<Product[]>({
-    url,
-    reactQueryOptions: {
-      onSuccess: () => {
-        if(data) {
-          setList([...data])
-        }
-      }
-    },
-  })
 
-  useEffect(() => {
-    if (data) {
-      setList([...data]);
-    }
-  }, [data])
   const handleChangeTitle = (title: string) => {
     setTitle(title);
     setList([]);
     setPage(0);
   }
 
-  const handleScroll = () => {
-    const modalContent = modalContentRef.current;
-    if (modalContent) {
-      const isBottom =
-        modalContent.scrollTop + modalContent.clientHeight + 100 >= modalContent.scrollHeight;
-      if (isBottom && !isLoading && data) {
-        setPage(prevPage => prevPage + 1);
+  const fetchProducts = async (page: number, title: string) => {
+    setIsLoading(true);
+    try {
+      let url = '';
+      if (title) {
+        url = `/api/products/select?title=${title}&page=${page}`;
+      } else {
+        url = `/api/products/select?page=${page}`;
+  }
+      const response = await fetch(url, { method: 'GET' });
+      const data = await response.json();
+      if (data) {
+        setList( preList => [ ...preList, ...data]);
       }
+      return data;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleModalScroll = (event: { target: { scrollTop: any; clientHeight: any; scrollHeight: any; }; }) => {
+    const { scrollTop, clientHeight, scrollHeight } = event.target;
+    if (scrollHeight - scrollTop === clientHeight && !isLoading) {
+      setPage(prePage => prePage + 1);
+      fetchProducts(page + 1, title);
     }
   };
 
-    const modalContent = modalContentRef.current;
-    if (modalContent) {
-      modalContent.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (modalContent) {
-        modalContent.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, [isLoading, data]);
-
+  useEffect(() => {
+    fetchProducts(page, title);
+  }, [])
+  
   return (
     <>
       <Box display="flex" justifyContent="flex-end" alignItems="flex-end" >
         <Button variant="contained" onClick={() => { setOpen(true) }} >Select Products</Button>
         <Modal open={open} onClose={() => setOpen(false)} >
-          <Box sx={style}>
+          <Box sx={style} onScroll={handleModalScroll}>
             <Typography id="modal-modal-title" variant="h6" component="h2">Add products</Typography>
             <TextField id="outlined-basic" label="Product" onChange={event => handleChangeTitle(event.target.value)} variant="outlined" fullWidth />
             <div>

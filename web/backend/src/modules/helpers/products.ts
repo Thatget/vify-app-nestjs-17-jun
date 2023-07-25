@@ -9,44 +9,46 @@ import shopify from "./shopify";
   This data is also queried so that the full state can be saved to the database, in order to generate QR code links.
 */
 
-const FETCH_PRODUCTS_QUERY = `{
-  products(first: 5) {
-    edges {
-      node {
-        id
-        title
-        description
-        legacyResourceId
-        images(first: 1) {
+const FETCH_PRODUCTS_QUERY = `
+      query ($query: String! $after: String!) {
+        products(first: 5, query: title:$title*, after: $page) {
           edges {
-            node {
-              url
-            }
-          }
-        }
-        variants(first: 100) {
-          edges {
+            cursor
             node {
               id
-              price
               title
+              images(first: 1) {
+                edges {
+                  node {
+                    url
+                  }
+                }
+              }
+              variants(first: 100) {
+                edges {
+                  node {
+                    id
+                    price
+                    title
+                  }
+                }
+              }
             }
           }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
         }
-      }
-    }
-  }
-}
-`
+      }`;
+
 const formatGQLResponse = (res) => {
     // edges : an array to hold all data
     const edges = res?.body?.data?.products?.edges || []
     if (!edges.length) return [];
     return edges.map(({node}) => ({
         id: node.id,
-        legacyID: node.legacyID,
         title: node.title,
-        description: node.description,
         image: node.images.edges[0]?.node?.url || "https://w7.pngwing.com/pngs/915/345/png-transparent-multicolored-balloons-illustration-balloon-balloon-free-balloons-easter-egg-desktop-wallpaper-party-thumbnail.png",
         variants: node.variants.edges.map(({node}) => ({
             id: node.id,
@@ -55,12 +57,13 @@ const formatGQLResponse = (res) => {
         })),
     }));
 };
-export default async function fetchProducts(session) {
+export default async function fetchProducts(session, title: string, page: number) {
     const client = new shopify.api.clients.Graphql({session});
     try {
         return formatGQLResponse(await client.query({
             data: {
-                query: FETCH_PRODUCTS_QUERY,
+              query: FETCH_PRODUCTS_QUERY,
+              variables: { page },
             }
         }))
     } catch (error) {
