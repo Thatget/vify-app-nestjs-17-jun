@@ -10,7 +10,7 @@ import shopify from "./shopify";
 */
 
 const FETCH_PRODUCTS_QUERY = `{
-  products(first: 20) {
+  products(first: 5) {
     edges {
       node {
         id
@@ -24,7 +24,7 @@ const FETCH_PRODUCTS_QUERY = `{
             }
           }
         }
-        variants(first: 10) {
+        variants(first: 100) {
           edges {
             node {
               id

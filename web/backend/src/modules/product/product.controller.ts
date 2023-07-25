@@ -51,7 +51,7 @@ export class ProductController {
         try {
           const { title, page } = query;
           const products = await fetchProducts(res.locals.shopify.session);
-          console.log("variants: ", products[0].variants);
+          console.log("variants: ", title, page);
           return res.status(200).send(products);
         } catch (e) {
           console.log(e.message);

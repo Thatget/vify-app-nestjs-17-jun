@@ -90,7 +90,7 @@ export default function SelectedProductsList() {
     return (
         <Box sx={{width: '100%'}}>
             <Box sx={{width: '100%'}}>
-                <ProductPicker chosenProducts={selectedProductList} parentCallback={getSelectedProducts}/>
+                <ProductPicker />
             </Box>
             <Box sx={{width: '100%'}}>
                 <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
