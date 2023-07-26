@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import '../../css/style.css'
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
+import { useAuthenticatedFetch } from "../../hooks";
 import { Modal, TextField, Typography } from "@mui/material";
-import Product from "../../types/Product";
+import useDebounce from "../../hooks/useDebounce";
+import PageInfo from "../../types/PageInfo";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -27,9 +28,11 @@ export default function ProductPicker() {
   const [title, setTitle] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [pageInfo, setPageInfo] = useState<PageInfo>({hasNextPage: true, endCursor: null});
+  const debouncedSearchTerm = useDebounce(title, 500);
   let url = '';
   if (title) {
-    url = `/api/products/select?title=${title}&page=${page}`;
+    url = `/api/products/select?title=${title}&cur=${page}`;
   } else {
     url = `/api/products/select?page=${page}`;
   }
@@ -45,14 +48,16 @@ export default function ProductPicker() {
     try {
       let url = '';
       if (title) {
-        url = `/api/products/select?title=${title}&page=${page}`;
+        url = `/api/products/select?title=${title}&cursor=${page}`;
       } else {
         url = `/api/products/select?page=${page}`;
   }
       const response = await fetch(url, { method: 'GET' });
       const data = await response.json();
+
       if (data) {
-        setList( preList => [ ...preList, ...data]);
+        setList( preList => [ ...preList, ...data.data]);
+        setPageInfo(data.pageInfo);
       }
       return data;
     } catch (error) {
@@ -63,16 +68,18 @@ export default function ProductPicker() {
     }
   };
   const handleModalScroll = (event: { target: { scrollTop: any; clientHeight: any; scrollHeight: any; }; }) => {
-    const { scrollTop, clientHeight, scrollHeight } = event.target;
-    if (scrollHeight - scrollTop === clientHeight && !isLoading) {
-      setPage(prePage => prePage + 1);
-      fetchProducts(title);
+    if (pageInfo.hasNextPage) {
+      const { scrollTop, clientHeight, scrollHeight } = event.target;
+      if (scrollHeight - scrollTop === clientHeight && !isLoading) {
+        setPage(prePage => prePage + 1);
+        fetchProducts(title);
+      }
     }
   };
 
   useEffect(() => {
-    fetchProducts(title);
-  }, [title])
+    fetchProducts(debouncedSearchTerm);
+  }, [debouncedSearchTerm])
   
   return (
     <>
@@ -86,10 +93,11 @@ export default function ProductPicker() {
               {list  && list.map(item => {
                 return (<div>
                   <input type="checkbox" />{item.title}
+                  <img src={item?.image || ''} />
                   <div>
                     { item.variants.map((variant: {price: string; title: string}) => {
                       return <div style={{ marginLeft: '12px', display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-                        <div><input type="checkbox" /> {variant.title}</div>
+                        <div><  input type="checkbox" /> {variant.title}</div>
                         <div>{variant.price}</div>
                       </div>
                     }) }

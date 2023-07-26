@@ -56,7 +56,9 @@ export class ProductController {
           const session = res.locals.shopify.session;
           reverse = reverse?true:false;
 
-          const shopProducts = await fetchProducts(session, title, reverse);
+          const productPage = await fetchProducts(session, title, reverse);
+          const shopProducts = productPage.productList;
+          const pageInfo = productPage.pageInfo;
           const shopProductIds = shopProducts.map(product => product.id);
           const products = await this.productService.findByProductIds(shopProductIds) || [];
           if (shopProducts) {
@@ -87,7 +89,7 @@ export class ProductController {
               list.push(subList);
             })
           }
-          return res.status(200).send(list);
+          return res.status(200).send({products: list, pageInfo});
         } catch (e) {
           console.log(e.message);
           return res.status(500).send({message: 'Failed when get products'});
