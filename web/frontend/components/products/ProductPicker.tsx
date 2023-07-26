@@ -40,7 +40,7 @@ export default function ProductPicker() {
     setPage(0);
   }
 
-  const fetchProducts = async (page: number, title: string) => {
+  const fetchProducts = async (title: string, page?: number) => {
     setIsLoading(true);
     try {
       let url = '';
@@ -66,13 +66,13 @@ export default function ProductPicker() {
     const { scrollTop, clientHeight, scrollHeight } = event.target;
     if (scrollHeight - scrollTop === clientHeight && !isLoading) {
       setPage(prePage => prePage + 1);
-      fetchProducts(page + 1, title);
+      fetchProducts(title);
     }
   };
 
   useEffect(() => {
-    fetchProducts(page, title);
-  }, [])
+    fetchProducts(title);
+  }, [title])
   
   return (
     <>

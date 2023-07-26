@@ -10,8 +10,8 @@ import shopify from "./shopify";
 */
 
 const FETCH_PRODUCTS_QUERY = `
-      query ($query: String! $after: String!) {
-        products(first: 5, query: title:$title*, after: $page) {
+      query ($query: String!, $reverse: Boolean) {
+        products(first: 5, query: $query, reverse: $reverse) {
           edges {
             cursor
             node {
@@ -57,13 +57,18 @@ const formatGQLResponse = (res) => {
         })),
     }));
 };
-export default async function fetchProducts(session, title: string, page: number) {
+export default async function fetchProducts(session, title: string, cursor?: string, reverse?: boolean) {
     const client = new shopify.api.clients.Graphql({session});
     try {
+      var query = '';
+      var after = '';
+      query = ` "title:*${title}*"`
+      console.log(query);
+      // if (cursor) after = `,after: ${after}`
         return formatGQLResponse(await client.query({
             data: {
               query: FETCH_PRODUCTS_QUERY,
-              variables: { page },
+              variables: { query, after, reverse: true },
             }
         }))
     } catch (error) {

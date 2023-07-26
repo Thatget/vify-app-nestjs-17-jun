@@ -51,10 +51,12 @@ export class ProductController {
     ) {
         try {
           const list: ProductResponse[] = [];
-          let { title, page } = query;
+          var { title, reverse } = query;
           if (!title) title = '';
-          if (!page) page = 0;
-          const shopProducts = await fetchProducts(res.locals.shopify.session, title, page);
+          const session = res.locals.shopify.session;
+          reverse = reverse?true:false;
+
+          const shopProducts = await fetchProducts(session, title, reverse);
           const shopProductIds = shopProducts.map(product => product.id);
           const products = await this.productService.findByProductIds(shopProductIds) || [];
           if (shopProducts) {
