@@ -48,4 +48,11 @@ export class ProductService {
     const product = await this.productRepository.findOneBy({productId: product_id});
     return product;
   }
+  async selectedPiecked(store_id: number): Promise<Product[]> {
+    const products = await this.productRepository.createQueryBuilder('product')
+      .select(['product.productId', 'product.variants'])
+      .where('product.store_id = :store_id', { store_id })
+      .getMany();
+      return products;
+  }
 }

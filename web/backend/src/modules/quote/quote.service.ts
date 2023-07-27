@@ -26,7 +26,7 @@ export class QuoteService {
     return `This action updates a #${id} quote`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} quote`;
+  async remove(id: number) {
+    return this.quoteRepository.delete({id});
   }
 }

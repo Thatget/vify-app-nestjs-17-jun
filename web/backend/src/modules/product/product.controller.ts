@@ -19,6 +19,7 @@ import fetchProducts from '../helpers/products';
 import {Request, Response} from 'express';
 import {Product} from './entities/product.entity';
 import ProductResponse, { ProductVariant } from '../../types/ProductResponse';
+import ProductSelect from 'src/types/ProductSelect';
 
 @Controller('api/products')
 export class ProductController {
@@ -54,7 +55,7 @@ export class ProductController {
           var { title, reverse } = query;
           if (!title) title = '';
           const session = res.locals.shopify.session;
-          reverse = reverse?true:false;
+          if (!(reverse === true)) reverse = false;
 
           const productPage = await fetchProducts(session, title, reverse);
           const shopProducts = productPage.productList;
@@ -117,5 +118,20 @@ export class ProductController {
             }
         });
       return res.status(200).send("OK");
+    }
+    @Get('/product_picked')
+    async getpicked( @Res() res: Response ) {
+      try {
+        const { shop } = res.locals.shopify.session;
+        const selectedProducts: ProductSelect[] = [];
+        const foundStore = await this.storeService.findByShopDomain(shop);
+        const products = await this.productService.selectedPiecked(foundStore.id);
+        products.forEach(product => {
+          selectedProducts.push({ id: product.productId, variants: (JSON.parse(product.variants) || []) })
+        })
+        return res.status(200).send(selectedProducts);
+      } catch (e) {
+        return res.status(500).send({message: 'Failed when get products'});
+      }
     }
 }

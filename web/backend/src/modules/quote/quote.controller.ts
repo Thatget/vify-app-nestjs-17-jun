@@ -47,4 +47,9 @@ export class QuoteController {
   remove(@Param('id') id: string) {
     return this.quoteService.remove(+id);
   }
+  @Delete('/delete')
+  async deleteMultipleRows(@Body() ids: number[]) {
+    // const result = await this.quoteService.remove({ id: In(ids) });
+    // return result;
+  }
 }

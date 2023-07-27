@@ -43,20 +43,19 @@ export default function ProductPicker() {
     setPage(0);
   }
 
-  const fetchProducts = async (title: string, page?: number) => {
+  const fetchProducts = async (title: string, cursor?: string) => {
     setIsLoading(true);
     try {
       let url = '';
       if (title) {
-        url = `/api/products/select?title=${title}&cursor=${page}`;
+        url = `/api/products/select?title=${title}&cursor=${cursor}`;
       } else {
-        url = `/api/products/select?page=${page}`;
-  }
+        url = `/api/products/select?cursor=${cursor}`;
+      }
       const response = await fetch(url, { method: 'GET' });
       const data = await response.json();
-
       if (data) {
-        setList( preList => [ ...preList, ...data.data]);
+        setList( preList => [ ...preList, ...data.products]);
         setPageInfo(data.pageInfo);
       }
       return data;
@@ -72,7 +71,7 @@ export default function ProductPicker() {
       const { scrollTop, clientHeight, scrollHeight } = event.target;
       if (scrollHeight - scrollTop === clientHeight && !isLoading) {
         setPage(prePage => prePage + 1);
-        fetchProducts(title);
+        fetchProducts(title, pageInfo.endCursor);
       }
     }
   };
@@ -92,8 +91,11 @@ export default function ProductPicker() {
             <div>
               {list  && list.map(item => {
                 return (<div>
-                  <input type="checkbox" />{item.title}
-                  <img src={item?.image || ''} />
+                  <div style={{display: 'flex', alignItems: 'center'}}>
+                    <input type="checkbox" />
+                    <div style={{height: '60px'}}><img style={{height: '100%'}} src={item?.image || ''} /></div>
+                    <div>{item.title}</div>
+                  </div>
                   <div>
                     { item.variants.map((variant: {price: string; title: string}) => {
                       return <div style={{ marginLeft: '12px', display: 'flex', justifyContent: 'space-between', width: '100%'}}>

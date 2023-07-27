@@ -74,15 +74,10 @@ const pages = [
         href: '/Quotes'
     },
     {
-        title: 'Products',
-        href: '/Products'
-    },
-    {
         title: 'Setting',
         href: '/Setting'
     },
 ]
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
 function ResponsiveAppBar(props: any) {

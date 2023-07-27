@@ -10,10 +10,9 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from "@mui/material/IconButton";
 import Button from '@mui/material/Button'
 import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
-import {makeStyles} from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Product from '../../types/Product';
-import ProductPicker from './ProductPicker';
+import Resource_Picker from './Resource_Picker';
 
 
 export default function SelectedProductsList() {
@@ -59,7 +58,6 @@ export default function SelectedProductsList() {
     const handleSave = () => {
       const productList = selectedProducts.map(selectedProduct => {
         let currentProduct: Product = {
-          id: '',
           productId: '',
           productDescription: '',
           imageURL: '',
@@ -90,7 +88,8 @@ export default function SelectedProductsList() {
     return (
         <Box sx={{width: '100%'}}>
             <Box sx={{width: '100%'}}>
-                <ProductPicker />
+                {/* <ProductPicker /> */}
+                <Resource_Picker parentCallback={getSelectedProducts} />
             </Box>
             <Box sx={{width: '100%'}}>
                 <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
