@@ -6,7 +6,6 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import AllProducts from "./products/AllProducts"
 import SelectedProductsList from "./products/SelectedProductsList";
-import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider';
 import Typography from "@mui/material/Typography";
 import {StoreContext, actions} from '../store'

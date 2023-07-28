@@ -17,6 +17,8 @@ import Quote from '../../types/Quote';
 import QuoteDetail from './QuoteDetail';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
+import { useAuthenticatedFetch } from '../../hooks';
+import {Frame, ContextualSaveBar} from '@shopify/polaris';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -71,6 +73,7 @@ const stautsLabel: StatusLabel = {
 }
 
 export default function QuoteTable({quotes}: PropQuoteTable) {
+  const fetch = useAuthenticatedFetch()
   const [rows, setRows] = React.useState<Quote[]>([]);
   React.useEffect(() => {
     setRows(quotes)
@@ -151,6 +154,16 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
   const handleView = (id: number) => {
     const quote:Quote = rows.find(quote => quote.id === id);
     if (quote.status === 0) {
+      try {
+        fetch(`/api/quote/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({status: 1}),
+        });
+      } catch (error) {
+      }
       setRows(preRows => {
         return preRows.map(row => {
           if (row.id === quote.id) {
@@ -166,6 +179,27 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
   return (
     <>
       <Box sx={{ width: '100%' }}>
+      <div style={{height: '250px'}}>
+      <Frame
+        logo={{
+          width: 124,
+          contextualSaveBarSource:
+            'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999',
+        }}
+      >
+        <ContextualSaveBar
+          message="Unsaved changes"
+          saveAction={{
+            onAction: () => console.log('add form submit logic'),
+            loading: false,
+            disabled: false,
+          }}
+          discardAction={{
+            onAction: () => console.log('add clear form logic'),
+          }}
+        />
+      </Frame>
+    </div>
         <Paper sx={{ width: '100%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer>

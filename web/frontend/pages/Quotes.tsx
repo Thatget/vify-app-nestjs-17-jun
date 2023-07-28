@@ -40,14 +40,14 @@ export default function Quotes() {
         <>
           <br/>
           <Container>
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <DateRangePickerValue/>
                 </Grid>
                 <Grid item xs={6}>
                   <SearchAppBar/>
                 </Grid>
-            </Grid>
+            </Grid> */}
             <br/>
             <Box sx={{minWidth: 275}}>
               <QuoteTable quotes={quotes} removeQuote={removeQuote}/>

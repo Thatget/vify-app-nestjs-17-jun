@@ -1,4 +1,4 @@
-import {Button, Modal, TextContainer} from '@shopify/polaris';
+import {Button, MediaCard, Modal, TextContainer} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
 import Quote from '../../types/Quote';
 
@@ -41,6 +41,25 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
         ]}
       >
         <Modal.Section>
+        <MediaCard
+          title={view.quote?.product?.name || 'Product Name'}
+          // primaryAction={{
+          //   content: 'Learn about getting started',
+          //   onAction: () => {},
+          // }}
+          description={view.quote?.product?.description || 'Product description'}
+        >
+          <img
+            alt="Product Image"
+            width="100%"
+            height="100%"
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+            src="https://burst.shopifycdn.com/photos/business-woman-smiling-in-office.jpg?width=1850"
+          />
+        </MediaCard>
           <TextContainer>
             <p>
               Use Instagram posts to share your products with millions of

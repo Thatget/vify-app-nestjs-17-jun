@@ -28,17 +28,16 @@ export default function Resource_Picker(props: any) {
       fetchProducts()
     }, [])
     
-    useEffect(() => {
-        // selectedProducts.filter(props.chosenProducts)
-        const newList = selectedProducts.filter((item: any) => item.id !== props.chosenProducts.id)
-        // setSelectedProducts((current:any) => current.filter((deselect:any) => deselect.id = props.chosenProducs.id))
-        setSelectedProducts(newList)
-    }, [props.chosenProducts])
+    // useEffect(() => {
+    //     // selectedProducts.filter(props.chosenProducts)
+    //     const newList = selectedProducts.filter((item: any) => item.id !== props.chosenProducts.id)
+    //     // setSelectedProducts((current:any) => current.filter((deselect:any) => deselect.id = props.chosenProducs.id))
+    //     setSelectedProducts(newList)
+    // }, [props.chosenProducts])
     const handleSelection = (resources: any) => {
       props.parentCallback(resources.selection)
-      console.log(resources.selection);
-        setSelectedProducts([...resources.selection])
-        setOpen(false)
+      setSelectedProducts([...resources.selection])
+      setOpen(false)
     }
     return (
         <>

@@ -10,6 +10,7 @@ const allowedAttribute = [
     'email',
     'message',
     'hide_price',
+    'all_product',
     'hide_buy_now',
     'hide_add_to_cart',
     'show_request_for_quote',
