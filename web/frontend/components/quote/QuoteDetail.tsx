@@ -14,8 +14,6 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
 
   const handleChange = useCallback(() => setActive(!active), [active]);
 
-  const activator = <Button onClick={handleChange}>Open</Button>;
-
   useEffect(() => {
     setActive(view.active);
   }, [view])
@@ -24,7 +22,6 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
   return (
     <div style={{height: '500px'}}>
       <Modal
-        activator={activator}
         open={active}
         onClose={handleChange}
         title="View Quote"

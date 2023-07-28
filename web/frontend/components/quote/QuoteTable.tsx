@@ -18,7 +18,7 @@ import QuoteDetail from './QuoteDetail';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
 import { useAuthenticatedFetch } from '../../hooks';
-import {Frame, ContextualSaveBar} from '@shopify/polaris';
+import QuoteDelete from './QuoteDelete';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -85,6 +85,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [deleteQuote, setDeleteQuote] = React.useState<{type: string, ids: number[]}>({ type: '', ids: []});
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -120,7 +121,6 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -176,32 +176,15 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
     setView({quote , active: true});
   }
 
+  const deleteSelected = () => {
+    setDeleteQuote({ type: 'selected', ids: [ ...selected ] })
+  }
+
   return (
     <>
       <Box sx={{ width: '100%' }}>
-      <div style={{height: '250px'}}>
-      <Frame
-        logo={{
-          width: 124,
-          contextualSaveBarSource:
-            'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999',
-        }}
-      >
-        <ContextualSaveBar
-          message="Unsaved changes"
-          saveAction={{
-            onAction: () => console.log('add form submit logic'),
-            loading: false,
-            disabled: false,
-          }}
-          discardAction={{
-            onAction: () => console.log('add clear form logic'),
-          }}
-        />
-      </Frame>
-    </div>
         <Paper sx={{ width: '100%', mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} />
+          <EnhancedTableToolbar numSelected={selected.length} deleteSelected={deleteSelected} />
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}
@@ -254,7 +237,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
                       <TableCell align="right">{stautsLabel[row.status] || 'undetected' }</TableCell>
                       <TableCell align="right">
                         <a onClick={() => handleView(row.id)}>View |</a>
-                        <Tooltip title="Delete" onClick={() => alert(row.id)}>
+                        <Tooltip title="Delete" onClick={() => setDeleteQuote({ type: 'clicked', ids: [ row.id]})}>
                           <IconButton>
                             <DeleteIcon />
                           </IconButton>
@@ -291,6 +274,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
         />
       </Box>
       { view.active && <QuoteDetail view={view} /> }
+      { ((deleteQuote.type === 'selected') || (deleteQuote.type === 'clicked')) && <QuoteDelete deleteQuote={deleteQuote} /> }
     </>
   );
 }
