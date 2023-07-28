@@ -25,5 +25,9 @@
     "source.fixAll.tslint": true,
     // For Stylelint
     "source.fixAll.stylelint": true
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.spec.ts"
+  ]
 }

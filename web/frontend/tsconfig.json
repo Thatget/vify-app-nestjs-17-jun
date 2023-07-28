@@ -1,27 +1,21 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "allowJs": false,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "module": "commonjs",
+    "allowJs": true,
     "esModuleInterop": true,
-    "target": "esnext",
-    "noImplicitAny": true,
+    "target": "ES2021",
     "moduleResolution": "node",
     "sourceMap": true,
-    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist",
-    "baseUrl": ".",
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "outDir": "./dist",
+    "baseUrl": "./",
     "noEmit": true,
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    },
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -37,10 +31,11 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "test/**/*.spec.ts"
+    "test/**/*.spec.ts",
+    "components/**/*.ts"
   ],
-  "exclude": [
-    "node_modules/**"
+  "files": [
+    "typings/index.d.ts"
   ],
   "editor.codeActionsOnSave": {
     // For ESLint
@@ -49,5 +44,8 @@
     "source.fixAll.tslint": true,
     // For Stylelint
     "source.fixAll.stylelint": true
+  },
+  "resolutions": {
+    "@types/react": "^18.0.8"
   }
 }

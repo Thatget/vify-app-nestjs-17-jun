@@ -4,18 +4,18 @@ import {useAuthenticatedFetch} from '../../hooks'
 import Button from "@mui/material/Button"
 
 interface SaveSettingProps {
-  isFetchingQuoteEntity: boolean;
-  refetchQuoteEntity: () => void;
+    isFetchingQuoteEntity: boolean;
+    refetchQuoteEntity: () => void;
 }
 
-const SaveSetting = ({ isFetchingQuoteEntity, refetchQuoteEntity }: SaveSettingProps) => {
+const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingProps) => {
     const {state, dispatch} = useContext(StoreContext);
 
     const setting = state.setting;
     const currentSetting = state.currentSetting;
 
     const fetch = useAuthenticatedFetch();
-    const updateSetting =async () => {
+    const updateSetting = async () => {
         const dataPost: Object[] = [];
         let changedName = false;
         let changeNamePlaceholder = false;
@@ -177,7 +177,6 @@ const SaveSetting = ({ isFetchingQuoteEntity, refetchQuoteEntity }: SaveSettingP
         if (changeShoppingButton) {
             dataPost.push(defaultContinueShoppingButton)
         }
-
         const data: any = fetch("/api/quote-entity", {
             method: 'POST',
             headers: {
@@ -188,13 +187,13 @@ const SaveSetting = ({ isFetchingQuoteEntity, refetchQuoteEntity }: SaveSettingP
         })
 
         if (data.ok) {
-          refetchQuoteEntity();
+            refetchQuoteEntity();
         }
     }
     const saveAble = (Object.entries(state.currentSetting).length === 0)
     return (
         <Button variant="contained" disabled={isFetchingQuoteEntity} onClick={updateSetting} sx={{m: 0.2}}>
-            {!isFetchingQuoteEntity && <>Save All Setting</> }
+            {!isFetchingQuoteEntity && <>Save All Setting</>}
         </Button>
 
     )

@@ -6,6 +6,7 @@ import {
     Param,
     Query,
     Res,
+    Req,
     HttpException,
     Inject,
 } from '@nestjs/common';
@@ -58,13 +59,16 @@ export class StoreFrontendController {
     ) {
         let show = true;
         try {
-            const {shop, product_id} = query.shop;
+
+            const shop = query.shop;
+            const variant_selected_id = query.variant_selected_id
             const store = await this.storeService.findByShopDomain(shop);
             if (!store || !this.storeFrontendService.verifySignature(query)) {
                 throw new HttpException('Failed to authenticate', 401);
             }
             const store_id = store.id;
-            const settings = await this.quoteEntityService.findByStoreId(store_id, this.defaultQuoteEntity);
+            // const settings = await this.quoteEntityService.findByStoreId(store_id, this.defaultQuoteEntity);
+            const settings = await this.quoteEntityService.findByStore_Id(store_id);
             this.defaultQuoteEntity.forEach(entity => {
                 switch (entity) {
                     case 'all_product':
@@ -77,16 +81,26 @@ export class StoreFrontendController {
                         })
                         break;
                     default:
+                        show = false
+                        // console.log("show 1.9", show)
                         break;
                 }
             })
             if (!show) {
-                const product = await this.productService.findByProductId(product_id);
-                if (product) {
-                  show = true;
-                }
+                const products = await this.productService.findByStoreId(store_id);
+                const variant_selected_id_string = `gid://shopify/Product/${variant_selected_id}`
+                console.log("variant_selected_id_string", variant_selected_id)
+
+                products.map(product => {
+                    if (product.variants.includes(variant_selected_id)) {
+                        show = true
+                        console.log("show", show)
+                        return res.status(200).send({show, settings});
+                    }
+                })
+                // return res.status(200).send({show, settings});
             }
-            return res.status(200).send({show, settings});
+            // return res.status(200).send({show, settings});
         } catch (e) {
             return res.status(200).send({show: false});
         }

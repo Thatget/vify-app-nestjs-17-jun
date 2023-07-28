@@ -46,7 +46,7 @@ export default function Resource_Picker(props: any) {
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-                <Button variant="contained" onClick={() => {
+                <Button onClick={() => {
                     setOpen(true)
                 }}
                 >Select Products</Button>

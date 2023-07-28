@@ -55,4 +55,8 @@ export class ProductService {
       .getMany();
       return products;
   }
+      async findByStoreId(store_id: number) {
+        const products = await this.productRepository.findBy({store_id: store_id});
+        return products;
+    }
 }

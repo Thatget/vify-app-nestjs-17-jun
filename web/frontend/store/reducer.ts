@@ -8,8 +8,20 @@ const ActionTypes = {
 
 // initial state
 const initialState = {
-    setting: {hide_price: false, hide_buy_now: false, show_request_for_quote: false},
-    currentSetting: {},
+    setting: {
+        hide_price: false,
+        hide_buy_now: false,
+        show_request_for_quote: false,
+        name_title: '',
+        name_placeholder: '',
+        message: '',
+        message_placeholder: '',
+        email_title: '',
+        email_placeholder: '',
+        form_title: '',
+        submit_button_text: ''
+    },
+    currentSetting: {hide_price: false, hide_buy_now: false, show_request_for_quote: false},
     settingTab: ['configSetting'],
 };
 
