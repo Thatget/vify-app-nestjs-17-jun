@@ -72,19 +72,6 @@ export class QuoteEntityController {
                     .status(HttpStatus.OK)
                     .json({message: 'Data updated successfully'});
             }
-            // const response = {
-            //     id: 1234,
-            //     shop: "abc",
-            //     name: "name",
-            //     email: "abc@gmail.com",
-            //     status: 1234,
-            //     user: {
-            //         id: 123445,
-            //         shop: "abcshopstring",
-            //         isActive: true,
-            //         role: "abc"
-            //     }
-            // }
             return res
                 .status(HttpStatus.BAD_REQUEST)
                 .json({message: 'Missing store name'});

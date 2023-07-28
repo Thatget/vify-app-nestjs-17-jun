@@ -1,56 +1,64 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { InsertResult, Repository } from 'typeorm';
-import { Product } from './entities/product.entity';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { CreateProductDto } from './dto/create-product.dto';
+import {Inject, Injectable} from '@nestjs/common';
+import {InsertResult, Repository} from 'typeorm';
+import {Product} from './entities/product.entity';
+import {UpdateProductDto} from './dto/update-product.dto';
+import {CreateProductDto} from './dto/create-product.dto';
 
 @Injectable()
 export class ProductService {
 
-  constructor(
-    @Inject('PRODUCT_REPOSITORY')
-    private productRepository: Repository<Product>,
-  ) {}
+    constructor(
+        @Inject('PRODUCT_REPOSITORY')
+        private productRepository: Repository<Product>,
+    ) {
+    }
 
-  async insertAll(products: Product[]): Promise<InsertResult> {
-    return await this.productRepository.insert(products);
-  }
+    async insertAll(products: Product[]): Promise<InsertResult> {
+        return await this.productRepository.insert(products);
+    }
 
-  async create(product: CreateProductDto): Promise<InsertResult> {
-    return await this.productRepository.insert(product);
-  }
+    async create(product: CreateProductDto): Promise<InsertResult> {
+        return await this.productRepository.insert(product);
+    }
 
-  async insert(product: CreateProductDto): Promise<InsertResult> {
-    console.log(product)
-    return await this.productRepository.insert(product);
-  }
+    async insert(product: CreateProductDto): Promise<InsertResult> {
+        console.log(product)
+        return await this.productRepository.insert(product);
+    }
 
-  async findAll(): Promise<Product[]> {
-    return await this.productRepository.find();
-  }
+    async findAll(): Promise<Product[]> {
+        return await this.productRepository.find();
+    }
 
-  async findOne(id: string): Promise<boolean> {
-    let found = false;
-    await this.productRepository
-      .findOne({ where: { productId: id } })
-      .then((r) => {
-        if (r !== null) {
-          found = true;
-        }
-      });
-    return found;
-  }
+    async findOne(id: string): Promise<boolean> {
+        let found = false;
+        await this.productRepository
+            .findOne({where: {productId: id}})
+            .then((r) => {
+                if (r !== null) {
+                    found = true;
+                }
+            });
+        return found;
+    }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
-    const Product = this.findOne(id);
-    return this.productRepository.update(id, updateProductDto);
-  }
+    async update(id: string, updateProductDto: UpdateProductDto) {
+        const Product = this.findOne(id);
+        return this.productRepository.update(id, updateProductDto);
+    }
 
-  async delete(id: string): Promise<void> {
-    await this.productRepository.delete(id);
-  }
-  async findByProductId(product_id: string) {
-    const product = await this.productRepository.findOneBy({productId: product_id});
-    return product;
-  }
+    async delete(id: string): Promise<void> {
+        await this.productRepository.delete(id);
+    }
+
+    async findByProductId(product_id: string) {
+        const product = await this.productRepository.findOneBy({productId: product_id});
+        if (product) console.log("found product from Product Service")
+        return product;
+    }
+
+    async findByStoreId(store_id: number) {
+        const products = await this.productRepository.findBy({store_id: store_id});
+        return products;
+    }
 }

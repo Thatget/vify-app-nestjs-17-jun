@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useAuthenticatedFetch} from "../hooks";
-import { Card } from '@mui/material';
+import {Card} from '@mui/material';
 
 export default function GettingStarted() {
     const fetch = useAuthenticatedFetch()
@@ -31,7 +31,7 @@ export default function GettingStarted() {
         <>
             <CardContent>
                 <Typography variant="body1" component="div">
-                    <b> Step 1: Select products </b>
+                    <b> Step 1: Select products</b>
                 </Typography>
                 <br/>
                 <Typography variant="body1">

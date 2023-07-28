@@ -1,9 +1,7 @@
 <script>
+    {% assign current_variant = product.selected_or_first_available_variant %}
     var vifyRequestFQ = {};
-    vifyRequestFQ.product = {{ product | json }}
-            {% if customer %}
-        vifyRequestFQ.customer = {{ customer | json }}
-    {% endif %}
+    vifyRequestFQ.lineItem = {{ product | json }}
     var jsVariants = [];
     {% for variant in product.variants %}
     jsVariants.push({
@@ -12,32 +10,42 @@
     })
     {% endfor %}
     if (vifyRequestFQ) {
-        vifyRequestFQ.product.variants = jsVariants;
+        vifyRequestFQ.lineItem.variants = jsVariants;
         window.vifyRequestFQ = vifyRequestFQ;
     }
+
+    var jsProduct = {};
+    jsProduct = vifyRequestFQ
+    var variant_selected_id = '';
+    variant_selected_id = {{ current_variant.id }}
+
+
 </script>
-<div>Abc new</div>
-<div>abc</div>
-<div id="vify_rfq-f"></div>
+{% assign jsProducts = "test" %}
+
+<script>
+    jsProducts = "new Test"
+</script>
+<div>The value of : {{ jsProducts }}</div>
+
+<!-- Product price -->
+<div class="price">
+    <span class="price-reg">{{ current_variant.price | money }}</span>
+
+    {% if current_variant.compare_at_price > current_variant.price %}
+        <span class="price-sale"><s>{{ current_variant.compare_at_price | money }}</s></span>
+    {% endif %}
+</div>
+
+<div>v 1.7</div>
+<div id="vify_rfq-f">b</div>
 {% schema %}
 {
-  "name": "Vify Request Quote",
-  "target": "section",
+  "name": "Vify Quote",
+  "target": "body",
   "stylesheet": "index.css",
   "javascript": "index.js",
-  "settings": [
-    {
-      "type": "product",
-      "id": "product",
-      "label": "product",
-      "autofill": true
-    },
-    {
-      "type": "color",
-      "id": "colour",
-      "label": "Star Colour",
-      "default": "#ff0000"
-    }
-  ]
+  "settings": []
 }
 {% endschema %}
+

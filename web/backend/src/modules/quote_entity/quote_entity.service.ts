@@ -41,4 +41,14 @@ export class QuoteEntityService {
             throw error;
         }
     }
+
+    async findByStore_Id(store_id: number): Promise<QuoteEntityDto[]> {
+        try {
+            return await this.quoteEntityRepository.findBy({
+                store_id: store_id,
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 }

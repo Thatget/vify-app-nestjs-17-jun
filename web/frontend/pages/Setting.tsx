@@ -6,7 +6,6 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import CardContent from "@mui/material/CardContent";
 import {actions, StoreContext} from "../store";
-import Button from "@mui/material/Button";
 import {payloadObject} from "../store/actions";
 import {makeStyles} from "@mui/styles";
 import {useAppQuery, useAuthenticatedFetch} from "../hooks";
@@ -54,7 +53,7 @@ const useStyles = makeStyles({
 });
 
 interface SettingX {
-  [key: string]: string | number | boolean;
+    [key: string]: string | number | boolean;
 }
 
 const Setting = () => {
@@ -94,25 +93,25 @@ const Setting = () => {
         },
     });
     React.useEffect(() => {
-      if (data) {
-        let setting:SettingX = {};
-        data.map((entity: QuoteEntity) => {
-          switch (entity.name) {
-            case 'hide_price':
-            case 'hide_buy_now':
-            case 'show_request_for_quote':
-              if (entity.value === '1') setting = {...setting, [entity.name]: true};
-              else setting = {...setting, [entity.name]: false};
-              break;
-            default:
-              setting = {...setting, [entity.name]: entity.value};
-              break;
-          }
-        });
-        dispatch(actions.setInitSetting(setting));
-      }
+        if (data) {
+            let setting: SettingX = {};
+            data.map((entity: QuoteEntity) => {
+                switch (entity.name) {
+                    case 'hide_price':
+                    case 'hide_buy_now':
+                    case 'show_request_for_quote':
+                        if (entity.value === '1') setting = {...setting, [entity.name]: true};
+                        else setting = {...setting, [entity.name]: false};
+                        break;
+                    default:
+                        setting = {...setting, [entity.name]: entity.value};
+                        break;
+                }
+            });
+            dispatch(actions.setInitSetting(setting));
+        }
     }, [data])
-    
+
     const configSetting = (
         <Grid
             container
@@ -254,7 +253,8 @@ const Setting = () => {
                                 </TabList>
                             </Box>
                             <Box sx={{mr: 2}}>
-                                <SaveSetting isFetchingQuoteEntity={isRefetchingQuoteEntity || isLoadingQuoteEntity} refetchQuoteEntity={refetchQuoteEntity} />
+                                <SaveSetting isFetchingQuoteEntity={isRefetchingQuoteEntity || isLoadingQuoteEntity}
+                                             refetchQuoteEntity={refetchQuoteEntity}/>
                             </Box>
                         </Box>
 

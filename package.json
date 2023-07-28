@@ -1,7 +1,7 @@
 {
   "name": "vify-app-nestjs-17-jun",
   "version": "1.0.0",
-  "main": "web/index.js_",
+  "main": "web/index.js",
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
@@ -10,7 +10,14 @@
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy"
+    "deploy": "shopify app deploy",
+    "dev:all": "npm-run-all -r -p dev theme:build",
+    "client:dev": "npm run --prefix=web/src/client/ dev",
+    "client:build": "npm run --prefix=web/frontend/ dev -- --watch --emptyOutDir",
+    "theme:build": "npm run --prefix=extensions_builder/request-quote/ build -- --watch",
+    "theme:removeHtml": "rm -rf extensions/request-quote/assets/index.html",
+    "theme:dev": "npm run --prefix=extensions_builder/request-quote/ dev",
+    "theme:deploy": "cd extensions_builder/request-quote && npm run build -- --emptyOutDir && cd .. && rm extensions/request-quote/assets/index.html && shopify app deploy"
   },
   "dependencies": {
     "@material-tailwind/react": "^2.0.6",
@@ -18,15 +25,18 @@
     "@shopify/cli": "^3.23.0",
     "@shopify/shopify-api": "^7.5.0",
     "kill": "^0.0.2",
-    "nodemon": "1.14.9",
-    "react-material-ui-form-validator": "^3.0.1"
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "react-material-ui-form-validator": "^3.0.1",
+    "@types/node": "^20.4.5"
   },
   "author": "Brucenguyen",
   "private": true,
   "workspaces": [
     "web",
     "web/frontend",
-    "extensions/*"
+    "extensions/**/*",
+    "extensions_builder/request_quote/***/**/*"
   ],
   "devDependencies": {
     "@types/react-material-ui-form-validator": "^2.1.1",
@@ -39,5 +49,8 @@
     "eslint-plugin-react": "^7.32.2",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6"
+  },
+  "resolutions": {
+    "@types/react": "^18.0.8"
   }
 }

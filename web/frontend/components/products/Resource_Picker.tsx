@@ -24,13 +24,13 @@ export default function Resource_Picker(props: any) {
         setOpen(false)
     }
     return (
-        <React.Fragment>
+        <>
             <Box
                 display="flex"
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-                <Button variant="contained" onClick={() => {
+                <Button onClick={() => {
                     setOpen(true)
                 }}
                 >Select Products</Button>
@@ -44,7 +44,7 @@ export default function Resource_Picker(props: any) {
                 initialSelectionIds={selectedProducts}
 
             />
-        </React.Fragment>
+        </>
 
     )
 }
