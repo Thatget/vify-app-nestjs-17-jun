@@ -1,3 +1,54 @@
+import Box from '@mui/material/Box';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Checkbox from '@mui/material/Checkbox';
+import { visuallyHidden } from '@mui/utils';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Quote from '../../types/Quote';
+
+type Order = 'asc' | 'desc';
+
+interface HeadCell {
+  disablePadding: boolean;
+  id: keyof Quote;
+  label: string;
+  numeric: boolean;
+}
+
+const headCells: readonly HeadCell[] = [
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: true,
+    label: 'Name',
+  },
+  {
+    id: 'email',
+    numeric: true,
+    disablePadding: false,
+    label: 'Email',
+  },
+  {
+    id: 'message',
+    numeric: true,
+    disablePadding: false,
+    label: 'Message',
+  },
+  {
+    id: 'status',
+    numeric: true,
+    disablePadding: false,
+    label: 'Status',
+  },
+  {
+    id: 'id',
+    numeric: true,
+    disablePadding: false,
+    label: 'Action',
+  },
+];
+
 interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Quote) => void;
@@ -7,7 +58,7 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+export default function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =

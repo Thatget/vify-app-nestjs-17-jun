@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
@@ -18,11 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
 import Quote from '../../types/Quote';
 import QuoteDetail from './QuoteDetail';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
+import EnhancedTableHead from './EnhancedTableHead';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,49 +54,20 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0]);
 }
 
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Quote;
-  label: string;
-  numeric: boolean;
-}
-
-const headCells: readonly HeadCell[] = [
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: true,
-    label: 'Name',
-  },
-  {
-    id: 'email',
-    numeric: true,
-    disablePadding: false,
-    label: 'Email',
-  },
-  {
-    id: 'message',
-    numeric: true,
-    disablePadding: false,
-    label: 'Message',
-  },
-  {
-    id: 'status',
-    numeric: true,
-    disablePadding: false,
-    label: 'Status',
-  },
-  {
-    id: 'id',
-    numeric: true,
-    disablePadding: false,
-    label: 'Action',
-  },
-];
-
 interface PropQuoteTable {
   quotes: Quote[],
   removeQuote: (id: number) => void,
+}
+
+interface StatusLabel {
+  [key: number]: string;
+}
+
+const stautsLabel: StatusLabel = {
+  0: 'unread',
+  1: 'read',
+  2: 'denied',
+  3: 'approve',
 }
 
 export default function QuoteTable({quotes}: PropQuoteTable) {
@@ -110,7 +75,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
   React.useEffect(() => {
     setRows(quotes)
   }, [quotes])
-  const [view, setView] = React.useState<{id: number; active: boolean}>({id: 0, active: false})
+  const [view, setView] = React.useState<{quote: Quote; active: boolean}>({quote: null, active: false})
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Quote>('id');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -184,8 +149,20 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
   );
 
   const handleView = (id: number) => {
-    setView({id , active: true});
+    const quote:Quote = rows.find(quote => quote.id === id);
+    if (quote.status === 0) {
+      setRows(preRows => {
+        return preRows.map(row => {
+          if (row.id === quote.id) {
+            row.status = 1;
+          }
+          return row;
+        })
+      })
+    }
+    setView({quote , active: true});
   }
+
   return (
     <>
       <Box sx={{ width: '100%' }}>
@@ -240,7 +217,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
                       </TableCell>
                       <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">{row.message}</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
+                      <TableCell align="right">{stautsLabel[row.status] || 'undetected' }</TableCell>
                       <TableCell align="right">
                         <a onClick={() => handleView(row.id)}>View |</a>
                         <Tooltip title="Delete" onClick={() => alert(row.id)}>

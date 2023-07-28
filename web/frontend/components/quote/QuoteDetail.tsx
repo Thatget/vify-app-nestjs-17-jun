@@ -1,9 +1,10 @@
 import {Button, Modal, TextContainer} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
+import Quote from '../../types/Quote';
 
 interface QuoteDetailProp {
   view: {
-    id: number;
+    quote: Quote;
     active: boolean;
   }
 }
@@ -26,14 +27,15 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
         activator={activator}
         open={active}
         onClose={handleChange}
-        title={view.id}
+        title="View Quote"
         primaryAction={{
-          content: 'Add Instagram',
+          content: 'Add',
           onAction: handleChange,
         }}
         secondaryActions={[
           {
-            content: 'Learn more',
+            content: 'Delete',
+            destructive: true,
             onAction: handleChange,
           },
         ]}
