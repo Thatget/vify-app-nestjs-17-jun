@@ -1,5 +1,7 @@
 import {GraphqlQueryError} from "@shopify/shopify-api";
 import shopify from "./shopify";
+import ProductPage from "src/types/ProductPage";
+import ProductResponse from "src/types/ProductResponse";
 // Used for creating some common functions used by the backend to format Products data
 // We are adding API layer so that the frontend can access the data
 /*
@@ -9,58 +11,68 @@ import shopify from "./shopify";
   This data is also queried so that the full state can be saved to the database, in order to generate QR code links.
 */
 
-const FETCH_PRODUCTS_QUERY = `{
-  products(first: 20) {
-    edges {
-      node {
-        id
-        title
-        description
-        legacyResourceId
-        images(first: 1) {
-          edges {
-            node {
-              url
-            }
-          }
-        }
-        variants(first: 10) {
+const FETCH_PRODUCTS_QUERY = `
+      query ($query: String!, $after: String, $reverse: Boolean) {
+        products(first: 5, after: $after, query: $query, reverse: $reverse) {
           edges {
             node {
               id
-              price
               title
+              images(first: 1) {
+                edges {
+                  node {
+                    url
+                  }
+                }
+              }
+              variants(first: 100) {
+                edges {
+                  node {
+                    id
+                    price
+                    title
+                  }
+                }
+              }
             }
           }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
         }
-      }
-    }
-  }
-}
-`
-const formatGQLResponse = (res) => {
+      }`;
+
+const formatGQLResponse = (res):ProductPage => {
     // edges : an array to hold all data
-    const edges = res?.body?.data?.products?.edges || []
-    if (!edges.length) return [];
-    return edges.map(({node}) => ({
+    const edges = res?.body?.data?.products?.edges || [];
+    const pageInfo = res?.body?.data?.products?.pageInfo || [];
+    var productList: ProductResponse[] = [];
+    if (edges.length) {
+      var productList: ProductResponse[] = edges.map(({node}) => ({
         id: node.id,
-        legacyID: node.legacyID,
         title: node.title,
-        description: node.description,
-        image: node.images.edges[0]?.node?.url || "https://w7.pngwing.com/pngs/915/345/png-transparent-multicolored-balloons-illustration-balloon-balloon-free-balloons-easter-egg-desktop-wallpaper-party-thumbnail.png",
+        image: node.images.edges[0]?.node?.url || "",
         variants: node.variants.edges.map(({node}) => ({
-            id: node.id,
-            title: node.title,
-            price: node.price,
+          id: node.id,
+          title: node.title,
+          price: node.price,
+          selected: false,
         })),
-    }));
+      }));
+    }
+    return { productList, pageInfo };
 };
-export default async function fetchProducts(session) {
+export default async function fetchProducts(session, title: string, cursor?: string, reverse?: boolean) {
     const client = new shopify.api.clients.Graphql({session});
     try {
+      var query = `'${title}*'`;
+      var after = after?after: null;
+      if (!(reverse === false)) reverse = true;
         return formatGQLResponse(await client.query({
             data: {
-                query: FETCH_PRODUCTS_QUERY,
+              query: FETCH_PRODUCTS_QUERY,
+              variables: { query, reverse, after },
             }
         }))
     } catch (error) {

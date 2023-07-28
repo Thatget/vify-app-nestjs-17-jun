@@ -1,63 +1,61 @@
-import {Inject, Injectable} from '@nestjs/common';
-import {InsertResult, Repository} from 'typeorm';
-import {Product} from './entities/product.entity';
-import {UpdateProductDto} from './dto/update-product.dto';
-import {CreateProductDto} from './dto/create-product.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { In, InsertResult, Repository } from 'typeorm';
+import { Product } from './entities/product.entity';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateProductDto } from './dto/create-product.dto';
 
 @Injectable()
 export class ProductService {
 
-    constructor(
-        @Inject('PRODUCT_REPOSITORY')
-        private productRepository: Repository<Product>,
-    ) {
-    }
+  constructor(
+    @Inject('PRODUCT_REPOSITORY')
+    private productRepository: Repository<Product>,
+  ) {}
 
-    async insertAll(products: Product[]): Promise<InsertResult> {
-        return await this.productRepository.insert(products);
-    }
+  async insertAll(products: Product[]): Promise<InsertResult> {
+    return await this.productRepository.insert(products);
+  }
 
-    async create(product: CreateProductDto): Promise<InsertResult> {
-        return await this.productRepository.insert(product);
-    }
+  async create(product: CreateProductDto): Promise<InsertResult> {
+    return await this.productRepository.insert(product);
+  }
 
-    async insert(product: CreateProductDto): Promise<InsertResult> {
-        console.log(product)
-        return await this.productRepository.insert(product);
-    }
+  async insert(product: CreateProductDto): Promise<InsertResult> {
+    return await this.productRepository.insert(product);
+  }
 
-    async findAll(): Promise<Product[]> {
-        return await this.productRepository.find();
-    }
+  async findAll(store_id: number): Promise<Product[]> {
+    return await this.productRepository.findBy({store_id});
+  }
 
-    async findOne(id: string): Promise<boolean> {
-        let found = false;
-        await this.productRepository
-            .findOne({where: {productId: id}})
-            .then((r) => {
-                if (r !== null) {
-                    found = true;
-                }
-            });
-        return found;
-    }
+  async findByProductIds(productIds:string[]) {
+    return await this.productRepository.findBy({ productId: In(productIds) });
+  }
 
-    async update(id: string, updateProductDto: UpdateProductDto) {
-        const Product = this.findOne(id);
-        return this.productRepository.update(id, updateProductDto);
-    }
+  async findOne(id: string): Promise<boolean> {
+    let found = false;
+    await this.productRepository
+      .findOne({ where: { productId: id } })
+      .then((r) => {
+        if (r !== null) {
+          found = true;
+        }
+      });
+    return found;
+  }
 
-    async delete(id: string): Promise<void> {
-        await this.productRepository.delete(id);
-    }
-
-    async findByProductId(product_id: string) {
-        const product = await this.productRepository.findOneBy({productId: product_id});
-        if (product) console.log("found product from Product Service")
-        return product;
-    }
-
-    async findByStoreId(store_id: number) {
+  async findByProductId(product_id: string) {
+    const product = await this.productRepository.findOneBy({productId: product_id});
+    return product;
+  }
+  async selectedPiecked(store_id: number): Promise<Product[]> {
+    const products = await this.productRepository.createQueryBuilder('product')
+      .select(['product.productId', 'product.variants'])
+      .where('product.store_id = :store_id', { store_id })
+      .getMany();
+      return products;
+  }
+      async findByStoreId(store_id: number) {
         const products = await this.productRepository.findBy({store_id: store_id});
         return products;
     }

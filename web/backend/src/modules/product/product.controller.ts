@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     Req,
     Res,
 } from '@nestjs/common';
@@ -17,6 +18,8 @@ import {StoreService} from '../store/store.service';
 import fetchProducts from '../helpers/products';
 import {Request, Response} from 'express';
 import {Product} from './entities/product.entity';
+import ProductResponse, { ProductVariant } from '../../types/ProductResponse';
+import ProductSelect from 'src/types/ProductSelect';
 
 @Controller('api/products')
 export class ProductController {
@@ -32,11 +35,64 @@ export class ProductController {
         @Res() res: Response,
     ) {
         try {
-            const status = 200;
-            // const products = await fetchProducts(res.locals.shopify.session);
-            const products = await this.productService.findAll();
+          const { shop } = res.locals.shopify.session;
+          const foundStore = await this.storeService.findByShopDomain(shop);
+            const products = await this.productService.findAll(foundStore.id);
             return res.status(200).send(products);
         } catch (e) {
+          console.log(e.message);
+          return res.status(500).send({message: 'Failed when get products'});
+        }
+    }
+
+    @Get('/select')
+    async storeProduct(
+      @Query() query,
+      @Res() res: Response,
+    ) {
+        try {
+          const list: ProductResponse[] = [];
+          var { title, reverse } = query;
+          if (!title) title = '';
+          const session = res.locals.shopify.session;
+          if (!(reverse === true)) reverse = false;
+
+          const productPage = await fetchProducts(session, title, reverse);
+          const shopProducts = productPage.productList;
+          const pageInfo = productPage.pageInfo;
+          const shopProductIds = shopProducts.map(product => product.id);
+          const products = await this.productService.findByProductIds(shopProductIds) || [];
+          if (shopProducts) {
+            shopProducts.forEach(shopProduct => {
+              const subList: ProductResponse = {
+                id: shopProduct.id,
+                title: shopProduct.title,
+                image: shopProduct.image,
+                variants: [],
+              };
+              let matchedProduct = products.find((product) => product.productId === shopProduct.id);
+              const variants: ProductVariant[] = [];
+              shopProduct.variants.map((shopVariant: ProductVariant) => {
+                let selected = false;
+                if (matchedProduct) {
+                  const matchedVariant = JSON.parse(matchedProduct.variants) || [];
+                  if (matchedVariant.find((variant: ProductVariant) => variant.id === shopVariant.id)) selected = true;
+                }
+                const variant: ProductVariant = {
+                  id: shopVariant.id,
+                  title: shopVariant.title,
+                  price: shopVariant.price,
+                  selected
+                }
+                variants.push(variant);
+                subList.variants = variants;
+              })
+              list.push(subList);
+            })
+          }
+          return res.status(200).send({products: list, pageInfo});
+        } catch (e) {
+          console.log(e.message);
           return res.status(500).send({message: 'Failed when get products'});
         }
     }
@@ -62,5 +118,20 @@ export class ProductController {
             }
         });
       return res.status(200).send("OK");
+    }
+    @Get('/product_picked')
+    async getpicked( @Res() res: Response ) {
+      try {
+        const { shop } = res.locals.shopify.session;
+        const selectedProducts: ProductSelect[] = [];
+        const foundStore = await this.storeService.findByShopDomain(shop);
+        const products = await this.productService.selectedPiecked(foundStore.id);
+        products.forEach(product => {
+          selectedProducts.push({ id: product.productId, variants: (JSON.parse(product.variants) || []) })
+        })
+        return res.status(200).send(selectedProducts);
+      } catch (e) {
+        return res.status(500).send({message: 'Failed when get products'});
+      }
     }
 }

@@ -6,22 +6,20 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import AllProducts from "./products/AllProducts"
 import SelectedProductsList from "./products/SelectedProductsList";
-import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider';
 import Typography from "@mui/material/Typography";
+import {StoreContext, actions} from '../store'
+import { defaultConfigSetting } from './Setting/ConfigSetting';
 
 export default function ProductSelector() {
-    const [value, setValue] = React.useState('');
-    const [openAllProducts, setOpenAllProducts] = React.useState(false)
-    const [openSelectProducts, setOpenSelectProducts] = React.useState(false)
+  const {state, dispatch} = React.useContext(StoreContext);
+  const localConfigSetting = ({...defaultConfigSetting, ...state.setting, ...state.currentSetting});
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.value === 'AllProducts') {
-            setOpenSelectProducts(false)
-            setOpenAllProducts(true)
+          dispatch(actions.setNewSetting({all_product: true}));
         } else {
-            setOpenSelectProducts(true)
-            setOpenAllProducts(false)
+          dispatch(actions.setNewSetting({all_product: false}));
         }
     }
     return (
@@ -34,7 +32,7 @@ export default function ProductSelector() {
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
                     name="row-radio-buttons-group"
-                    value={value}
+                    value={localConfigSetting.all_product ? 'AllProducts' : 'SelectProducts'}
                     onChange={handleRadioChange}
                 >
                     <FormControlLabel value="AllProducts" control={<Radio/>}
@@ -46,11 +44,10 @@ export default function ProductSelector() {
                 {/*<Divider variant="middle" light={true} />*/}
                 <br/>
             </FormControl>
-            {openSelectProducts && <Divider variant="middle" sx={{bgcolor: "#1a237e", height: 2}}/>}
+            {!localConfigSetting.all_product && <Divider variant="middle" sx={{bgcolor: "#1a237e", height: 2}}/>}
             <br/>
             {/*{openSelectProducts && <hr/>}*/}
-            {openAllProducts && <AllProducts/>}
-            {openSelectProducts && <SelectedProductsList/>}
+            {localConfigSetting.all_product ? <AllProducts/> : <SelectedProductsList/>}
         </>
         // </Box>
     );

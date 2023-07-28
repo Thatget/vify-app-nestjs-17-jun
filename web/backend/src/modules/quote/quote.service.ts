@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuoteDto } from './dto/create-quote.dto';
-import { UpdateQuoteDto } from './dto/update-quote.dto';
 import { Repository } from 'typeorm';
 import { Quote } from './entities/quote.entity';
 
@@ -22,11 +21,15 @@ export class QuoteService {
     return `This action returns a #${id} quote`;
   }
 
-  update(id: number, updateQuoteDto: UpdateQuoteDto) {
-    return `This action updates a #${id} quote`;
+  async updateStatus(id: number, store_id: number, status: number ) {
+    const quote = await this.quoteRepository.findOneBy({id});
+    if (quote.store_id === store_id) {
+      quote.status = status;
+      return await this.quoteRepository.save(quote);
+    } else throw new NotFoundException(`Store and quote id ${id} is mismatch`);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} quote`;
+  async remove(id: number) {
+    return this.quoteRepository.delete({id});
   }
 }

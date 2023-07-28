@@ -5,25 +5,46 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Box from "@mui/material/Box";
-import Resource_Picker from "./Resource_Picker";
 import Divider from "@mui/material/Divider";
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from "@mui/material/IconButton";
 import Button from '@mui/material/Button'
-import {useAuthenticatedFetch} from "../../hooks";
-import {makeStyles} from "@mui/material/styles";
+import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
 import Typography from "@mui/material/Typography";
 import Product from '../../types/Product';
+import Resource_Picker from './Resource_Picker';
 
 
 export default function SelectedProductsList() {
-    const fetch = useAuthenticatedFetch()
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [selectedProductList, setSelectedProductList] = React.useState<Product[]>([]);
+    const fetch = useAuthenticatedFetch();
     const [deselect, setDeselect] = React.useState([])
-    const [show, setShow] = React.useState(false)
+    const [show, setShow] = React.useState(true)
     const getSelectedProducts = (productsResource_Picker: any) => {
         setSelectedProducts(productsResource_Picker)
         setShow(true)
     }
+    const {
+      data,
+      refetch: refetchQuote,
+      isLoading: isLoadingQuote,
+      isRefetching: isRefetchingQuote,
+    } = useAppQuery<Product[]>({
+      url: "/api/products",
+      reactQueryOptions: {
+        onSuccess: () => {
+          setIsLoading(false);
+        }
+      },
+    });
+
+    React.useEffect(() => {
+      if(data) {
+      setSelectedProductList(data);
+      }
+    }, [data]);
+
     const [selectedProducts, setSelectedProducts] = React.useState([])
     const handleRemove = (id: string) => {
         const newList = selectedProducts.filter((item) => item.id !== id)
@@ -37,7 +58,6 @@ export default function SelectedProductsList() {
     const handleSave = () => {
       const productList = selectedProducts.map(selectedProduct => {
         let currentProduct: Product = {
-          id: '',
           productId: '',
           productDescription: '',
           imageURL: '',
@@ -53,7 +73,6 @@ export default function SelectedProductsList() {
 
         return currentProduct;
       })
-      console.log(productList);
         fetch("/api/products/insert",
             {
                 method: "Post",
@@ -66,22 +85,15 @@ export default function SelectedProductsList() {
         alert("Okay, data has saved")
     }
 
-    // const useStyles = makeStyles({
-    //     listItem: {
-    //         fontSize: '0.7rem'
-    //     }
-    // })
-    // const classes = useStyles()
-
     return (
         <Box sx={{width: '100%'}}>
             <Box sx={{width: '100%'}}>
-                <Resource_Picker chosenProducts={deselect} parentCallback={getSelectedProducts}/>
+                {/* <ProductPicker /> */}
+                <Resource_Picker parentCallback={getSelectedProducts} />
             </Box>
             <Box sx={{width: '100%'}}>
                 <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
-
-                    {selectedProducts.map((product) => {
+                {selectedProductList && selectedProductList.map((product) => {
                         const labelId = `checkbox-list-secondary-label-${product.id}`;
                         return (
                             <ListItem
@@ -103,7 +115,7 @@ export default function SelectedProductsList() {
                                     <ListItemAvatar>
                                         <Avatar
                                             alt={''}
-                                            src={`${product.images[0]?.originalSrc || ''}`}
+                                            src={`${product.imageURL || ''}`}
                                         />
                                     </ListItemAvatar>
                                     <ListItemText id={labelId} primary={<Typography variant="body1">{`${product.title}`}</Typography>}/>

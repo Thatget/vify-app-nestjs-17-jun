@@ -38,13 +38,27 @@ export class QuoteController {
     return this.quoteService.findOne(+id);
   }
 
+  //Update status only
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuoteDto: UpdateQuoteDto) {
-    return this.quoteService.update(+id, updateQuoteDto);
+  async update(@Param('id') id: number, @Body('status') status: number, @Res() res: Response) {
+    try {
+      const shopDomain = res.locals.shopify.session.shop;
+      const foundStore = await this.storeService.findByShopDomain(shopDomain);
+      const store_id = foundStore.id;
+      await this.quoteService.updateStatus(id, store_id, status); 
+      return res.status(500).send('OK');
+    } catch (error) {
+      return res.status(500).send({message: error.message});
+    }
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.quoteService.remove(+id);
+  }
+  @Delete('/delete')
+  async deleteMultipleRows(@Body() ids: number[]) {
+    // const result = await this.quoteService.remove({ id: In(ids) });
+    // return result;
   }
 }

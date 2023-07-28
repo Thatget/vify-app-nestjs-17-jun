@@ -27,6 +27,9 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 import PhoneMissedIcon from '@mui/icons-material/PhoneMissed';
 import SvgIcon, {SvgIconProps} from '@mui/material/SvgIcon';
 import QuoteEntity from "../types/QuoteEntity";
+import { Typography } from "@mui/material";
+import { CardBody } from "@material-tailwind/react";
+import ProductSelector from "../components/ProductSelector";
 
 const HomeIcon = (props: SvgIconProps) => {
     return (
@@ -35,7 +38,6 @@ const HomeIcon = (props: SvgIconProps) => {
         </SvgIcon>
     );
 }
-
 
 const useStyles = makeStyles({
     root: {
@@ -129,6 +131,17 @@ const Setting = () => {
                         <CardContent>
                             <ConfigSetting/>
                         </CardContent>
+                    </Card>
+                    <Card style={{ marginTop: '20px' }}>
+                      <CardContent>
+                        <CardBody>
+                          <Typography variant="body1">
+                            <b>Products Quotes Setting: </b>
+                          </Typography>
+                          <br/>
+                          <ProductSelector />
+                        </CardBody>
+                      </CardContent>
                     </Card>
                 </div>
             </Grid>
