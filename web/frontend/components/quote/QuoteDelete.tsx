@@ -1,5 +1,6 @@
 import {Button, Modal} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
+import { useAuthenticatedFetch } from '../../hooks';
 
 interface QuoteDeleteProp {
   deleteQuote: {
@@ -9,8 +10,8 @@ interface QuoteDeleteProp {
 }
 
 const QuoteDelete = ({deleteQuote}: QuoteDeleteProp) => {
+  const fetch = useAuthenticatedFetch();
   const [active, setActive] = useState(true);
-
   const handleChange = useCallback(() => setActive(!active), [active]);
 
   useEffect(() => {
@@ -18,12 +19,14 @@ const QuoteDelete = ({deleteQuote}: QuoteDeleteProp) => {
   }, [deleteQuote])
   
   const handleDelete = async () => {
+    const ids = deleteQuote.ids|| [2];
+    console.log(ids);
     await fetch('/api/quote/delete',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(deleteQuote.ids),
+      body: JSON.stringify(ids),
     })
     setActive(!active), [active]
   }

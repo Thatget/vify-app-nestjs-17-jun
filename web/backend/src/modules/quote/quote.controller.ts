@@ -7,6 +7,7 @@ import {
   Delete,
   Req,
   Res,
+  Post,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { QuoteService } from './quote.service';
@@ -38,6 +39,20 @@ export class QuoteController {
     return this.quoteService.findOne(+id);
   }
 
+  @Post('/delete')
+  async delete(@Req() req: Request,  @Body() ids: number[], @Res() res: Response) {
+    try {
+      const { shop } = res.locals.shopify.session;
+      const foundStore = await this.storeService.findByShopDomain(shop);
+      const store_id = foundStore.id;
+      await this.quoteService.delete(ids, store_id);
+      return res.status(200).send("OK");
+    } catch (error) {
+      console.log(error)
+      return res.status(500).send({message: error.message});
+    }
+  }
+
   //Update status only
   @Patch(':id')
   async update(@Param('id') id: number, @Body('status') status: number, @Res() res: Response) {
@@ -54,7 +69,7 @@ export class QuoteController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.quoteService.remove(+id);
+    // return this.quoteService.remove(+id);
   }
   @Delete('/delete')
   async deleteMultipleRows(@Body() ids: number[]) {
