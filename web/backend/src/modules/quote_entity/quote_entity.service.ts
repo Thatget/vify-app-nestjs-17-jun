@@ -44,9 +44,11 @@ export class QuoteEntityService {
 
     async findByStore_Id(store_id: number): Promise<QuoteEntityDto[]> {
         try {
-            return await this.quoteEntityRepository.findBy({
+            const found = await this.quoteEntityRepository.findBy({
                 store_id: store_id,
             });
+            console.log("found store", found)
+            return found
         } catch (error) {
             throw error;
         }

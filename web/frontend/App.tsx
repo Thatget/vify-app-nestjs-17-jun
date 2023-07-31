@@ -15,7 +15,7 @@ import {createTheme, makeStyles} from "@mui/material/styles";
 
 import {PaletteColor, PaletteColorOptions} from "@mui/material";
 import {blue, brown, cyan, deepPurple, green, grey, lightBlue, orange, purple} from "@mui/material/colors";
-import TabsTesting from "./pages/TabsTesting";
+import TabsWithIcon from "./pages/TabsTesting";
 
 // declare module '@mui/material/styles' {
 //     interface Palette {

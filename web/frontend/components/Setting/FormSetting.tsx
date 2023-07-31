@@ -1,9 +1,7 @@
-import React, {ChangeEvent, useContext, useEffect, useState} from 'react'
+import React, {useContext} from 'react'
 import {StoreContext, actions} from '../../store';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box"
-import Button from "@mui/material/Button";
-import {Controller, useForm, useWatch, Resolver} from "react-hook-form";
 import TextField from "@mui/material/TextField";
 
 export const thank_page_content: string = "We've received your request. We are going to reply to you within 24 hours"
@@ -20,42 +18,10 @@ export const defaultFormSetting = {
     shopping_button: 'Continue Shopping',
     submit_button_text: 'Submit',
 };
-type FormValues = {
-    email: string
-}
-const resolver: Resolver<FormValues> = async (values) => {
-    return {
-        values: values.email ? values : {},
-        errors: !values.email
-            ? {
-                email: {
-                    type: "email",
-                    message: "You must enter a valid email.",
-                },
-            }
-            : {},
-    }
-}
 const FormSetting = () => {
     const {state, dispatch} = useContext(StoreContext)
     const localFormSetting = {...defaultFormSetting, ...state.setting, ...state.currentSetting}
-    const {
-        register,
-        handleSubmit,
-        control,
-        setValue: setFormValue,
-        formState: {errors},
-    } = useForm({
-        criteriaMode: 'all', resolver
-    });
-    const email = useWatch({control, name: 'email'})
 
-    useEffect(() => {
-        let field = {}
-        field = {email: email}
-        console.log("field email", email)
-        dispatch(actions.setNewSetting({...field}))
-    }, [email])
     const handleChangeField = (value: string, id: string) => {
         let field = {}
         switch (id) {
@@ -65,8 +31,8 @@ const FormSetting = () => {
             case 'name_placeholder':
                 field = {name_placeholder: value}
                 break;
-            case 'email':
-                field = {email: email}
+            case 'email_title':
+                field = {email_title: value}
                 break;
             case 'email_placeholder':
                 field = {email_placeholder: value}
@@ -86,7 +52,6 @@ const FormSetting = () => {
             default:
                 break;
         }
-
         dispatch(actions.setNewSetting({...field}))
     }
     const onSubmit = (data: any) => {
@@ -97,10 +62,7 @@ const FormSetting = () => {
         <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%'}}>
             <Typography variant="body2" sx={{m: 0.5}}>Form Setting</Typography>
             <form
-                onSubmit=
-                    {handleSubmit(onSubmit, (errors) => {
-                        console.log(errors);
-                    })}
+                onSubmit={onSubmit}
                 style={{width: '100%'}}
             >
                 <TextField
@@ -127,13 +89,14 @@ const FormSetting = () => {
                     autoComplete="off"
                     sx={{m: 1, width: '100%'}}
                 />
-                <TextField {...register("email")}
-                           autoComplete="off"
-                           sx={{m: 1, width: '100%'}}
-                           label="Your Email"
+                <TextField
+                    id='email_title'
+                    label="Email"
+                    value={localFormSetting.email_title}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => handleChangeField(e.target.value, "email_title")}
+                    autoComplete="off"
+                    sx={{m: 1, width: '100%'}}
                 />
-                {errors?.email && <p><span>{errors.email.message}</span></p>}
-
                 <TextField
                     id='message_placeholder'
                     label="Message Placeholder"

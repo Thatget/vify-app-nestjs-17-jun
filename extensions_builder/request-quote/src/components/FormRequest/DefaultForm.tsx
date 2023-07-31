@@ -7,7 +7,7 @@ import "../../css/style.css"
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import * as ReactDOMServer from 'react-dom/server';
-// import {useAuthenticatedFetch} from "../../../../../web/frontend/hooks/useAuthenticatedFetch.ts"
+// import {useAuthenticatedFetch} from "../../hooks"
 
 
 // declare global {
@@ -105,6 +105,20 @@ type LineItem = {
     images: string;
 
 }
+type quoteEntity = {
+    name: string;
+    value: string;
+}
+type VariantDTO = {
+    id: string;
+    title: string;
+    price: number;
+}
+type ProductDTO = {
+    id: string;
+    title: string;
+    image: string
+}
 const initialLineItem: LineItem = {
     id: 1,
     variant: {},
@@ -128,6 +142,7 @@ const schema = yup
 const DefaultForm = ({isOpen, handleModal}: Props) => {
     // const fetch = useAuthenticatedFetch()
     const [open, setOpen] = useState(isOpen)
+    const [quoteSettings, setQuoteSettings] = useState<Array<quoteEntity>>([])
     const [product, setProduct] = useState({initialLineItem})
     const [formValue, setFormValue] = useState<FormValues>({
         name: '',
@@ -166,10 +181,11 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
         }
         setFormValue(field);
     }
+
     useEffect(() => {
         console.log("version 1.9");
         const product = (window as any).vifyRequestFQ.lineItem;
-        const customer = (window as any).vifyRequestFQ.customer;
+        // const customer = (window as any).vifyRequestFQ.customer;
         const variant_selected_id = (window as any).variant_selected_id
         product.variants.map((variant) => {
             if (variant_selected_id === variant.id) {
@@ -183,67 +199,75 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
         initialLineItem.images = product.images[0];
         console.log("initialLineItem", initialLineItem)
         console.log("product", product)
-        fetch('/apps/vify_rfq-f/quote_setting', {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({product_id: product.id}),
-        }).then(response => {
+        fetch("/apps/vify_rfq-f/quote_setting")
+            .then(response => response.json())
+            .then(settings => {
+                console.log("data from API quote entity", settings)
+                settings.map(setting => {
+                    let temp: quoteEntity = {
+                        name: setting.name,
+                        value: setting.value
+                    }
+                    quoteSettings.push(temp)
+                })
+                setQuoteSettings(quoteSettings)
+            })
+    }, [])
+    const sendQuote = () => {
+        setOpen(false)
+        handleModal('thankyou');
+        const variant_selected_id = (window as any).variant_selected_id
+        const product = (window as any).vifyRequestFQ.lineItem;
+        let selected_product: ProductDTO
+        selected_product = {
+            id: product.id,
+            title: product.title,
+            image: product.images[0]
+        }
+        let selected_variant: VariantDTO
+        console.log("selected_product", selected_product)
+        product.variants.map(variant => {
+            if (variant.id === variant_selected_id) {
+                selected_variant = {
+                    id: variant.id,
+                    title: variant.title,
+                    price: variant.price
+                }
+                console.log("selected_variant", selected_variant)
+            }
+        })
+        formValue.email = email
+        console.log("formValue", formValue)
+        const url = new URLSearchParams({
+            selected_variant: selected_variant.toString(),
+            formValue: formValue.toString(),
+            selected_product: selected_product.toString(),
+        })
+        console.log("url", url)
+        const data = {selected_product, selected_variant, formValue}
+        console.log("data", data)
+        fetch("/apps/vify_rfq-f/new_quote",
+            {
+                method: "Post",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            }
+        ).then(response => {
+            // Check if the response was successful (status code in the range of 200-299)
             if (response.ok) {
+                handleModal('thankyou');
                 return response.json(); // Parse the response data as JSON
             } else {
                 throw new Error('Request failed with status ' + response.status);
             }
         })
-        hidden
-
-
-    }, [])
-
-    const sendQuote = () => {
-        setOpen(false)
-        handleModal('thankyou');
-        handleSubmit(onSubmit, (errors) => {
-            console.log("come")
-            console.log(errors);
-        })
-        const product = (window as any).vifyRequestFQ.lineItem;
-        // fetch('/apps/vify_rfq-f/new_quote', {
-        //     method: "POST",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({...formValue, product_id: product.id}),
-        // }).then(response => {
-        //     // Check if the response was successful (status code in the range of 200-299)
-        //     if (response.ok) {
-        //         handleModal('thankyou');
-        //         return response.json(); // Parse the response data as JSON
-        //     } else {
-        //         throw new Error('Request failed with status ' + response.status);
-        //     }
-        // })
-        //     // .then(data => {
-        //     //   // Process the data returned from the server
-        //     //   console.log(data);
-        //     // })
-        //     .catch(error => {
-        //         // Handle any errors that occurred during the request
-        //         handleModal('');
-        //         console.error('Error:', error);
-        //     });
+            .catch(error => {
+                // Handle any errors that occurred during the request
+                handleModal('');
+                console.error('Error:', error);
+            });
 
     }
-
-    // const closeRequest = () => {
-    //     // setOpen(false)
-    //     handleModal('thankyou');
-    //     isOpen = false
-    //
-    // }
     const onSubmit = (data: any) => {
         console.log("data from From submit", data)
         sendQuote()
@@ -281,8 +305,8 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
                                 alt=""
                             />
                             <div style={{margin: 0.5}}>
-                                <Typography variant="body1"
-                                            sx={{m: 1}}>Description: {initialLineItem.description}</Typography>
+                                {/*<Typography variant="body1"*/}
+                                {/*            sx={{m: 1}}>Description: {initialLineItem.description}</Typography>*/}
                                 <Typography variant="body1" sx={{m: 1}}>
                                     Title: {initialLineItem.variant.name}</Typography>
                                 <Typography variant="body1" sx={{m: 1}}>
@@ -295,7 +319,16 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
                             display: 'flex', width: '100%', mb: 1, mt: 1.7,
                             mr: 1.3, alignItems: 'center'
                         }}>
-                            <Typography variant="body1" sx={{}}>Your Name:</Typography>
+                            {quoteSettings.map(quoteSetting => {
+                                    if (quoteSetting.name === "email") {
+                                        return (
+                                            <Typography variant="body1"
+                                                        sx={{}}>{quoteSetting.value || 'Your email'}:</Typography>
+                                        )
+                                    }
+                                }
+                            )}
+
                             <TextField
                                 id="name"
                                 label="Your Name"

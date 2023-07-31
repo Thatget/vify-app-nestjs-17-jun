@@ -25,14 +25,16 @@
     ],
     "typeRoots": [
       "./node_modules/@types",
-      "./@types"
+      "./@types",
+      "./@types/node"
     ]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     "test/**/*.spec.ts",
-    "components/**/*.ts"
+    "components/**/*.ts",
+    "./scripts"
   ],
   "files": [
     "typings/index.d.ts"

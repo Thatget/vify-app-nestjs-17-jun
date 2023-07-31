@@ -1,11 +1,9 @@
 import React, {useContext} from "react";
 import {actions, StoreContext} from "../../store";
-import Box from "@mui/material/Box";
-import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import {defaultFormSetting} from "./FormSetting";
+import {Form} from "@shopify/polaris";
 
 export default function ThanksFormSetting() {
     const {state, dispatch} = useContext(StoreContext)
@@ -36,10 +34,9 @@ export default function ThanksFormSetting() {
 
     return (
         // <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%'}}>
-        <ValidatorForm
+        <Form
             onSubmit={() => handleSubmit}
-            onError={(errors: any) => console.log(errors)}
-            sx={{width: '100%', m: 0.5}}
+            // sx={{width: '100%', m: 0.5}}
         >
             <Typography variant="body2" sx={{mb: 1}}>Thanks Form Setting</Typography>
             <TextField
@@ -77,7 +74,7 @@ export default function ThanksFormSetting() {
             {/*>*/}
             {/*    <Button type="submit" variant="contained" sx={{mr: 0, ml: 'auto'}}>Save Thanks Page Setting</Button>*/}
             {/*</Box>*/}
-        </ValidatorForm>
+        </Form>
         // </Box>
     )
 }
