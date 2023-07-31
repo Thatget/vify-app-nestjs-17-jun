@@ -29,7 +29,12 @@ export class QuoteService {
     } else throw new NotFoundException(`Store and quote id ${id} is mismatch`);
   }
 
-  async remove(id: number) {
-    return this.quoteRepository.delete({id});
+  async delete(ids: number[], store_id: number) {
+    return this.quoteRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Quote)
+      .where('id IN (:...ids) AND store_id = :store_id', { ids, store_id }) 
+      .execute();
   }
 }
