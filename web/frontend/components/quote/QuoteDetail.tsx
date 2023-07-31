@@ -3,16 +3,16 @@ import {useState, useCallback, useEffect} from 'react';
 import Quote from '../../types/Quote';
 
 interface QuoteDetailProp {
-  view: {
-    quote: Quote;
-    active: boolean;
-  }
+    view: {
+        quote: Quote;
+        active: boolean;
+    }
 }
 
 const QuoteDetail = ({view}: QuoteDetailProp) => {
-  const [active, setActive] = useState(true);
+    const [active, setActive] = useState(true);
 
-  const handleChange = useCallback(() => setActive(!active), [active]);
+    const handleChange = useCallback(() => setActive(!active), [active]);
 
   useEffect(() => {
     setActive(view.active);

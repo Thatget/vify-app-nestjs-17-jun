@@ -1,54 +1,28 @@
-import * as React from 'react';
-import {Button} from '@mui/material';
-import FormRequest from './components/FormRequest/Index.tsx';
-import Thankyou from './components/ThankyouPage/Index.tsx';
-import {useEffect} from "react";
+import React from 'react'
+// import ReactDOM from 'react-dom/client'
+// import App from './App.tsx'
+// import '../assets/index.css'
+// import {ThemeProvider} from "@material-tailwind/react";
 
-// import {Button} from '@shopify/polaris';
+// import "../../../extensions/request-quote/assets/index.css"
+import "./index.css"
+// import {AppBridgeProvider, PolarisProvider, QueryProvider} from "../../../web/frontend/components";
+// import ContextProvider from "../../../web/frontend/store/ContextProvider.tsx";
+import Index from "./index.tsx";
 
-function App() {
-    const [setting, setSetting] = React.useState({show: true});
-    const [modal, setModal] = React.useState('');
-
-    useEffect(() => {
-        const variant_selected_id = (window as any).variant_selected_id
-        // console.log("lineItemId", lineItemId)
-        console.log("version 1.8 - App.tsx")
-        fetch(`/apps/vify_rfq-f/quote_setting?variant_selected_id=${variant_selected_id}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Products from quoteSetting ", data)
-                setSetting(data);
-                console.log("setting.show", data.show)
-            })
-    }, [])
-
-
-    const handleChangeModal = (modal: string) => {
-        console.log("modal", modal)
-        setModal(modal);
-    }
-
+const App = () => {
     return (
-        <>
-            {setting.show &&
-                <div>
-                    <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                            onClick={() => handleChangeModal('request')}>Request For Quote V1.6</Button>
-                    {modal === 'request' &&
-                        <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}/>}
-                    {modal === 'thankyou' &&
-                        <Thankyou isOpen={modal === 'thankyou'} handleModal={handleChangeModal} form={''}/>}
-                </div>
-            }
-            {setting.show && <style>
-                {` .price__regular 
-                display: none;
-            }
-            `}
-            </style>}
-        </>
-    );
+        <React.StrictMode>
+            {/*<PolarisProvider>*/}
+            {/*    <AppBridgeProvider>*/}
+            {/*        <QueryProvider>*/}
+            {/*            <ContextProvider>*/}
+            <Index/>
+            {/*            </ContextProvider>*/}
+            {/*        </QueryProvider>*/}
+            {/*    </AppBridgeProvider>*/}
+            {/*</PolarisProvider>*/}
+        </React.StrictMode>
+    )
 }
-
 export default App

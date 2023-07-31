@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card"
 import CardMedia from "@mui/material/CardMedia";
-import ListItemButton from "@mui/material/ListItemButton";
 import {defaultFormSetting} from "./FormSetting";
 
 const FormSettingPreview = () => {
@@ -24,6 +23,7 @@ const FormSettingPreview = () => {
                     alt=""
                 />
                 <Typography variant="body1" sx={{m: 1}}>Product Title</Typography>
+                <Typography variant="body1" sx={{m: 1}}>Product Price</Typography>
             </Card>
 
             <Box sx={{flexWrap: 'wrap', width: '100%'}}>
@@ -33,10 +33,10 @@ const FormSettingPreview = () => {
                         display: 'flex', width: '100%', my: 1,
                         mr: 1.3, alignItems: 'center'
                     }}>
-                        <Typography variant="body1" sx={{}}>Name</Typography>
+                        <Typography variant="body1" sx={{}}>{localFormSetting.name || "Name:"}</Typography>
                         <TextField
                             id="name_preview"
-                            value={localFormSetting.name}
+                            value={localFormSetting.name_placeholder}
                             placeholder={localFormSetting.name_placeholder}
                             autoComplete="off"
                             sx={{width: '30ch', mr: 0, ml: 'auto'}}
@@ -46,10 +46,10 @@ const FormSettingPreview = () => {
                         display: 'flex', width: '100%', my: 1,
                         mr: 1.3, alignItems: 'center'
                     }}>
-                        <Typography variant="body1" sx={{}}>Email</Typography>
+                        <Typography variant="body1" sx={{}}>{localFormSetting.email || 'Email:'}</Typography>
                         <TextField
                             id="email_preview"
-                            value={localFormSetting.email_title}
+                            value={localFormSetting.email_placeholder}
                             placeholder={localFormSetting.email_placeholder}
                             autoComplete="off"
                             sx={{width: '30ch', mr: 0, ml: 'auto'}}
@@ -63,10 +63,10 @@ const FormSettingPreview = () => {
                         alignContent: 'space-between',
                         alignItems: 'center'
                     }}>
-                        <Typography variant="body1" sx={{}}>Message</Typography>
+                        <Typography variant="body1" sx={{}}>{localFormSetting.message_title || 'Message:'}</Typography>
                         <TextField
                             id="message_title"
-                            value={localFormSetting.message_title}
+                            value={localFormSetting.message_placeholder}
                             placeholder={localFormSetting.massage_placeholder}
                             autoComplete="off"
                             sx={{width: '30ch', mr: 0, ml: 'auto'}}

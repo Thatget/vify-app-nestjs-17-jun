@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import ProductSelector from "../components/ProductSelector";
-import {useAuthenticatedFetch} from "../hooks/useAuthenticatedFetch";
+import {useAuthenticatedFetch} from "../hooks";
 import {useEffect} from "react";
 import {makeStyles} from "@mui/styles";
 import {
@@ -15,47 +15,47 @@ import {
     CardBody,
     CardFooter,
 } from "@material-tailwind/react";
-import { useAppQuery } from '../hooks';
+import {useAppQuery} from '../hooks';
 import Product from '../types/Product';
 
 export default function Products() {
     const {
-      data,
-      refetch: refetchQuote,
-      isLoading: isLoadingQuote,
-      isRefetching: isRefetchingQuote,
-  } = useAppQuery<Product[]>({
-      url: "/api/products",
-      reactQueryOptions: {
-          onSuccess: () => {
-          }
-      },
-  });
+        data,
+        refetch: refetchQuote,
+        isLoading: isLoadingQuote,
+        isRefetching: isRefetchingQuote,
+    } = useAppQuery<Product[]>({
+        url: "/api/products",
+        reactQueryOptions: {
+            onSuccess: () => {
+            }
+        },
+    });
     const selectProducts = (
         <>
-          <CardBody>
-              <Typography variant="body1">
-                <b>Products Quotes Setting: </b>
-              </Typography>
-              <br/>
-              <ProductSelector/>
-          </CardBody>
+            <CardBody>
+                <Typography variant="body1">
+                    <b>Products Quotes Setting: </b>
+                </Typography>
+                <br/>
+                <ProductSelector/>
+            </CardBody>
         </>
     );
 
     useEffect(() => {
-      console.log(data);
+        console.log(data);
     }, [data])
 
     return (
         <>
-          <br/>
-          <Container>
-              {/*<Box sx={{minWidth: 275}}>*/}
-              <Card>{selectProducts}</Card>
-              {/*</Box>*/}
-              <br/>
-          </Container>
+            <br/>
+            <Container>
+                {/*<Box sx={{minWidth: 275}}>*/}
+                <Card>{selectProducts}</Card>
+                {/*</Box>*/}
+                <br/>
+            </Container>
         </>
     );
 

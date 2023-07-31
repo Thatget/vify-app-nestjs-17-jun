@@ -12,7 +12,7 @@ import {
     Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 
-export default function TabsTesting() {
+export default function TabsWithIcon() {
     const data = [
         {
             label: "Dashboard",
