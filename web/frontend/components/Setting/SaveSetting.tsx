@@ -60,6 +60,8 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
         let defaultThankTitle = {name: 'thank_title', value: setting.thank_title || ''};
         let defaultThankContent = {name: 'thank_content', value: setting.thank_content || ''};
         let defaultContinueShoppingButton = {name: 'shopping_button', value: setting.shopping_button || ''};
+        console.log("currentSetting -saveSetting", currentSetting)
+        console.log("state.setting -saveSetting", setting)
 
         Object.entries(currentSetting).map(([key, value]) => {
             switch (key) {
@@ -75,7 +77,7 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
                         changeNamePlaceholder = true;
                     }
                     break;
-                case 'email_title':
+                case 'email':
                     if (value !== setting.email_title) {
                         defaultEmail = {...defaultEmail, value: value};
                         changedEmail = true;

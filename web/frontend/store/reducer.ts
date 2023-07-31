@@ -9,19 +9,33 @@ const ActionTypes = {
 // initial state
 const initialState = {
     setting: {
-        hide_price: false,
-        hide_buy_now: false,
-        show_request_for_quote: false,
-        name_title: '',
+        name: '',
         name_placeholder: '',
-        message: '',
-        message_placeholder: '',
         email_title: '',
         email_placeholder: '',
-        form_title: '',
-        submit_button_text: ''
+        message_title: '',
+        message_placeholder: '',
+        hide_price: true,
+        hide_buy_now: false,
+        show_request_for_quote: false,
+        thank_title: '',
+        thank_content: '',
+        shopping_button: ''
     },
-    currentSetting: {hide_price: false, hide_buy_now: false, show_request_for_quote: false},
+    currentSetting: {
+        name: '',
+        name_placeholder: '',
+        email_title: '',
+        email_placeholder: '',
+        message_title: '',
+        message_placeholder: '',
+        hide_price: true,
+        hide_buy_now: false,
+        show_request_for_quote: false,
+        thank_title: '',
+        thank_content: '',
+        shopping_button: ''
+    },
     settingTab: ['configSetting'],
 };
 

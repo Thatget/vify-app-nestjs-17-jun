@@ -31,43 +31,19 @@ export class QuoteEntityController {
     async create(@Body() quoteEntities: QuoteEntityDto[], @Res() res: Response) {
         try {
             const {shop} = res.locals.shopify.session;
+            console.log("quoteEntities", quoteEntities)
             if (shop) {
                 const foundStore = await this.storeService.findByShopDomain(shop);
                 // Filter allowed quote entities
                 // let value;
                 const passedQuoteEntities = quoteEntities
-                    .filter((entity) => this.defaultQuoteEntity.includes(entity.name))
+                    // .filter((entity) => this.defaultQuoteEntity.includes(entity.name))
                     .map((entity) => (
-
-                        // if (entity.value.toString() === "true") {
-                        //     value = "true"
-                        // }
-                        // if (entity.value.toString() === "false") {
-                        //     value = "false"
-                        // }
-                        // // {...entity, store_id: foundStore.id}
-                        // return (
                         {
                             ...entity, store_id: foundStore.id, id: null
                         }
-                        // )
-
                     ));
-                // Update or Save
-                // console.log('passedQuoteEntities before changing', passedQuoteEntities);
-
-
-                // passedQuoteEntities.map(result => {
-                //     if (result.value.toString() === "true") {
-                //         result.value = "true"
-                //     } else if (result.value.toString() === "false") {
-                //         result.value = "false"
-                //     }
-                // })
-                console.log('passedQuoteEntities', passedQuoteEntities);
-
                 await this.quoteEntityService.createUpdateEntity(passedQuoteEntities);
-                // console.log("respond from Quote_entiy", res)
                 return res
                     .status(HttpStatus.OK)
                     .json({message: 'Data updated successfully'});
