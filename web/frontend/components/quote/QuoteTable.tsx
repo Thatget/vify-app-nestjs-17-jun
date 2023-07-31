@@ -19,6 +19,7 @@ import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
 import { useAuthenticatedFetch } from '../../hooks';
 import QuoteDelete from './QuoteDelete';
+import { Link } from '@shopify/polaris';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -203,7 +204,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
                 {visibleRows.map((row, index) => {
                   const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+                  console.log(row.product.selected_product.image)
                   return (
                     <TableRow
                       hover
@@ -233,10 +234,22 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.message}</TableCell>
+                      <td>
+                        <div style={{display: 'flex'}}>
+                          <div style={{height: '90px', width: '150px'}}>
+                            <img src={row.product.selected_product.image || ''} style={{height: '100%'}} alt={row.product.selected_product.title ||''} />
+                          </div>
+                          <div>
+                            <div>{row.product.selected_product.title ||''}</div>
+                            <div>{row.product.selected_variant.title ||''}</div>
+                            <div>{row.product.selected_variant.price ||''}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <TableCell>{row.message}</TableCell>
                       <TableCell align="right">{stautsLabel[row.status] || 'undetected' }</TableCell>
                       <TableCell align="right">
-                        <a onClick={() => handleView(row.id)}>View |</a>
+                        <Link onClick={() => handleView(row.id)}>View |</Link>
                         <Tooltip title="Delete" onClick={() => setDeleteQuote({ type: 'clicked', ids: [ row.id]})}>
                           <IconButton>
                             <DeleteIcon />

@@ -39,12 +39,12 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
       >
         <Modal.Section>
         <MediaCard
-          title={view.quote?.product?.name || 'Product Name'}
+          title={view.quote?.product?.selected_product.title || 'Product Name'}
           // primaryAction={{
           //   content: 'Learn about getting started',
           //   onAction: () => {},
           // }}
-          description={view.quote?.product?.description || 'Product description'}
+          description={view.quote?.product?.selected_variant.title  + view.quote?.product?.selected_variant.price || 'Product description'}
         >
           <img
             alt="Product Image"
@@ -54,14 +54,12 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
               objectFit: 'cover',
               objectPosition: 'center',
             }}
-            src="https://burst.shopifycdn.com/photos/business-woman-smiling-in-office.jpg?width=1850"
+            src={view.quote?.product?.selected_product.image || 'Product Name'}
           />
         </MediaCard>
           <TextContainer>
             <p>
-              Use Instagram posts to share your products with millions of
-              people. Let shoppers buy from your store without leaving
-              Instagram.
+            {view.quote.message }
             </p>
           </TextContainer>
         </Modal.Section>

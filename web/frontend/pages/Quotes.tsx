@@ -34,8 +34,14 @@ export default function Quotes() {
       })
     }
     React.useEffect(() => {
-      setQuote(data?.quotes || []);
+      const preQuote = data?.quotes || [];
+      const updatedQuote = preQuote.map(q => {
+        const parsedProduct = JSON.parse(q.product);
+        return { ...q, product: parsedProduct };
+      });
+      setQuote(updatedQuote);
     }, [data]);
+    
     return (
         <>
           <br/>

@@ -1,6 +1,8 @@
 interface Quote {
+  selected_product: any;
   id: number;
   name: string;
+  product: string;
   email: string;
   message: string;
   status: number;

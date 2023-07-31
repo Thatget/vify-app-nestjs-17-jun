@@ -22,20 +22,7 @@ const initialState = {
         thank_content: '',
         shopping_button: ''
     },
-    currentSetting: {
-        name: '',
-        name_placeholder: '',
-        email_title: '',
-        email_placeholder: '',
-        message_title: '',
-        message_placeholder: '',
-        hide_price: true,
-        hide_buy_now: false,
-        show_request_for_quote: false,
-        thank_title: '',
-        thank_content: '',
-        shopping_button: ''
-    },
+    currentSetting: {},
     settingTab: ['configSetting'],
 };
 
