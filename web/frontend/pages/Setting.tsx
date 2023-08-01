@@ -7,11 +7,9 @@ import Grid from "@mui/material/Grid";
 import CardContent from "@mui/material/CardContent";
 import {actions, StoreContext} from "../store";
 import {payloadObject} from "../store/actions";
-import {makeStyles} from "@mui/styles";
-import {useAppQuery, useAuthenticatedFetch} from "../hooks";
+import {useAppQuery} from "../hooks";
 import SaveSetting from "../components/Setting/SaveSetting";
 import FormSetting, {defaultFormSetting} from "../components/Setting/FormSetting";
-import {Frame, ContextualSaveBar} from '@shopify/polaris';
 import ConfigSetting from "../components/Setting/ConfigSetting";
 import ConfigSettingPreview from "../components/Setting/ConfigSettingPreview";
 import Tab from '@mui/material/Tab';
@@ -21,38 +19,10 @@ import TabPanel from '@mui/lab/TabPanel';
 import FormSettingPreview from "../components/Setting/FormSettingPreview";
 import ThanksFormSetting from "../components/Setting/ThanksFormSetting";
 import ThanksPagePreview from "../components/Setting/ThanksPagePreview";
-import PhoneIcon from '@mui/icons-material/Phone';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PersonPinIcon from '@mui/icons-material/PersonPin';
-import PhoneMissedIcon from '@mui/icons-material/PhoneMissed';
-import SvgIcon, {SvgIconProps} from '@mui/material/SvgIcon';
 import QuoteEntity from "../types/QuoteEntity";
 import { Typography } from "@mui/material";
 import { CardBody } from "@material-tailwind/react";
 import ProductSelector from "../components/ProductSelector";
-
-const HomeIcon = (props: SvgIconProps) => {
-    return (
-        <SvgIcon {...props}>
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-        </SvgIcon>
-    );
-}
-
-const useStyles = makeStyles({
-    root: {
-        position: "sticky",
-        overflow: "auto",
-        // top: "1rem",
-        // maxWidth: "600"
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-});
 
 interface SettingX {
     [key: string]: string | number | boolean;
@@ -100,6 +70,7 @@ const Setting = () => {
             data.map((entity: QuoteEntity) => {
                 switch (entity.name) {
                     case 'hide_price':
+                    case 'all_product':
                     case 'hide_buy_now':
                     case 'show_request_for_quote':
                         if (entity.value === '1') setting = {...setting, [entity.name]: true};
@@ -218,9 +189,6 @@ const Setting = () => {
             </Grid>
         </Grid>
     )
-
-
-    const classes = useStyles();
 
     return (
         <>

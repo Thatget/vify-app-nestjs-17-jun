@@ -6,13 +6,13 @@ interface QuoteDeleteProp {
   deleteQuote: {
     type: string;
     ids: number[];
-  }
+  };
+  removeQuote: (id: number[]) => void
 }
 
-const QuoteDelete = ({deleteQuote}: QuoteDeleteProp) => {
+const QuoteDelete = ({deleteQuote, removeQuote}: QuoteDeleteProp) => {
   const fetch = useAuthenticatedFetch();
   const [active, setActive] = useState(true);
-  const [toastInfo, setToastInfo] = useState();
   const handleChange = useCallback(() => setActive(!active), [active]);
 
   useEffect(() => {
@@ -20,17 +20,7 @@ const QuoteDelete = ({deleteQuote}: QuoteDeleteProp) => {
   }, [deleteQuote])
   
   const handleDelete = async () => {
-    try {
-      const ids = deleteQuote.ids|| [2];
-      await fetch('/api/quote/delete',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ids),
-      })
-    } catch(error) {
-    }
+    await removeQuote(deleteQuote.ids);
     setActive(!active), [active]
   }
 

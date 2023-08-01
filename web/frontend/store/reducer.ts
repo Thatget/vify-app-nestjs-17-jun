@@ -8,21 +8,8 @@ const ActionTypes = {
 
 // initial state
 const initialState = {
-    setting: {
-        name: '',
-        name_placeholder: '',
-        email_title: '',
-        email_placeholder: '',
-        message_title: '',
-        message_placeholder: '',
-        hide_price: true,
-        hide_buy_now: false,
-        show_request_for_quote: false,
-        thank_title: '',
-        thank_content: '',
-        shopping_button: ''
-    },
-    currentSetting: {},
+    setting: null,
+    currentSetting: null,
     settingTab: ['configSetting'],
 };
 
@@ -31,8 +18,8 @@ const reducer = (state: StoreState, action: StoreAction): StoreState => {
     switch (action.type) {
         // SET INIT SETTING
         case ActionTypes.SET_INIT_SETTING:
-            const setting = {...state.setting, ...action.payload}
-            return {...state, ...{setting}};
+            const setting = {...action.payload}
+            return {...state, setting: { ...state.setting, ...setting }, currentSetting: null};
         // UPDATE NEW SETTING
         case ActionTypes.SET_NEW_SETTING:
             const currentSetting = {...state.currentSetting, ...action.payload}

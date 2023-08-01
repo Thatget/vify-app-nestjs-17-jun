@@ -4,8 +4,8 @@ import Setting from "../types/Setting";
 
 export type StoreState = {
     settingTab: string[];
-    setting: Setting
-    currentSetting: Setting
+    setting: Setting;
+    currentSetting: Setting;
 }
 export type StoreAction = {
     type: actionType

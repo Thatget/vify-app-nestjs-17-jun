@@ -1,15 +1,16 @@
-import {Button, MediaCard, Modal, TextContainer} from '@shopify/polaris';
+import { MediaCard, Modal, TextContainer} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
 import Quote from '../../types/Quote';
 
 interface QuoteDetailProp {
     view: {
-        quote: Quote;
-        active: boolean;
+      quote?: Quote;
+      active: boolean;
     }
+    deleteInView: () => void
 }
 
-const QuoteDetail = ({view}: QuoteDetailProp) => {
+const QuoteDetail = ({view, deleteInView}: QuoteDetailProp) => {
     const [active, setActive] = useState(true);
 
     const handleChange = useCallback(() => setActive(!active), [active]);
@@ -33,17 +34,13 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
           {
             content: 'Delete',
             destructive: true,
-            onAction: handleChange,
+            onAction: deleteInView,
           },
         ]}
       >
         <Modal.Section>
         <MediaCard
           title={view.quote?.product?.selected_product.title || 'Product Name'}
-          // primaryAction={{
-          //   content: 'Learn about getting started',
-          //   onAction: () => {},
-          // }}
           description={view.quote?.product?.selected_variant.title  + view.quote?.product?.selected_variant.price || 'Product description'}
         >
           <img

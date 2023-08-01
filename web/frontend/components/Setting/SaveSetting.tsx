@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import {useContext} from 'react'
 import {StoreContext} from '../../store'
 import {useAuthenticatedFetch} from '../../hooks'
 import Button from "@mui/material/Button"
@@ -9,7 +9,7 @@ interface SaveSettingProps {
 }
 
 const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingProps) => {
-    const {state, dispatch} = useContext(StoreContext);
+    const {state} = useContext(StoreContext);
 
     const setting = state.setting;
     const currentSetting = state.currentSetting;
@@ -50,7 +50,7 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
             value: setting.hide_price || ''
         };
         let defaultHideByNow = {
-            name: 'hide_by_now',
+            name: 'hide_buy_now',
             value: setting.hide_buy_now || ''
         };
         let defaultRequestQuote = {
@@ -60,9 +60,8 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
         let defaultThankTitle = {name: 'thank_title', value: setting.thank_title || ''};
         let defaultThankContent = {name: 'thank_content', value: setting.thank_content || ''};
         let defaultContinueShoppingButton = {name: 'shopping_button', value: setting.shopping_button || ''};
-        console.log("currentSetting -saveSetting", currentSetting)
-        console.log("state.setting -saveSetting", setting)
 
+      if(currentSetting) {
         Object.entries(currentSetting).map(([key, value]) => {
             switch (key) {
                 case 'name':
@@ -105,7 +104,6 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
                 case 'hide_price':
                     if (value !== setting.hide_price) {
                         defaultHidePrice = {...defaultHidePrice, value: value};
-                        console.log("defaultHidePrice", defaultHidePrice)
                         changedHidePrice = true;
                     }
                     break;
@@ -139,6 +137,11 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
                         changeShoppingButton = true;
                     }
                     break;
+                case 'all_product':
+                  if (value !== setting?.all_product) {
+                    dataPost.push({name: 'all_product', value})
+                  }
+                  break;
                 default:
                     break;
             }
@@ -179,7 +182,7 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
         if (changeShoppingButton) {
             dataPost.push(defaultContinueShoppingButton)
         }
-        const data: any = fetch("/api/quote-entity", {
+        const data: any = await fetch("/api/quote-entity", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -191,8 +194,9 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
         if (data.ok) {
             refetchQuoteEntity();
         }
+      }
     }
-    const saveAble = (Object.entries(state.currentSetting).length === 0)
+
     return (
         <Button variant="contained" disabled={isFetchingQuoteEntity} onClick={updateSetting} sx={{m: 0.2}}>
             {!isFetchingQuoteEntity && <>Save All Setting</>}

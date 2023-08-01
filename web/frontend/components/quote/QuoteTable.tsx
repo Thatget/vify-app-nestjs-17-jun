@@ -10,8 +10,6 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Quote from '../../types/Quote';
 import QuoteDetail from './QuoteDetail';
@@ -59,7 +57,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface PropQuoteTable {
   quotes: Quote[],
-  removeQuote: (id: number) => void,
+  removeQuote: (id: number[]) => void,
 }
 
 interface StatusLabel {
@@ -73,18 +71,17 @@ const stautsLabel: StatusLabel = {
   3: 'approve',
 }
 
-export default function QuoteTable({quotes}: PropQuoteTable) {
+export default function QuoteTable({quotes, removeQuote}: PropQuoteTable) {
   const fetch = useAuthenticatedFetch()
   const [rows, setRows] = React.useState<Quote[]>([]);
   React.useEffect(() => {
     setRows(quotes)
   }, [quotes])
-  const [view, setView] = React.useState<{quote: Quote; active: boolean}>({quote: null, active: false})
+  const [view, setView] = React.useState<{quote?: Quote; active: boolean}>({quote: null, active: false})
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Quote>('id');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [deleteQuote, setDeleteQuote] = React.useState<{type: string, ids: number[]}>({ type: '', ids: []});
 
@@ -134,10 +131,6 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
     setPage(0);
   };
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
   const emptyRows =
@@ -181,6 +174,11 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
     setDeleteQuote({ type: 'selected', ids: [ ...selected ] })
   }
 
+  const deleteInView = () => {
+    setDeleteQuote({ type: 'clicked', ids: [ view.quote.id ] })
+    setView({active: false, quote: null})
+  }
+
   return (
     <>
       <Box sx={{ width: '100%' }}>
@@ -190,7 +188,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
             <Table
               sx={{ minWidth: 750 }}
               aria-labelledby="tableTitle"
-              size={dense ? 'small' : 'medium'}
+              size={'small'}
             >
               <EnhancedTableHead
                 numSelected={selected.length}
@@ -262,7 +260,7 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
                 {emptyRows > 0 && (
                   <TableRow
                     style={{
-                      height: (dense ? 33 : 53) * emptyRows,
+                      height: 33 * emptyRows,
                     }}
                   >
                     <TableCell colSpan={6} />
@@ -281,13 +279,9 @@ export default function QuoteTable({quotes}: PropQuoteTable) {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Paper>
-        <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label="Dense padding"
-        />
       </Box>
-      { view.active && <QuoteDetail view={view} /> }
-      { ((deleteQuote.type === 'selected') || (deleteQuote.type === 'clicked')) && <QuoteDelete deleteQuote={deleteQuote} /> }
+      { view.active && <QuoteDetail view={view} deleteInView={deleteInView} /> }
+      { ((deleteQuote.type === 'selected') || (deleteQuote.type === 'clicked')) && <QuoteDelete deleteQuote={deleteQuote} removeQuote={removeQuote} /> }
     </>
   );
 }

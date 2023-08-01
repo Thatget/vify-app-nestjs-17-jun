@@ -30,7 +30,7 @@ const headCells: readonly HeadCell[] = [
     label: 'Email',
   },
   {
-    id: 'email',
+    id: 'product',
     numeric: true,
     disablePadding: false,
     label: 'Product',

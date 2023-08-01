@@ -8,6 +8,7 @@ import SearchAppBar from "../components/SearchBar";
 import QuoteTable from "../components/quote/QuoteTable"
 import {useAppQuery, useAuthenticatedFetch} from '../hooks';
 import Quote from "../types/Quote";
+import { Button, Frame, Page, Toast } from '@shopify/polaris';
 
 interface QuoteData { quotes: Quote[]; }
 
@@ -28,10 +29,19 @@ export default function Quotes() {
             }
         },
     });
-    const removeQuote = (id: number) => {
-      fetch(`/api/quote/id/${id}`,{
-        method: "DELETE",
-      })
+    const removeQuote = async (ids: number[]) => {
+      try {
+        await fetch('/api/quote/delete',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(ids),
+        });
+      } catch(error) {
+      } finally {
+        refetchQuote()
+      }
     }
     React.useEffect(() => {
       const preQuote = data?.quotes || [];
@@ -41,11 +51,17 @@ export default function Quotes() {
       });
       setQuote(updatedQuote);
     }, [data]);
-    
+    const [active, setActive] = React.useState(false);
+
+    const toggleActive = React.useCallback(() => setActive((active) => !active), []);
+  
+    const toastMarkup = active ? (
+      <Toast content="Message sent" onDismiss={toggleActive} />
+    ) : null;
     return (
         <>
           <br/>
-          <Container>
+          {/* <Container> */}
             {/* <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <DateRangePickerValue/>
@@ -55,10 +71,12 @@ export default function Quotes() {
                 </Grid>
             </Grid> */}
             <br/>
-            <Box sx={{minWidth: 275}}>
+            {/* <Box sx={{minWidth: 275}}> */}
               <QuoteTable quotes={quotes} removeQuote={removeQuote}/>
-            </Box>
-          </Container>
+            {/* </Box> */}
+          {/* </Container> */}
+              <Button onClick={toggleActive}>Show Toast</Button>
+              {toastMarkup}
         </>
     );
 };

@@ -40,7 +40,6 @@ export class ProductController {
             const products = await this.productService.findAll(foundStore.id);
             return res.status(200).send(products);
         } catch (e) {
-          console.log(e.message);
           return res.status(500).send({message: 'Failed when get products'});
         }
     }
@@ -70,7 +69,7 @@ export class ProductController {
                 image: shopProduct.image,
                 variants: [],
               };
-              let matchedProduct = products.find((product) => product.productId === shopProduct.id);
+              let matchedProduct = products.find((product) => product.id === shopProduct.id);
               const variants: ProductVariant[] = [];
               shopProduct.variants.map((shopVariant: ProductVariant) => {
                 let selected = false;
@@ -92,7 +91,6 @@ export class ProductController {
           }
           return res.status(200).send({products: list, pageInfo});
         } catch (e) {
-          console.log(e.message);
           return res.status(500).send({message: 'Failed when get products'});
         }
     }
@@ -107,7 +105,6 @@ export class ProductController {
             if (found !== true) {
                 rawData = {
                     id: result.id,
-                    productId: result.id,
                     title: result.title || '',
                     productDescription: result.descriptionHtml,
                     store_id: foundStore.id,
@@ -127,11 +124,23 @@ export class ProductController {
         const foundStore = await this.storeService.findByShopDomain(shop);
         const products = await this.productService.selectedPiecked(foundStore.id);
         products.forEach(product => {
-          selectedProducts.push({ id: product.productId, variants: (JSON.parse(product.variants) || []) })
+          selectedProducts.push({ id: product.id, variants: (JSON.parse(product.variants) || []) })
         })
         return res.status(200).send(selectedProducts);
       } catch (e) {
         return res.status(500).send({message: 'Failed when get products'});
       }
     }
+
+    @Delete(':id')
+      async remove(@Param('id') id: number, @Res() res: Response) {
+        try {
+          const { shop } = res.locals.shopify.session;
+          const foundStore = await this.storeService.findByShopDomain(shop);
+          await this.productService.delete(id, foundStore.id);
+          return res.status(200).send('OK');
+        } catch (e) {
+          return res.status(500).send({message: 'Failed when get products'});
+        }
+      }
 }
