@@ -39,22 +39,22 @@ export class StoreFrontendController {
     ) {
         try {
             // const { product_id } = quote;
-            console.log("query", query)
-            console.log("data", data)
+            console.log("query -store-frontEnd.Controller", query)
+            console.log("data store-frontEnd.Controller", data)
             const {shop} = query.shop;
             const formValue = data.formValue
             const selected_variant = data.selected_variant
 
             const selected_product = data.selected_product
             const product = {selected_product, selected_variant}
-            console.log("product before stringify", product)
+            console.log("product before stringify store-frontEnd.Controller", product)
             const product_string = JSON.stringify(product)
-            console.log("product_string", product_string)
+            console.log("product_string store-frontEnd.Controller", product_string)
             const store = await this.storeService.findByShopDomain(shop);
             if (store) {
                 const store_id = store.id;
                 const quote: CreateQuoteDto = {...formValue, product: product_string, store_id: store.id}
-                console.log("passedQuote", quote)
+                console.log("passedQuote store-frontEnd.Controller", quote)
                 await this.quoteService.create(quote);
                 return res.status(200).send({message: 'OK'});
             }
@@ -70,6 +70,7 @@ export class StoreFrontendController {
         @Res() res: Response,
     ) {
         let show = true;
+        let settings = []
         try {
 
             const shop = query.shop;
@@ -81,8 +82,8 @@ export class StoreFrontendController {
             const store_id = store.id;
             console.log("Store_id", store_id)
             // const settings = await this.quoteEntityService.findByStoreId(store_id, this.defaultQuoteEntity);
-            const settings = await this.quoteEntityService.findByStore_Id(store_id);
-            console.log("Data settings from store", settings)
+            settings = await this.quoteEntityService.findByStore_Id(store_id);
+            // console.log("Data settings from store", settings)
             this.defaultQuoteEntity.forEach(entity => {
                 switch (entity) {
                     case 'all_product':
@@ -104,21 +105,22 @@ export class StoreFrontendController {
             if (!show) {
                 const products = await this.productService.findByStoreId(store_id);
                 const variant_selected_id_string = `gid://shopify/Product/${variant_selected_id}`
-                console.log("variant_selected_id_string", variant_selected_id)
+                console.log("variant_selected_id_string store-frontEnd.Controller", variant_selected_id)
 
                 products.map(product => {
                     if (product.variants.includes(variant_selected_id)) {
                         show = true
-                        console.log("show", show)
+                        console.log("show store-frontEnd.Controller", show)
                         return res.status(200).send({show, settings});
                     }
                 })
-                console.log("Cannot find this variant")
+                console.log("Cannot find this variant store-frontEnd.Controller")
                 return res.status(200).send({show, settings});
             }
             // return res.status(200).send({show, settings});
         } catch (e) {
-            return res.status(200).send({show: false});
+            //has a problem here??
+            return res.status(200).send({show: false, settings});
         }
     }
 }

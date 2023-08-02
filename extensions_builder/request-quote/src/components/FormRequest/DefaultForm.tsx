@@ -94,7 +94,8 @@ const newMessage = ReactDOMServer.renderToString(
 type Props = {
     isOpen: boolean;
     handleModal: (modal: string) => void;
-    form: string
+    form: string,
+    dataSettings: Array<quoteEntity>
 
 }
 type LineItem = {
@@ -139,16 +140,26 @@ const schema = yup
     })
     .required()
 
-const DefaultForm = ({isOpen, handleModal}: Props) => {
+const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
     // const fetch = useAuthenticatedFetch()
     const [open, setOpen] = useState(isOpen)
-    const [quoteSettings, setQuoteSettings] = useState<Array<quoteEntity>>([])
     const [product, setProduct] = useState({initialLineItem})
     const [formValue, setFormValue] = useState<FormValues>({
         name: '',
         email: '',
         message: '',
     })
+    const initialValue: quoteEntity = {
+        name: '',
+        value: ''
+    }
+    const [formName, setFormName] = useState<quoteEntity>(initialValue)
+    const [formEmail, setFormEmail] = useState<quoteEntity>(initialValue)
+    const [formMessage, setFormMessage] = useState<quoteEntity>(initialValue)
+    const [formNamePlaceholder, setNamePlaceholder] = useState<quoteEntity>(initialValue)
+    const [formEmailPlaceholder, setEmailPlaceholder] = useState<quoteEntity>(initialValue)
+    const [formMessagePlaceholder, setMessagePlaceholder] = useState<quoteEntity>(initialValue)
+    const [formFormTitle, setFormTitle] = useState<quoteEntity>(initialValue)
     const {
         register,
         handleSubmit,
@@ -197,22 +208,29 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
         initialLineItem.description = product.description;
         initialLineItem.id = product.id;
         initialLineItem.images = product.images[0];
-        console.log("initialLineItem", initialLineItem)
-        console.log("product", product)
-        fetch("/apps/vify_rfq-f/quote_setting")
-            .then(response => response.json())
-            .then(settings => {
-                console.log("data from API quote entity", settings)
-                settings.map(setting => {
-                    let temp: quoteEntity = {
-                        name: setting.name,
-                        value: setting.value
-                    }
-                    quoteSettings.push(temp)
-                })
-                setQuoteSettings(quoteSettings)
-            })
-    }, [])
+        console.log("initialLineItem - Default Form", initialLineItem)
+        console.log("product - Default Form", product)
+        // fetch(`/apps/vify_rfq-f/quote_setting?variant_selected_id=${variant_selected_id}`)
+        //     .then(response => response.json())
+        //     .then(settings => {
+        //         console.log("data from API quote entity -Default Form", settings)
+        console.log("DataSettings", dataSettings)
+        dataSettings.map(setting => {
+            let temp: quoteEntity = {
+                name: setting.name,
+                value: setting.value
+            }
+            if (temp.name === "name") setFormName(temp)
+            // if (temp.name === "name") formName = temp
+
+            if (temp.name === "email") setFormEmail(temp)
+            if (temp.name === "message") setFormMessage(temp)
+            if (temp.name === "email_placeholder") setEmailPlaceholder(temp)
+            if (temp.name === 'message_placeholder') setMessagePlaceholder(temp)
+            if (temp.name === 'name_placeholder') setNamePlaceholder(temp)
+            if (temp.name === 'form_title') setFormTitle(temp)
+        })
+    }, [dataSettings])
     const sendQuote = () => {
         setOpen(false)
         handleModal('thankyou');
@@ -225,7 +243,7 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
             image: product.images[0]
         }
         let selected_variant: VariantDTO
-        console.log("selected_product", selected_product)
+        console.log("selected_product DefaultForm", selected_product)
         product.variants.map(variant => {
             if (variant.id === variant_selected_id) {
                 selected_variant = {
@@ -233,17 +251,11 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
                     title: variant.title,
                     price: variant.price
                 }
-                console.log("selected_variant", selected_variant)
+                console.log("selected_variant DefaultForm", selected_variant)
             }
         })
         formValue.email = email
-        console.log("formValue", formValue)
-        const url = new URLSearchParams({
-            selected_variant: selected_variant.toString(),
-            formValue: formValue.toString(),
-            selected_product: selected_product.toString(),
-        })
-        console.log("url", url)
+        console.log("formValue DefaultForm", formValue)
         const data = {selected_product, selected_variant, formValue}
         console.log("data", data)
         fetch("/apps/vify_rfq-f/new_quote",
@@ -269,7 +281,7 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
 
     }
     const onSubmit = (data: any) => {
-        console.log("data from From submit", data)
+        console.log("data from From submit DefaultForm", data)
         sendQuote()
 
     }
@@ -294,8 +306,7 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
 
                     >
                         <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.2}}>
-                            <Typography variant="h5" sx={{m: 1, fontWeight: 700}}>Request For
-                                Quote Version 1.0</Typography>
+                            <Typography variant="h5" sx={{m: 1, fontWeight: 700}}>{formFormTitle.value}</Typography>
                         </Box>
                         <Card sx={{display: 'flex', mr: 1, width: '100%', mb: 0.5}}>
                             <CardMedia
@@ -319,19 +330,11 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
                             display: 'flex', width: '100%', mb: 1, mt: 1.7,
                             mr: 1.3, alignItems: 'center'
                         }}>
-                            {quoteSettings.map(quoteSetting => {
-                                    if (quoteSetting.name === "email") {
-                                        return (
-                                            <Typography variant="body1"
-                                                        sx={{}}>{quoteSetting.value || 'Your email'}:</Typography>
-                                        )
-                                    }
-                                }
-                            )}
+                            <Typography variant="body1" sx={{}}>{formName.value}</Typography>
 
                             <TextField
                                 id="name"
-                                label="Your Name"
+                                label={formNamePlaceholder.value}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(e.target.value, 'name')}
                                 // value={formValue.name}
                                 type="text"
@@ -343,19 +346,12 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
                             display: 'flex', width: '100%', mb: 1, mt: 1.7,
                             mr: 1.3, alignItems: 'center'
                         }}>
-                            <Typography variant="body1" sx={{}}>Your Email:</Typography>
-                            {/*<TextField*/}
-                            {/*    id="email"*/}
-                            {/*    onChange={onChange}*/}
-                            {/*    // value={formValue.name}*/}
-                            {/*    type="email"*/}
-                            {/*    autoComplete="off"*/}
-                            {/*    sx={{width: '50ch', mr: 0, ml: 'auto'}}*/}
-                            {/*/>*/}
+                            <Typography variant="body1"
+                                        sx={{}}>{formEmail.value || 'Your Email:'}</Typography>
                             <TextField {...register("email")}
                                        autoComplete="off"
                                        sx={{width: '50ch', mr: 0, ml: 'auto'}}
-                                       label="Your Email"
+                                       label={formEmailPlaceholder.value || 'Your Email'}
                                        type={"email"}
                             />
 
@@ -377,11 +373,12 @@ const DefaultForm = ({isOpen, handleModal}: Props) => {
                             alignContent: 'space-between',
                             alignItems: 'center'
                         }}>
-                            <Typography variant="body1" sx={{}}>Message</Typography>
+                            <Typography variant="body1"
+                                        sx={{}}>{formMessage.value}</Typography>
                             <StyledTextarea
                                 aria-label="minimum height"
                                 minRows={5}
-                                placeholder={messageSample}
+                                placeholder={formMessagePlaceholder.value}
                                 // value={formValue.message}
                                 onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setFormData(e.target.value, "message")}
                                 sx={{width: '46ch', mr: 0, ml: 'auto'}}
