@@ -21,9 +21,6 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-// import CabinTTF from 'components/fonts/Cabin-Regular-TTF.ttf'
-// import GillSansNovaTTF from 'components/fonts/GillSansNova-CnMedium.ttf'
-// import SFPro from '../fonts/SF-Pro-Rounded-Medium.otf'
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import Avatar from '@mui/material/Avatar';
 
@@ -159,7 +156,8 @@ function ResponsiveAppBar(props: any) {
         <AppBar position="sticky" className="app-bar">
             <Container maxWidth="xl">
                 <Toolbar disableGutters variant="dense">
-                    <IconButton
+                  {/* Hide show bar */}
+                    {/* <IconButton
                         edge="end"
                         aria-label="delete"
                         onClick={toggleDrawer(true)}
@@ -173,7 +171,7 @@ function ResponsiveAppBar(props: any) {
                         >
                             {list()}
                         </SwipeableDrawer>
-                    </IconButton>
+                    </IconButton> */}
                     <Typography> &nbsp;&nbsp;&nbsp;</Typography>
                     <Avatar
                         alt="Remy Sharp"

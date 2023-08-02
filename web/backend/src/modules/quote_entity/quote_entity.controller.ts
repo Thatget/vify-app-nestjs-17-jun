@@ -3,9 +3,6 @@ import {
     Get,
     Post,
     Body,
-    Patch,
-    Param,
-    Delete,
     Res,
     HttpStatus,
     Inject,
@@ -13,8 +10,6 @@ import {
 import {QuoteEntityService} from './quote_entity.service';
 import {QuoteEntityDto} from './dto/quote_entity.dto';
 import {Request, Response} from 'express';
-import {Column, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {Store} from '../store/entities/store.entity';
 import {StoreService} from '../store/store.service';
 
 
@@ -31,7 +26,6 @@ export class QuoteEntityController {
     async create(@Body() quoteEntities: QuoteEntityDto[], @Res() res: Response) {
         try {
             const {shop} = res.locals.shopify.session;
-            console.log("quoteEntities", quoteEntities)
             if (shop) {
                 const foundStore = await this.storeService.findByShopDomain(shop);
                 // Filter allowed quote entities
@@ -78,19 +72,4 @@ export class QuoteEntityController {
                 .json({message: 'An error occurred'});
         }
     }
-
-    // @Get(':id')
-    // findOne(@Param('id') id: string) {
-    //     return this.quoteEntityService.findOne(+id);
-    // }
-
-    // @Patch(':id')
-    // update(@Param('id') id: string, @Body() quoteEntityDto: QuoteEntityDto) {
-    //     return this.quoteEntityService.update(+id, quoteEntityDto);
-    // }
-
-    // @Delete(':id')
-    // remove(@Param('id') id: string) {
-    //     return this.quoteEntityService.remove(+id);
-    // }
 }

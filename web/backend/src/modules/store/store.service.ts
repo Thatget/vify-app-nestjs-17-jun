@@ -13,8 +13,12 @@ export class StoreService {
     }
 
     async createOrUpdate(createStoreDto: CreateStoreDto) {
-        const store = await this.storesRepository.upsert(createStoreDto, ['shop']);
-        return store;
+      const store = await this.storesRepository.findOneBy({shop: createStoreDto.shop});
+      if (store) {
+        await this.storesRepository.save({...createStoreDto, id: store.id })
+      }
+      this.storesRepository.create({ ...createStoreDto})
+      return store;
     }
 
     async findAll() {
@@ -22,7 +26,7 @@ export class StoreService {
     }
 
     async findByShopDomain(shop: string): Promise<Store> {
-        return await this.storesRepository.findOne({where: {shop: shop}});
+      return await this.storesRepository.findOne({where: {shop: shop}});
     }
 
     async update(id: number, updateStoreDto: UpdateStoreDto) {

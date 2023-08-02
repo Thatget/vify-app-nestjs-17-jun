@@ -1,15 +1,16 @@
-import {Button, MediaCard, Modal, TextContainer} from '@shopify/polaris';
+import { MediaCard, Modal, TextContainer} from '@shopify/polaris';
 import {useState, useCallback, useEffect} from 'react';
 import Quote from '../../types/Quote';
 
 interface QuoteDetailProp {
     view: {
-        quote: Quote;
-        active: boolean;
+      quote?: Quote;
+      active: boolean;
     }
+    deleteInView: () => void
 }
 
-const QuoteDetail = ({view}: QuoteDetailProp) => {
+const QuoteDetail = ({view, deleteInView}: QuoteDetailProp) => {
     const [active, setActive] = useState(true);
 
     const handleChange = useCallback(() => setActive(!active), [active]);
@@ -33,18 +34,14 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
           {
             content: 'Delete',
             destructive: true,
-            onAction: handleChange,
+            onAction: deleteInView,
           },
         ]}
       >
         <Modal.Section>
         <MediaCard
-          title={view.quote?.product?.name || 'Product Name'}
-          // primaryAction={{
-          //   content: 'Learn about getting started',
-          //   onAction: () => {},
-          // }}
-          description={view.quote?.product?.description || 'Product description'}
+          title={view.quote?.product?.selected_product.title || 'Product Name'}
+          description={view.quote?.product?.selected_variant.title  + view.quote?.product?.selected_variant.price || 'Product description'}
         >
           <img
             alt="Product Image"
@@ -54,14 +51,12 @@ const QuoteDetail = ({view}: QuoteDetailProp) => {
               objectFit: 'cover',
               objectPosition: 'center',
             }}
-            src="https://burst.shopifycdn.com/photos/business-woman-smiling-in-office.jpg?width=1850"
+            src={view.quote?.product?.selected_product.image || 'Product Name'}
           />
         </MediaCard>
           <TextContainer>
             <p>
-              Use Instagram posts to share your products with millions of
-              people. Let shoppers buy from your store without leaving
-              Instagram.
+            {view.quote.message }
             </p>
           </TextContainer>
         </Modal.Section>

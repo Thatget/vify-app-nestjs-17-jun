@@ -1,6 +1,5 @@
 interface Product {
-    id?: string;
-    productId: string;
+    id: string;
     productDescription: string;
     imageURL: string;
     title: string;

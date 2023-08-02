@@ -1,6 +1,5 @@
 import {Switch} from '@mui/material'
-import {VerticalStack} from '@shopify/polaris'
-import React, {useContext} from 'react'
+import {useContext} from 'react'
 import {StoreContext, actions} from '../../store'
 import Typography from "@mui/material/Typography";
 import Stack from '@mui/material/Stack'
@@ -17,8 +16,6 @@ const ConfigSetting = () => {
     const localConfigSetting = ({...defaultConfigSetting, ...state.setting, ...state.currentSetting});
 
     const handleChangeConfig = (configKey: string) => {
-        console.log("state.setting - config Setting Component", state.setting)
-        console.log("localConfigSetting", localConfigSetting)
 
         switch (configKey) {
             case 'hide_price':

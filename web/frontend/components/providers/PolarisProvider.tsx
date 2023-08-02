@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import {AppProvider} from "@shopify/polaris";
+import {AppProvider, Frame} from "@shopify/polaris";
 import {useNavigate} from "@shopify/app-bridge-react";
 import "@shopify/polaris/build/esm/styles.css";
 import {getPolarisTranslations} from "../../utils/i18nUtils";
@@ -51,8 +51,10 @@ export function PolarisProvider({children}: any) {
     const translations = getPolarisTranslations();
 
     return (
-        <AppProvider i18n={translations} linkComponent={AppBridgeLink}>
-            {children}
-        </AppProvider>
+      <AppProvider i18n={translations} linkComponent={AppBridgeLink}>
+        <Frame>
+          {children}
+        </Frame>
+      </AppProvider>
     );
 }

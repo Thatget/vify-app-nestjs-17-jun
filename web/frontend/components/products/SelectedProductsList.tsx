@@ -19,7 +19,6 @@ export default function SelectedProductsList() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [selectedProductList, setSelectedProductList] = React.useState<Product[]>([]);
     const fetch = useAuthenticatedFetch();
-    const [deselect, setDeselect] = React.useState([])
     const [show, setShow] = React.useState(true)
     const getSelectedProducts = (productsResource_Picker: any) => {
         setSelectedProducts(productsResource_Picker)
@@ -27,7 +26,7 @@ export default function SelectedProductsList() {
     }
     const {
       data,
-      refetch: refetchQuote,
+      refetch: refetchProduct,
       isLoading: isLoadingQuote,
       isRefetching: isRefetchingQuote,
     } = useAppQuery<Product[]>({
@@ -46,19 +45,18 @@ export default function SelectedProductsList() {
     }, [data]);
 
     const [selectedProducts, setSelectedProducts] = React.useState([])
-    const handleRemove = (id: string) => {
+    const handleRemove = async (id: string) => {
+      await fetch(`/api/products/${id}`, {
+        method: "DELETE"
+      })
+      refetchProduct()
         const newList = selectedProducts.filter((item) => item.id !== id)
         setSelectedProducts(newList)
-    }
-    const handleClick = (chosenProduct: any): void => {
-        setDeselect(null)
-        deselect.push(chosenProduct)
-        setDeselect(deselect)
     }
     const handleSave = () => {
       const productList = selectedProducts.map(selectedProduct => {
         let currentProduct: Product = {
-          productId: '',
+          id: '',
           productDescription: '',
           imageURL: '',
           title: '',
@@ -66,13 +64,15 @@ export default function SelectedProductsList() {
         };
         let variants = selectedProduct.variants.map((variant: { id: any; title: any; }) => ({ id: variant.id, title: variant.title }))
         currentProduct.variants = variants;
-        currentProduct.id = selectedProduct.id;
+        const parts = selectedProduct.id.split("/");
+        currentProduct.id = parts[parts.length - 1];
         currentProduct.title = selectedProduct.title;
         currentProduct.productDescription = selectedProduct.descriptionHtml;
         currentProduct.imageURL = selectedProduct.images[0]?.originalSrc || null;
 
         return currentProduct;
       })
+      console.log(productList)
         fetch("/api/products/insert",
             {
                 method: "Post",
@@ -99,12 +99,7 @@ export default function SelectedProductsList() {
                             <ListItem
                                 key={product.id}
                                 secondaryAction={
-                                    <IconButton edge="end" aria-label="delete"
-                                                onClick={() => {
-                                                    handleClick({product})
-                                                    handleRemove(product.id)
-                                                }
-                                                }>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => {handleRemove(product.id)}}>
                                         <DeleteIcon/>
                                     </IconButton>
                                 }

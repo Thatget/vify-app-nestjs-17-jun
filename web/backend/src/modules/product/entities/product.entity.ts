@@ -12,9 +12,6 @@ export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  productId: string;
-
   @Column({ nullable: true })
   productDescription: string;
 

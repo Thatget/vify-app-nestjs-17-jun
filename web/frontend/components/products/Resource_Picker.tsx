@@ -9,18 +9,18 @@ import ProductSelect from "../../types/ProductSelect";
 export default function Resource_Picker(props: any) {
     const fetch = useAuthenticatedFetch();
     const [open, setOpen] = useState(false);
-    const [selectedProducts, setSelectedProducts] = useState([]);
     const [initialSelectionIds, setInitialSelectionIds] = useState<ProductSelect[]>([]);
     const fetchProducts = async () => {
       try {
         const response = await fetch('/api/products/product_picked', { method: 'GET' });
         const data = await response.json();
         if (data) {
-          setInitialSelectionIds(data)
+          const initSelected = data.map((product) => ({ ...product,id: "gid://shopify/Product/" + product.id}))
+          setInitialSelectionIds(initSelected)
         }
         return data;
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching products: ', error);
         throw error;
       }
     };
@@ -28,15 +28,8 @@ export default function Resource_Picker(props: any) {
       fetchProducts()
     }, [])
     
-    // useEffect(() => {
-    //     // selectedProducts.filter(props.chosenProducts)
-    //     const newList = selectedProducts.filter((item: any) => item.id !== props.chosenProducts.id)
-    //     // setSelectedProducts((current:any) => current.filter((deselect:any) => deselect.id = props.chosenProducs.id))
-    //     setSelectedProducts(newList)
-    // }, [props.chosenProducts])
     const handleSelection = (resources: any) => {
-      props.parentCallback(resources.selection)
-      setSelectedProducts([...resources.selection])
+      props.parentCallback(resources.selection);
       setOpen(false)
     }
     return (

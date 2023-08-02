@@ -22,6 +22,7 @@ export default function ProductSelector() {
           dispatch(actions.setNewSetting({all_product: false}));
         }
     }
+
     return (
         // <Box sx={{ width: '100%'}}>
         <>

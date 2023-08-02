@@ -29,13 +29,13 @@ export class ProductService {
   }
 
   async findByProductIds(productIds:string[]) {
-    return await this.productRepository.findBy({ productId: In(productIds) });
+    return await this.productRepository.findBy({ id: In(productIds) });
   }
 
   async findOne(id: string): Promise<boolean> {
     let found = false;
     await this.productRepository
-      .findOne({ where: { productId: id } })
+      .findOne({ where: { id } })
       .then((r) => {
         if (r !== null) {
           found = true;
@@ -45,12 +45,12 @@ export class ProductService {
   }
 
   async findByProductId(product_id: string) {
-    const product = await this.productRepository.findOneBy({productId: product_id});
+    const product = await this.productRepository.findOneBy({ id: product_id });
     return product;
   }
   async selectedPiecked(store_id: number): Promise<Product[]> {
     const products = await this.productRepository.createQueryBuilder('product')
-      .select(['product.productId', 'product.variants'])
+      .select(['product.id', 'product.variants'])
       .where('product.store_id = :store_id', { store_id })
       .getMany();
       return products;
@@ -58,5 +58,14 @@ export class ProductService {
       async findByStoreId(store_id: number) {
         const products = await this.productRepository.findBy({store_id: store_id});
         return products;
+    }
+
+    async delete (id: number, store_id: number) {
+      await this.productRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Product)
+      .where('id = :id AND store_id = :store_id', { id, store_id }) 
+      .execute();
     }
 }
