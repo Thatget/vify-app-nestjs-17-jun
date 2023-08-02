@@ -75,7 +75,6 @@ export default function Quotes() {
               <QuoteTable quotes={quotes} removeQuote={removeQuote}/>
             {/* </Box> */}
           {/* </Container> */}
-              <Button onClick={toggleActive}>Show Toast</Button>
               {toastMarkup}
         </>
     );

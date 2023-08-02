@@ -29,7 +29,6 @@ export default function Resource_Picker(props: any) {
     }, [])
     
     const handleSelection = (resources: any) => {
-      console.log(resources.selection)
       props.parentCallback(resources.selection);
       setOpen(false)
     }

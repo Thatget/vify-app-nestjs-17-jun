@@ -49,6 +49,7 @@ export default function SelectedProductsList() {
       await fetch(`/api/products/${id}`, {
         method: "DELETE"
       })
+      refetchProduct()
         const newList = selectedProducts.filter((item) => item.id !== id)
         setSelectedProducts(newList)
     }
@@ -98,11 +99,7 @@ export default function SelectedProductsList() {
                             <ListItem
                                 key={product.id}
                                 secondaryAction={
-                                    <IconButton edge="end" aria-label="delete"
-                                                onClick={() => {
-                                                  handleRemove(product.id)
-                                                }
-                                                }>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => {handleRemove(product.id)}}>
                                         <DeleteIcon/>
                                     </IconButton>
                                 }
