@@ -10,7 +10,8 @@ interface Setting {
     show_request_for_quote: boolean,
     thank_title: string,
     thank_content: string,
-    shopping_button: string
+    shopping_button: string,
+    form_title: string,
 }
 
 export default Setting

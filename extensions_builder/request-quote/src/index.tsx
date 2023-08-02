@@ -4,12 +4,16 @@ import FormRequest from './components/FormRequest/Index.tsx';
 import Thankyou from './components/ThankyouPage/Index.tsx';
 import {useEffect} from "react";
 import {useState} from 'react'
-
 // import {Button} from '@shopify/polaris';
+type quoteEntity = {
+    name: string;
+    value: string;
+}
 
 function Index() {
     const [setting, setSetting] = useState({show: true});
     const [modal, setModal] = useState('');
+    const [dataSettings, setDataSettings] = useState<Array<quoteEntity>>([])
 
     useEffect(() => {
         const variant_selected_id = (window as any).variant_selected_id
@@ -21,29 +25,28 @@ function Index() {
                 console.log("Products from quoteSetting ", data)
                 setSetting(data);
                 console.log("setting.show", data.show)
+                setDataSettings(data.settings)
             })
     }, [])
-
-
     const handleChangeModal = (modal: string) => {
         console.log("modal", modal)
         setModal(modal);
     }
-
     return (
         <>
             {setting.show &&
                 <div>
                     <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                            onClick={() => handleChangeModal('request')}>Request For Quote V1.6</Button>
+                            onClick={() => handleChangeModal('request')}>Request For Quote V1.9</Button>
                     {modal === 'request' &&
-                        <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}/>}
+                        <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}
+                                     dataSettings={dataSettings}/>}
                     {modal === 'thankyou' &&
-                        <Thankyou isOpen={modal === 'thankyou'} handleModal={handleChangeModal} form={''}/>}
+                        <Thankyou isOpen={modal === 'thankyou'} handleModal={handleChangeModal} form={''}
+                                  dataSettings={dataSettings}/>}
                 </div>
             }
             {setting.show &&
-
                 <style>
                     {` .price__regular {
                 display: none 
