@@ -63,6 +63,7 @@ export class StoreFrontendController {
         @Res() res: Response,
     ) {
         let show = true;
+        let settings = []
         try {
 
             const shop = query.shop;
@@ -73,8 +74,8 @@ export class StoreFrontendController {
             }
             const store_id = store.id;
             // const settings = await this.quoteEntityService.findByStoreId(store_id, this.defaultQuoteEntity);
-            const settings = await this.quoteEntityService.findByStore_Id(store_id);
-            console.log("Data settings from store", settings)
+            settings = await this.quoteEntityService.findByStore_Id(store_id);
+            // console.log("Data settings from store", settings)
             this.defaultQuoteEntity.forEach(entity => {
                 switch (entity) {
                     case 'all_product':
@@ -96,12 +97,12 @@ export class StoreFrontendController {
             if (!show) {
                 const products = await this.productService.findByStoreId(store_id);
                 const variant_selected_id_string = `gid://shopify/Product/${variant_selected_id}`
-                console.log("variant_selected_id_string", variant_selected_id)
+                console.log("variant_selected_id_string store-frontEnd.Controller", variant_selected_id)
 
                 products.map(product => {
                     if (product.variants.includes(variant_selected_id)) {
                         show = true
-                        console.log("show", show)
+                        console.log("show store-frontEnd.Controller", show)
                         return res.status(200).send({show, settings});
                     }
                 })
@@ -109,7 +110,8 @@ export class StoreFrontendController {
             }
             // return res.status(200).send({show, settings});
         } catch (e) {
-            return res.status(200).send({show: false});
+            //has a problem here??
+            return res.status(200).send({show: false, settings});
         }
     }
 }

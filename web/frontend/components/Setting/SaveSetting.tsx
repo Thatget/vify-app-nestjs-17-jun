@@ -29,6 +29,7 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
         let changeThankTitle = false;
         let changeThankContent = false;
         let changeShoppingButton = false;
+        let changeFormTitle = false;
         let defaultName = {name: 'name', value: setting.name || ''};
         let defaultEmail = {name: 'email', value: setting.email_title || ''};
         let defaultEmailPlaceholder = {name: 'email_placeholder', value: setting.email_placeholder || ''};
@@ -56,6 +57,10 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
         let defaultRequestQuote = {
             name: 'show_request_for_quote',
             value: setting.show_request_for_quote || ''
+        };
+        let defaultFormTitle = {
+            name: 'form_title',
+            value: setting.form_title || ''
         };
         let defaultThankTitle = {name: 'thank_title', value: setting.thank_title || ''};
         let defaultThankContent = {name: 'thank_content', value: setting.thank_content || ''};
@@ -128,7 +133,7 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
                 case 'thank_content':
                     if (value !== setting.thank_content) {
                         defaultThankContent = {...defaultThankContent, value: value};
-                        changeThankTitle = true;
+                        changeThankContent = true;
                     }
                     break;
                 case 'shopping_button':
@@ -142,6 +147,12 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
                     dataPost.push({name: 'all_product', value})
                   }
                   break;
+                case 'form_title':
+                    if (value !== setting.form_title) {
+                        defaultFormTitle = {...defaultFormTitle, value: value};
+                        changeFormTitle = true;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -182,7 +193,10 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
         if (changeShoppingButton) {
             dataPost.push(defaultContinueShoppingButton)
         }
-        const data: any = await fetch("/api/quote-entity", {
+        if (changeFormTitle) {
+            dataPost.push(defaultFormTitle)
+        }
+        const data: any = fetch("/api/quote-entity", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

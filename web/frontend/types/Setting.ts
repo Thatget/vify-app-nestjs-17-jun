@@ -12,6 +12,7 @@ interface Setting {
     thank_content?: string,
     shopping_button?: string;
     all_product?: boolean;
+    form_title?: string,
 }
 
 export default Setting
