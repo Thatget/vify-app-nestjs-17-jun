@@ -20,8 +20,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import ListItemText from "@mui/material/ListItemText";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import Avatar from '@mui/material/Avatar';
 
 //
@@ -156,29 +154,12 @@ function ResponsiveAppBar(props: any) {
         <AppBar position="sticky" className="app-bar">
             <Container maxWidth="xl">
                 <Toolbar disableGutters variant="dense">
-                  {/* Hide show bar */}
-                    {/* <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={toggleDrawer(true)}
-                    >
-                        <DensityMediumIcon sx={{color: 'secondary'}}/>
-                        <SwipeableDrawer
-                            // anchor={{'left'}}
-                            open={state}
-                            onClose={toggleDrawer(false)}
-                            onOpen={toggleDrawer(true)}
-                        >
-                            {list()}
-                        </SwipeableDrawer>
-                    </IconButton> */}
                     <Typography> &nbsp;&nbsp;&nbsp;</Typography>
                     <Avatar
                         alt="Remy Sharp"
                         src="/assets/vifylog.png"
                         sx={{width: 24, height: 24}}
                     />
-
                     <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                         <IconButton
                             size="large"

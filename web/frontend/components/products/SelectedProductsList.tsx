@@ -19,10 +19,8 @@ export default function SelectedProductsList() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [selectedProductList, setSelectedProductList] = React.useState<Product[]>([]);
     const fetch = useAuthenticatedFetch();
-    const [show, setShow] = React.useState(true)
     const getSelectedProducts = (productsResource_Picker: any) => {
         setSelectedProducts(productsResource_Picker)
-        setShow(true)
     }
     const {
       data,
@@ -72,7 +70,6 @@ export default function SelectedProductsList() {
 
         return currentProduct;
       })
-      console.log(productList)
         fetch("/api/products/insert",
             {
                 method: "Post",
@@ -80,7 +77,7 @@ export default function SelectedProductsList() {
                 headers: {"Content-Type": "application/json"}
             }
         ).then((data: Response): void => {
-            console.log("data from handleSelection", data)
+          refetchProduct();
         });
         alert("Okay, data has saved")
     }
@@ -119,7 +116,7 @@ export default function SelectedProductsList() {
                         );
                     })}
                 </List>
-                {show && <Divider variant="middle" sx={{ bgcolor: "#1a237e",height:2 }}/>}
+                <Divider variant="middle" sx={{ bgcolor: "#1a237e",height:2 }}/>
                 <br/>
                 <Box
                     display="flex"
@@ -127,10 +124,8 @@ export default function SelectedProductsList() {
                     alignItems="flex-end"
                     sx={{width: '100%'}}
                 >
-                    {show &&
                         <Button variant="contained" onClick={() => handleSave()}
                         >Save</Button>
-                    }
                 </Box>
             </Box>
         </Box>

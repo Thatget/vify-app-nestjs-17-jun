@@ -37,7 +37,7 @@ export class StoreFrontendController {
         @Res() res: Response,
     ) {
         try {
-            const {shop} = query.shop;
+            const shop = query.shop;
             const formValue = data.formValue
             const selected_variant = data.selected_variant
 

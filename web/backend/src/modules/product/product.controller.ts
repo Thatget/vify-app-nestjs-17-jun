@@ -12,12 +12,9 @@ import {
 } from '@nestjs/common';
 import {ProductService} from './product.service';
 import {CreateProductDto} from './dto/create-product.dto';
-import {UpdateProductDto} from './dto/update-product.dto';
 import {StoreService} from '../store/store.service';
-
 import fetchProducts from '../helpers/products';
 import {Request, Response} from 'express';
-import {Product} from './entities/product.entity';
 import ProductResponse, { ProductVariant } from '../../types/ProductResponse';
 import ProductSelect from 'src/types/ProductSelect';
 
