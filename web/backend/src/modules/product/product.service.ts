@@ -68,4 +68,8 @@ export class ProductService {
       .where('id = :id AND store_id = :store_id', { id, store_id }) 
       .execute();
     }
+
+    async deleteMany (ids: number[], store_id: number) {
+      await this.productRepository.delete({id: In(ids), store_id});
+    }
 }

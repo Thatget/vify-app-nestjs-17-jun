@@ -52,7 +52,6 @@ export class ProductController {
           if (!title) title = '';
           const session = res.locals.shopify.session;
           if (!(reverse === true)) reverse = false;
-
           const productPage = await fetchProducts(session, title, reverse);
           const shopProducts = productPage.productList;
           const pageInfo = productPage.pageInfo;
@@ -138,6 +137,21 @@ export class ProductController {
           return res.status(200).send('OK');
         } catch (e) {
           return res.status(500).send({message: 'Failed when get products'});
+        }
+      }
+      @Post('/delete')
+      async delete(@Body() ids: number[], @Res() res: Response) {
+        try {
+          console.log(typeof ids[0]);
+          const shopDomain = res.locals.shopify.session.shop;
+          const foundStore = await this.storeService.findByShopDomain(shopDomain);
+          if (foundStore) {
+            const store_id = foundStore.id;
+            await this.productService.deleteMany(ids, store_id);
+          }
+          return res.status(200).send("OK");
+        } catch (error) {
+          res.status(500).json({message: 'An error occurred'})
         }
       }
 }

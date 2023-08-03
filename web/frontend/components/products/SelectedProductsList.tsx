@@ -8,16 +8,18 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from "@mui/material/IconButton";
-import Button from '@mui/material/Button'
 import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
 import Typography from "@mui/material/Typography";
 import Product from '../../types/Product';
 import Resource_Picker from './Resource_Picker';
+import { Button, ButtonGroup } from '@shopify/polaris';
 
 
 export default function SelectedProductsList() {
     const [isLoading, setIsLoading] = React.useState(true);
-    const [selectedProductList, setSelectedProductList] = React.useState<Product[]>([]);
+    const [selectedProducts, setSelectedProducts] = React.useState([])
+    const [deleteList, setDeleteList] = React.useState<number[]>([]);
+    const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([]);
     const fetch = useAuthenticatedFetch();
     const getSelectedProducts = (productsResource_Picker: any) => {
         setSelectedProducts(productsResource_Picker)
@@ -38,23 +40,35 @@ export default function SelectedProductsList() {
 
     React.useEffect(() => {
       if(data) {
-      setSelectedProductList(data);
+      setVisibleProduct(data);
       }
     }, [data]);
+    React.useEffect(() => {
+        const subSet = new Set(deleteList);
+        let resultArray = [];
+        if (data) {
+          resultArray = data.filter((item) => !subSet.has(item.id));
+        }
+        setVisibleProduct(resultArray);
+    }, [deleteList]);
 
-    const [selectedProducts, setSelectedProducts] = React.useState([])
-    const handleRemove = async (id: string) => {
-      await fetch(`/api/products/${id}`, {
-        method: "DELETE"
-      })
-      refetchProduct()
-        const newList = selectedProducts.filter((item) => item.id !== id)
-        setSelectedProducts(newList)
+    const handleRemove = async (ids: number[]) => {
+      try {
+        await fetch(`/api/products/delete`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(ids)
+        })
+        setDeleteList([])
+        refetchProduct()
+      } catch (error) {
+        
+      }
     }
     const handleSave = () => {
       const productList = selectedProducts.map(selectedProduct => {
         let currentProduct: Product = {
-          id: '',
+          id: 0,
           productDescription: '',
           imageURL: '',
           title: '',
@@ -70,16 +84,6 @@ export default function SelectedProductsList() {
 
         return currentProduct;
       })
-        fetch("/api/products/insert",
-            {
-                method: "Post",
-                body: JSON.stringify(productList),
-                headers: {"Content-Type": "application/json"}
-            }
-        ).then((data: Response): void => {
-          refetchProduct();
-        });
-        alert("Okay, data has saved")
     }
 
     return (
@@ -90,13 +94,13 @@ export default function SelectedProductsList() {
             </Box>
             <Box sx={{width: '100%'}}>
                 <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
-                {selectedProductList && selectedProductList.map((product) => {
+                {visibleProduct.length > 0 && visibleProduct.map((product) => {
                         const labelId = `checkbox-list-secondary-label-${product.id}`;
                         return (
                             <ListItem
                                 key={product.id}
                                 secondaryAction={
-                                    <IconButton edge="end" aria-label="delete" onClick={() => {handleRemove(product.id)}}>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => {setDeleteList(preSet => [...preSet, product.id])}}>
                                         <DeleteIcon/>
                                     </IconButton>
                                 }
@@ -124,8 +128,16 @@ export default function SelectedProductsList() {
                     alignItems="flex-end"
                     sx={{width: '100%'}}
                 >
-                        <Button variant="contained" onClick={() => handleSave()}
-                        >Save</Button>
+                  {/* { deleteList.length > 0 && <Button variant="contained" onClick={() => handleSave()}
+                        >Save</Button> } */}
+                  { deleteList.length > 0 && <>
+                    <ButtonGroup>
+                      <Button destructive onClick={() => setDeleteList([])}
+                          >UnChange</Button>
+                      <Button primary onClick={() => handleRemove(deleteList)}
+                          >Save</Button>
+                    </ButtonGroup>
+                  </> }
                 </Box>
             </Box>
         </Box>
