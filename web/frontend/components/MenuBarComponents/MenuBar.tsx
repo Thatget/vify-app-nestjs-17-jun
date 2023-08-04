@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,52 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {useNavigate} from 'react-router-dom'
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import ListItemText from "@mui/material/ListItemText";
 import Avatar from '@mui/material/Avatar';
-
-//
-// const SFPro = {
-//     fontFamily: 'SFPro',
-//     fontStyle: 'normal',
-//     fontWeight: 500,
-//     src: `url(${SFPro}) format('truetype')`,
-// }
-// const theme = createTheme({
-//     typography: {
-//         fontFamily: "sans-serif",
-//         // fontSize: "3rem",
-//         button: {
-//             textTransform: "none",
-//             fontFamily: 'sans-serif',
-//             fontStyle: 'normal',
-//             fontWeight: 500,
-//             fontSize:"1.2rem"
-//         }
-//     },
-//     components: {
-//         MuiCssBaseline: {
-//             styleOverrides: {
-//                 "@font-face": {
-//                     fontFamily: "sans-serif",
-//                 },
-//                 body: {
-//                     fontSize: "4rem",
-//                     color: "purple"
-//                 },
-//                 button: {
-//                     textTransform: "none"
-//                 }
-//             }
-//         }
-//     }
-// });
 
 const pages = [
     {
@@ -78,77 +32,14 @@ const pages = [
 function ResponsiveAppBar(props: any) {
     const history = useNavigate()
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        console.log("abc")
         setAnchorElNav(event.currentTarget);
-        // console.log(event.currentTarget.nodeValue)
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = (href: string) => {
         history(href)
         setAnchorElNav(null);
     };
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-
-    // functions and variables for Drawers :
-    const [state, setState] = React.useState(false);
-
-    const toggleDrawer = (open: boolean) =>
-        (event: React.KeyboardEvent | React.MouseEvent) => {
-            if (
-                event &&
-                event.type === 'keydown' &&
-                ((event as React.KeyboardEvent).key === 'Tab' ||
-                    (event as React.KeyboardEvent).key === 'Shift')
-            ) {
-                return;
-            }
-
-            setState(open);
-            console.log("state", state)
-        };
-
-    const list = () => (
-        <Box
-            sx={{width: 250}}
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
-        >
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
-                            </ListItemIcon>
-                            <ListItemText primary={text}/>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider/>
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
-                            </ListItemIcon>
-                            <ListItemText primary={text}/>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </Box>
-    );
-
 
     return (
         <AppBar position="sticky" className="app-bar">
@@ -211,18 +102,6 @@ function ResponsiveAppBar(props: any) {
                                                 }}
 
                                     >{page.title}</Typography>
-                                    {/*<Typography textAlign="center"*/}
-                                    {/*            sx={{*/}
-                                    {/*                mr: 2,*/}
-                                    {/*                // display: {xs: 'flex', md: 'none'},*/}
-                                    {/*                flexGrow: 1,*/}
-                                    {/*                fontFamily: 'Apple LiSung',*/}
-                                    {/*                fontWeight: 200,*/}
-                                    {/*                letterSpacing: '.3rem',*/}
-                                    {/*                color: 'primary',*/}
-                                    {/*            }}*/}
-
-                                    {/*>ABC Test</Typography>*/}
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -256,41 +135,8 @@ function ResponsiveAppBar(props: any) {
                             >
                                 {page.title}&nbsp;&nbsp;
                             </Button>
-                            // <Divider orientation="vertical" variant="middle" flexItem sx={{ bgcolor: "#1a237e",height:2 }}/>
-
                         ))}
                     </Box>
-
-
-                    {/*<Box sx={{flexGrow: 0}}>*/}
-                    {/*    <Tooltip title="Open settings">*/}
-                    {/*        <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>*/}
-                    {/*            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
-                    {/*        </IconButton>*/}
-                    {/*    </Tooltip>*/}
-                    {/*    <Menu*/}
-                    {/*        sx={{mt: '45px'}}*/}
-                    {/*        id="menu-appbar"*/}
-                    {/*        anchorEl={anchorElUser}*/}
-                    {/*        anchorOrigin={{*/}
-                    {/*            vertical: 'top',*/}
-                    {/*            horizontal: 'right',*/}
-                    {/*        }}*/}
-                    {/*        keepMounted*/}
-                    {/*        transformOrigin={{*/}
-                    {/*            vertical: 'top',*/}
-                    {/*            horizontal: 'right',*/}
-                    {/*        }}*/}
-                    {/*        open={Boolean(anchorElUser)}*/}
-                    {/*        onClose={handleCloseUserMenu}*/}
-                    {/*    >*/}
-                    {/*        {settings.map((setting) => (*/}
-                    {/*            <MenuItem key={setting} onClick={handleCloseUserMenu}>*/}
-                    {/*                <Typography textAlign="center">{setting}</Typography>*/}
-                    {/*            </MenuItem>*/}
-                    {/*        ))}*/}
-                    {/*    </Menu>*/}
-                    {/*</Box>*/}
                 </Toolbar>
             </Container>
         </AppBar>

@@ -81,7 +81,6 @@ export default function Resource_Picker(props: any) {
     }
 
     const handleSave = async () => {
-      console.log()
       const deleeteIds = deleteList.map(list => (list.id.split("/")[list.id.split("/").length - 1]));
       await fetch("/api/products/delete",
         {
@@ -101,6 +100,9 @@ export default function Resource_Picker(props: any) {
     setNewList([]);
     alert("Okay, data has saved")
     }
+    console.log(newList);
+    console.log(deleteList);
+
     return (
         <>
             <Box
@@ -121,10 +123,10 @@ export default function Resource_Picker(props: any) {
                 selectMultiple={true}
                 initialSelectionIds={initialSelectionIds}
             />
-          {(newList.length > 0 || deleteList.length > 0 )&& 
+          {(newList.length > 0 || deleteList.length > 0 ) && 
           <>
             <ButtonGroup>
-              <Button destructive onClick={() => setNewList([])} >UnChange</Button>
+              <Button destructive onClick={() => {setNewList([]); setDeleteList([])}} >Cancel</Button>
               <Button primary onClick={() => handleSave()} >Save</Button>
             </ButtonGroup>
             <br />

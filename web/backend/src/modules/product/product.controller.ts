@@ -34,8 +34,8 @@ export class ProductController {
         try {
           const { shop } = res.locals.shopify.session;
           const foundStore = await this.storeService.findByShopDomain(shop);
-            const products = await this.productService.findAll(foundStore.id);
-            return res.status(200).send(products);
+            const [products, count] = await this.productService.findAll(foundStore.id, 0, 10);
+            return res.status(200).send({products, count});
         } catch (e) {
           return res.status(500).send({message: 'Failed when get products'});
         }
@@ -116,9 +116,13 @@ export class ProductController {
     async getpicked( @Res() res: Response ) {
       try {
         const { shop } = res.locals.shopify.session;
+        const selectedProducts: ProductSelect[] = [];
         const foundStore = await this.storeService.findByShopDomain(shop);
         const products = await this.productService.selectedPiecked(foundStore.id);
-        return res.status(200).send(products);
+        products.forEach(product => {
+          selectedProducts.push({ id: product.id, variants: (JSON.parse(product.variants) || []) })
+        })
+        return res.status(200).send(selectedProducts);
       } catch (e) {
         return res.status(500).send({message: 'Failed when get products'});
       }

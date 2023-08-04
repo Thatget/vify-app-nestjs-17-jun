@@ -1,7 +1,7 @@
 import {useContext} from 'react'
-import {StoreContext} from '../../store'
+import {StoreContext, actions} from '../../store'
 import {useAuthenticatedFetch} from '../../hooks'
-import Button from "@mui/material/Button"
+import { Button, ButtonGroup } from '@shopify/polaris';
 
 interface SaveSettingProps {
     isFetchingQuoteEntity: boolean;
@@ -9,12 +9,14 @@ interface SaveSettingProps {
 }
 
 const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingProps) => {
-    const {state} = useContext(StoreContext);
-
+    const {state, dispatch} = useContext(StoreContext);
     const setting = state.setting;
     const currentSetting = state.currentSetting;
 
     const fetch = useAuthenticatedFetch();
+    const unchamgeSetting = () => {
+      dispatch(actions.resetNewSetting())
+    }
     const updateSetting = async () => {
         const dataPost: Object[] = [];
         let changedName = false;
@@ -212,9 +214,14 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
     }
 
     return (
-        <Button variant="contained" disabled={isFetchingQuoteEntity} onClick={updateSetting} sx={{m: 0.2}}>
-            {!isFetchingQuoteEntity && <>Save All Setting</>}
-        </Button>
+      <>
+      {state.currentSetting && <>
+        <ButtonGroup>
+          <Button destructive disabled={isFetchingQuoteEntity} onClick={unchamgeSetting} >UnChange</Button>
+          <Button primary disabled={isFetchingQuoteEntity} onClick={updateSetting} >Save All Setting</Button>
+        </ButtonGroup>
+      </>}
+      </>
 
     )
 }

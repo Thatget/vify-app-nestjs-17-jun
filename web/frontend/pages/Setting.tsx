@@ -193,7 +193,7 @@ const Setting = () => {
     return (
         <>
             {/*<Box sx={{width: '100%', typography: 'body1'}}>*/}
-            <TabContext value={value} sx={{width: '100%'}}>
+            <TabContext value={value}>
                 {/*<ValidatorForm onSubmit={handleSubmit}>*/}
                 <Grid container spacing={1} sx={{width: "100%"}}>
                     <Grid

@@ -8,46 +8,44 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from "@mui/material/IconButton";
-import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
+import {useAuthenticatedFetch} from "../../hooks";
 import Typography from "@mui/material/Typography";
 import Product from '../../types/Product';
 import Resource_Picker from './Resource_Picker';
-import { Button, ButtonGroup } from '@shopify/polaris';
+import { Button, ButtonGroup, Pagination } from '@shopify/polaris';
 
 
 export default function SelectedProductsList() {
+  const fetch = useAuthenticatedFetch();
     const [isLoading, setIsLoading] = React.useState(true);
     const [selectedProducts, setSelectedProducts] = React.useState([])
     const [deleteList, setDeleteList] = React.useState<number[]>([]);
     const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([]);
-    const fetch = useAuthenticatedFetch();
+    const [page, setPage] = React.useState<number>(0);
+    const [count, setCount] = React.useState<number>(0);
     const getSelectedProducts = (productsResource_Picker: any) => {
         setSelectedProducts(productsResource_Picker)
     }
-    const {
-      data,
-      refetch: refetchProduct,
-      isLoading: isLoadingQuote,
-      isRefetching: isRefetchingQuote,
-    } = useAppQuery<Product[]>({
-      url: "/api/products",
-      reactQueryOptions: {
-        onSuccess: () => {
-          setIsLoading(false);
-        }
-      },
-    });
 
-    React.useEffect(() => {
-      if(data) {
-      setVisibleProduct(data);
+    const fetchData = React.useCallback(async (page: number) => {
+      try {
+        const response = await fetch(`/api/products?page=${page}`, { method: 'GET' });
+        const data = await response.json();
+        setVisibleProduct(data.products);
+        setCount(data.count);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-    }, [data]);
+    }, []);
+
+    React.useEffect(() => { 
+      fetchData(page);
+    }, [page]);
     React.useEffect(() => {
         const subSet = new Set(deleteList);
         let resultArray = [];
-        if (data) {
-          resultArray = data.filter((item) => !subSet.has(item.id));
+        if (visibleProduct) {
+          resultArray = visibleProduct.filter((item) => !subSet.has(item.id));
         }
         setVisibleProduct(resultArray);
     }, [deleteList]);
@@ -60,30 +58,10 @@ export default function SelectedProductsList() {
           body: JSON.stringify(ids)
         })
         setDeleteList([])
-        refetchProduct()
+        setPage(0);
       } catch (error) {
         
       }
-    }
-    const handleSave = () => {
-      const productList = selectedProducts.map(selectedProduct => {
-        let currentProduct: Product = {
-          id: 0,
-          productDescription: '',
-          imageURL: '',
-          title: '',
-          variants: ''
-        };
-        let variants = selectedProduct.variants.map((variant: { id: any; title: any; }) => ({ id: variant.id, title: variant.title }))
-        currentProduct.variants = variants;
-        const parts = selectedProduct.id.split("/");
-        currentProduct.id = parts[parts.length - 1];
-        currentProduct.title = selectedProduct.title;
-        currentProduct.productDescription = selectedProduct.descriptionHtml;
-        currentProduct.imageURL = selectedProduct.images[0]?.originalSrc || null;
-
-        return currentProduct;
-      })
     }
 
     return (
@@ -94,7 +72,7 @@ export default function SelectedProductsList() {
             </Box>
             <Box sx={{width: '100%'}}>
                 <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
-                {visibleProduct.length > 0 && visibleProduct.map((product) => {
+                {visibleProduct && visibleProduct.length > 0 && visibleProduct.map((product) => {
                         const labelId = `checkbox-list-secondary-label-${product.id}`;
                         return (
                             <ListItem
@@ -106,8 +84,7 @@ export default function SelectedProductsList() {
                                 }
                                 disablePadding
                             >
-                                <ListItem
-                                >
+                                <ListItem>
                                     <ListItemAvatar>
                                         <Avatar
                                             alt={''}
@@ -128,14 +105,21 @@ export default function SelectedProductsList() {
                     alignItems="flex-end"
                     sx={{width: '100%'}}
                 >
-                  {/* { deleteList.length > 0 && <Button variant="contained" onClick={() => handleSave()}
-                        >Save</Button> } */}
+                  <Pagination
+                    label="Results"
+                    hasPrevious={page!==0}
+                    onPrevious={() => {
+                      console.log('Previous');
+                    }}
+                    hasNext={false}
+                    onNext={() => {
+                      console.log('Next');
+                    }}
+                  />
                   { deleteList.length > 0 && <>
                     <ButtonGroup>
-                      <Button destructive onClick={() => setDeleteList([])}
-                          >UnChange</Button>
-                      <Button primary onClick={() => handleRemove(deleteList)}
-                          >Save</Button>
+                      <Button destructive onClick={() => setDeleteList([])} >UnChange</Button>
+                      <Button primary onClick={() => handleRemove(deleteList)} >Save</Button>
                     </ButtonGroup>
                   </> }
                 </Box>
