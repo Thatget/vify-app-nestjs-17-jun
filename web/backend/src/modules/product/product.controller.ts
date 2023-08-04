@@ -116,13 +116,9 @@ export class ProductController {
     async getpicked( @Res() res: Response ) {
       try {
         const { shop } = res.locals.shopify.session;
-        const selectedProducts: ProductSelect[] = [];
         const foundStore = await this.storeService.findByShopDomain(shop);
         const products = await this.productService.selectedPiecked(foundStore.id);
-        products.forEach(product => {
-          selectedProducts.push({ id: product.id, variants: (JSON.parse(product.variants) || []) })
-        })
-        return res.status(200).send(selectedProducts);
+        return res.status(200).send(products);
       } catch (e) {
         return res.status(500).send({message: 'Failed when get products'});
       }
