@@ -1,5 +1,5 @@
 import SettingComponentSet from "../components/Setting/SettingComponentSet";
-import React, {useContext} from "react";
+import React, {useCallback, useContext, useState} from "react";
 import SettingComponentPreview from "../components/Setting/SettingComponentPreview";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -23,6 +23,7 @@ import QuoteEntity from "../types/QuoteEntity";
 import { Typography } from "@mui/material";
 import { CardBody } from "@material-tailwind/react";
 import ProductSelector from "../components/ProductSelector";
+import { Spinner } from "@shopify/polaris";
 
 interface SettingX {
     [key: string]: string | number | boolean;
@@ -36,7 +37,7 @@ const Setting = () => {
         });
     };
     const [value, setValue] = React.useState('1');
-
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
@@ -61,9 +62,14 @@ const Setting = () => {
         url: "/api/quote-entity",
         reactQueryOptions: {
             onSuccess: () => {
+              console.log("Fax")
+              setIsLoading(false);
             },
         },
     });
+    const fetchQuoteEntity = useCallback( async () => {
+      return await fetch('/api/quote-entity');
+    }, [])
     React.useEffect(() => {
         if (data) {
             let setting: SettingX = {};
@@ -192,7 +198,7 @@ const Setting = () => {
 
     return (
         <>
-            {/*<Box sx={{width: '100%', typography: 'body1'}}>*/}
+          {isLoading ? <div style={{marginLeft: '50%'}}><Spinner /></div> :
             <TabContext value={value}>
                 {/*<ValidatorForm onSubmit={handleSubmit}>*/}
                 <Grid container spacing={1} sx={{width: "100%"}}>
@@ -234,7 +240,7 @@ const Setting = () => {
                                 </TabList>
                             </Box>
                             <Box sx={{mr: 2}}>
-                                <SaveSetting isFetchingQuoteEntity={isRefetchingQuoteEntity || isLoadingQuoteEntity}
+                                <SaveSetting isFetchingQuoteEntity={isRefetchingQuoteEntity || isLoadingQuoteEntity} setIsLoading={setIsLoading}
                                              refetchQuoteEntity={refetchQuoteEntity}/>
                             </Box>
                         </Box>
@@ -253,7 +259,7 @@ const Setting = () => {
 
 
                 </Grid>
-            </TabContext>
+            </TabContext>}
             {/*</Box>*/}
             {/*</Container>*/}
             {/*</Box>*/}

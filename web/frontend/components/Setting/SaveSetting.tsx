@@ -6,9 +6,10 @@ import { Button, ButtonGroup } from '@shopify/polaris';
 interface SaveSettingProps {
     isFetchingQuoteEntity: boolean;
     refetchQuoteEntity: () => void;
+    setIsLoading: (loading: boolean) => void;
 }
 
-const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingProps) => {
+const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity, setIsLoading}: SaveSettingProps) => {
     const {state, dispatch} = useContext(StoreContext);
     const setting = state.setting;
     const currentSetting = state.currentSetting;
@@ -18,6 +19,7 @@ const SaveSetting = ({isFetchingQuoteEntity, refetchQuoteEntity}: SaveSettingPro
       dispatch(actions.resetNewSetting())
     }
     const updateSetting = async () => {
+      setIsLoading(true);
         const dataPost: Object[] = [];
         let changedName = false;
         let changeNamePlaceholder = false;

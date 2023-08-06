@@ -12,7 +12,7 @@ import {useAuthenticatedFetch} from "../../hooks";
 import Typography from "@mui/material/Typography";
 import Product from '../../types/Product';
 import Resource_Picker from './Resource_Picker';
-import { Button, ButtonGroup, Pagination } from '@shopify/polaris';
+import { Button, ButtonGroup, Pagination, Spinner } from '@shopify/polaris';
 
 
 export default function SelectedProductsList() {
@@ -31,14 +31,16 @@ export default function SelectedProductsList() {
       try {
         const response = await fetch(`/api/products?page=${page}`, { method: 'GET' });
         const data = await response.json();
-        setVisibleProduct(data.products);
-        setCount(data.count);
+        setVisibleProduct(data.products || []);
+        setCount(data.count || 0);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     }, []);
 
     React.useEffect(() => { 
+      setIsLoading(true);
       fetchData(page);
     }, [page]);
     React.useEffect(() => {
@@ -71,16 +73,20 @@ export default function SelectedProductsList() {
                 <Resource_Picker parentCallback={getSelectedProducts} />
             </Box>
             <Box sx={{width: '100%'}}>
-                <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
+              {isLoading ?
+                <div style={{marginLeft: '50%'}}>
+                  <Spinner />
+                </div>:
+              <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
                 {visibleProduct && visibleProduct.length > 0 && visibleProduct.map((product) => {
                         const labelId = `checkbox-list-secondary-label-${product.id}`;
                         return (
                             <ListItem
                                 key={product.id}
                                 secondaryAction={
-                                    <IconButton edge="end" aria-label="delete" onClick={() => {setDeleteList(preSet => [...preSet, product.id])}}>
-                                        <DeleteIcon/>
-                                    </IconButton>
+                                  <IconButton edge="end" aria-label="delete" onClick={() => {setDeleteList(preSet => [...preSet, product.id])}}>
+                                      <DeleteIcon/>
+                                  </IconButton>
                                 }
                                 disablePadding
                             >
@@ -96,7 +102,8 @@ export default function SelectedProductsList() {
                             </ListItem>
                         );
                     })}
-                </List>
+              </List>
+              }
                 <Divider variant="middle" sx={{ bgcolor: "#1a237e",height:2 }}/>
                 <br/>
                 <Box
@@ -108,13 +115,9 @@ export default function SelectedProductsList() {
                   <Pagination
                     label="Results"
                     hasPrevious={page!==0}
-                    onPrevious={() => {
-                      console.log('Previous');
-                    }}
-                    hasNext={false}
-                    onNext={() => {
-                      console.log('Next');
-                    }}
+                    onPrevious={() => {setPage((prePage) => prePage-1)}}
+                    hasNext={page*10 < count}
+                    onNext={() => {setPage((prePage) => prePage+1)}}
                   />
                   { deleteList.length > 0 && <>
                     <ButtonGroup>

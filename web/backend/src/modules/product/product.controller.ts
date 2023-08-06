@@ -17,6 +17,7 @@ import fetchProducts from '../helpers/products';
 import {Request, Response} from 'express';
 import ProductResponse, { ProductVariant } from '../../types/ProductResponse';
 import ProductSelect from 'src/types/ProductSelect';
+import { log } from 'console';
 
 @Controller('api/products')
 export class ProductController {
@@ -28,13 +29,14 @@ export class ProductController {
 
     @Get()
     async getAllProducts(
+      @Query('page') page: number,
         @Req() req: Request,
         @Res() res: Response,
     ) {
         try {
           const { shop } = res.locals.shopify.session;
           const foundStore = await this.storeService.findByShopDomain(shop);
-            const [products, count] = await this.productService.findAll(foundStore.id, 0, 10);
+            const [products, count] = await this.productService.findAll(foundStore.id, page, 10);
             return res.status(200).send({products, count});
         } catch (e) {
           return res.status(500).send({message: 'Failed when get products'});

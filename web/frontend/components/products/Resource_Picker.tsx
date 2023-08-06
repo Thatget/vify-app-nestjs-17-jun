@@ -19,9 +19,9 @@ export default function Resource_Picker(props: any) {
         const response = await fetch('/api/products/product_picked', { method: 'GET' });
         const data = await response.json();
         if (data) {
-          const initSelected = data.map((product: {id: number, variants: string}) => {
+          const initSelected = data.map((product: {id: number, variants: { id: string; title: string }[]}) => {
             const id = "gid://shopify/Product/" + product.id;
-            const variantsArray = JSON.parse(product.variants) || [];
+            const variantsArray: { id: string; title: string }[] = product.variants || [];
             const variants = variantsArray.map((variant: { id: string; title: string }) => ({ ...variant, id: "gid://shopify/ProductVariant/" + variant.id }))
             return {id, variants}
             })
@@ -29,8 +29,7 @@ export default function Resource_Picker(props: any) {
         }
         return data;
       } catch (error) {
-        console.error('Error fetching products: ', error);
-        return [];
+        console.log(error.message);
       }
     };
     useEffect(() => {
@@ -100,8 +99,6 @@ export default function Resource_Picker(props: any) {
     setNewList([]);
     alert("Okay, data has saved")
     }
-    console.log(newList);
-    console.log(deleteList);
 
     return (
         <>
