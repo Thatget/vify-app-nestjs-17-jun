@@ -2,7 +2,7 @@ import {ResourcePicker} from "@shopify/app-bridge-react";
 import {useEffect, useState} from "react";
 import '../../css/style.css'
 import Box from "@mui/material/Box";
-import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
+import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
 import ProductSelect from "../../types/ProductSelect";
 import Product from "types/Product";
 import { ButtonGroup, Button, Divider } from "@shopify/polaris";
@@ -107,10 +107,10 @@ export default function Resource_Picker(props: any) {
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-                <Button onClick={() => {
+                <Button variant='contained' onClick={() => {
                     setOpen(true)
                 }}
-                >Select Products</Button>
+                >Add Products</Button>
             </Box>
             <ResourcePicker
                 resourceType={"Product"}

@@ -26,7 +26,6 @@ export default function SelectedProductsList() {
     const getSelectedProducts = (productsResource_Picker: any) => {
         setSelectedProducts(productsResource_Picker)
     }
-
     const fetchData = React.useCallback(async (page: number) => {
       try {
         const response = await fetch(`/api/products?page=${page}`, { method: 'GET' });
@@ -70,7 +69,7 @@ export default function SelectedProductsList() {
         <Box sx={{width: '100%'}}>
             <Box sx={{width: '100%'}}>
                 {/* <ProductPicker /> */}
-                <Resource_Picker parentCallback={getSelectedProducts} />
+                <Resource_Picker parentCallback={getSelectedProducts}/>
             </Box>
             <Box sx={{width: '100%'}}>
               {isLoading ?
@@ -97,7 +96,8 @@ export default function SelectedProductsList() {
                                             src={`${product.imageURL || ''}`}
                                         />
                                     </ListItemAvatar>
-                                    <ListItemText id={labelId} primary={<Typography variant="body1">{`${product.title}`}</Typography>}/>
+                                    <ListItemText id={labelId} primary={<Typography
+                                        variant="body1">{`${product.title}`}</Typography>}/>
                                 </ListItem>
                             </ListItem>
                         );

@@ -65,7 +65,6 @@ export class StoreFrontendController {
         let show = true;
         let settings = []
         try {
-
             const shop = query.shop;
             const variant_selected_id = query.variant_selected_id
             const store = await this.storeService.findByShopDomain(shop);

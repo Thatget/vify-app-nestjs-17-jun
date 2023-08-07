@@ -18,25 +18,21 @@
     jsProduct = vifyRequestFQ
     var variant_selected_id = '';
     variant_selected_id = {{ current_variant.id }}
-
 </script>
-{% assign jsProducts = "test" %}
+<style>
+    .price--show-badge {
+        display: none;
+    }
 
-<script>
-    jsProducts = "new Test"
-</script>
-<div>The value of : {{ jsProducts }}</div>
+    .shopify-payment-button__button {
+        display: none;
+    }
 
+    .product-form__submit {
+        display: none;
+    }
+</style>
 <!-- Product price -->
-<div class="price">
-    <span class="price-reg">{{ current_variant.price | money }}</span>
-
-    {% if current_variant.compare_at_price > current_variant.price %}
-        <span class="price-sale"><s>{{ current_variant.compare_at_price | money }}</s></span>
-    {% endif %}
-</div>
-
-<div>v 1.4</div>
 <div id="vify_rfq-f">b</div>
 {% schema %}
 {

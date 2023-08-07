@@ -31,6 +31,7 @@ const SaveSetting = ({fetchQuoteEntity,}: SaveSettingProps) => {
         let changeThankContent = false;
         let changeShoppingButton = false;
         let changeFormTitle = false;
+        let changeAddToCart = false;
         let defaultName = {name: 'name', value: setting?.name || ''};
         let defaultEmail = {name: 'email', value: setting?.email_title || ''};
         let defaultEmailPlaceholder = {name: 'email_placeholder', value: setting?.email_placeholder || ''};
@@ -66,7 +67,7 @@ const SaveSetting = ({fetchQuoteEntity,}: SaveSettingProps) => {
         let defaultThankTitle = {name: 'thank_title', value: setting?.thank_title || ''};
         let defaultThankContent = {name: 'thank_content', value: setting?.thank_content || ''};
         let defaultContinueShoppingButton = {name: 'shopping_button', value: setting?.shopping_button || ''};
-
+        let defaultAddToCart = {name: 'hide_add_to_cart', value: setting?.hide_add_to_cart || ''};
       if(currentSetting) {
         Object.entries(currentSetting).map(([key, value]) => {
             switch (key) {
@@ -154,6 +155,12 @@ const SaveSetting = ({fetchQuoteEntity,}: SaveSettingProps) => {
                         changeFormTitle = true;
                     }
                     break;
+                case 'hide_add_to_cart':
+                        if (value !== setting.hide_add_to_cart) {
+                            defaultAddToCart = {...defaultAddToCart, value: value};
+                            changeAddToCart = true;
+                        }
+                        break;
                 default:
                     break;
             }
@@ -196,6 +203,9 @@ const SaveSetting = ({fetchQuoteEntity,}: SaveSettingProps) => {
         }
         if (changeFormTitle) {
             dataPost.push(defaultFormTitle)
+        }
+        if (changeAddToCart) {
+            dataPost.push(defaultAddToCart)
         }
         const data: any = await fetch("/api/quote-entity", {
             method: 'POST',

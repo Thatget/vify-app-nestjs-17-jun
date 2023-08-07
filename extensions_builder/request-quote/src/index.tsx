@@ -26,6 +26,27 @@ function Index() {
                 setSetting(data);
                 console.log("setting.show", data.show)
                 setDataSettings(data.settings)
+                const hidepriceElement = document.querySelector('.price--show-badge') as HTMLDivElement
+                console.log("test", hidepriceElement)
+                if (data.show === true)
+                    hidepriceElement.style.display = 'block'
+                const hideByNowElement = document.querySelector('.shopify-payment-button__button') as HTMLDivElement
+                const hideAddToCartElement = document.querySelector('.product-form__submit') as HTMLDivElement
+                // data.settings.map(setting => {
+                //     if (setting.name === 'hide_buy_now') {
+                //         if (setting.value === '1') {
+                //             console.log("setting.name - hide by now", setting.value)
+                //             console.log("hideByNowElement", hideByNowElement)
+                //             hideByNowElement.style.display = 'none'
+                //         }
+                //     }
+                //     if (setting.name === 'hide_add_to_cart') {
+                //         if (setting.value === '1') {
+                //             console.log("hideByNowElement", hideAddToCartElement)
+                //             hideAddToCartElement.style.display = 'none'
+                //         }
+                //     }
+                // })
             })
     }, [])
     const handleChangeModal = (modal: string) => {
@@ -37,7 +58,7 @@ function Index() {
             {setting.show &&
                 <div>
                     <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                            onClick={() => handleChangeModal('request')}>Request For Quote V1.9</Button>
+                            onClick={() => handleChangeModal('request')}>Request For Quote V1.3</Button>
                     {modal === 'request' &&
                         <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}
                                      dataSettings={dataSettings}/>}
@@ -46,13 +67,6 @@ function Index() {
                                   dataSettings={dataSettings}/>}
                 </div>
             }
-            {setting.show &&
-                <style>
-                    {` .price__regular {
-                display: none 
-                }
-            `}
-                </style>}
         </>
     );
 }

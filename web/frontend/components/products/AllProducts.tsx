@@ -11,15 +11,15 @@ const AllProductsSelected = (
     <Card sx={{width: '100%'}}>
         <CardBody>
             <Typography gutterBottom variant="h6" component="div">
-                The Easy Quotes will apply to All Products
+                Vify Quotes will apply to All of Your Products
             </Typography>
         </CardBody>
-        <CardMedia
-            component="img"
-            height="180"
-            image="./assets/allProducts.png"
-            alt="green iguana"
-        />
+        {/*<CardMedia*/}
+        {/*    component="img"*/}
+        {/*    height="180"*/}
+        {/*    image="./assets/allProducts.png"*/}
+        {/*    alt="green iguana"*/}
+        {/*/>*/}
     </Card>
 )
 export default function AllProducts() {

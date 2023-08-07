@@ -20,8 +20,8 @@ import FormSettingPreview from "../components/Setting/FormSettingPreview";
 import ThanksFormSetting from "../components/Setting/ThanksFormSetting";
 import ThanksPagePreview from "../components/Setting/ThanksPagePreview";
 import QuoteEntity from "../types/QuoteEntity";
-import { Typography } from "@mui/material";
-import { CardBody } from "@material-tailwind/react";
+import {Typography} from "@mui/material";
+import {CardBody} from "@material-tailwind/react";
 import ProductSelector from "../components/ProductSelector";
 import { Spinner } from "@shopify/polaris";
 
@@ -104,16 +104,16 @@ const Setting = () => {
                             <ConfigSetting/>
                         </CardContent>
                     </Card>
-                    <Card style={{ marginTop: '20px' }}>
-                      <CardContent>
-                        <CardBody>
-                          <Typography variant="body1">
-                            <b>Products Quotes Setting: </b>
-                          </Typography>
-                          <br/>
-                          <ProductSelector />
-                        </CardBody>
-                      </CardContent>
+                    <Card style={{marginTop: '20px'}}>
+                        <CardContent>
+                            <CardBody>
+                                <Typography variant="body1">
+                                    <b>Products Quotes Setting: </b>
+                                </Typography>
+                                <br/>
+                                <ProductSelector/>
+                            </CardBody>
+                        </CardContent>
                     </Card>
                 </div>
             </Grid>
@@ -217,8 +217,6 @@ const Setting = () => {
                             alignItems: "flex-start",
                             width: "100%",
                             bgcolor: 'background.paper',
-
-
                         }}>
                             <Box sx={{flexGrow: 1}}>
                                 <TabList

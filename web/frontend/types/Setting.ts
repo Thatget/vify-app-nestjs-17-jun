@@ -7,6 +7,7 @@ interface Setting {
     message_placeholder?: string,
     hide_price?: boolean,
     hide_buy_now?: boolean,
+    hide_add_to_cart?: boolean,
     show_request_for_quote?: boolean,
     thank_title?: string,
     thank_content?: string,
