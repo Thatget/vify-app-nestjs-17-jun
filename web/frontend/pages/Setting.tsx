@@ -1,5 +1,5 @@
 import SettingComponentSet from "../components/Setting/SettingComponentSet";
-import React, {useContext} from "react";
+import React, {useCallback, useContext, useState} from "react";
 import SettingComponentPreview from "../components/Setting/SettingComponentPreview";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import CardContent from "@mui/material/CardContent";
 import {actions, StoreContext} from "../store";
 import {payloadObject} from "../store/actions";
-import {useAppQuery} from "../hooks";
+import {useAppQuery, useAuthenticatedFetch} from "../hooks";
 import SaveSetting from "../components/Setting/SaveSetting";
 import FormSetting, {defaultFormSetting} from "../components/Setting/FormSetting";
 import ConfigSetting from "../components/Setting/ConfigSetting";
@@ -23,12 +23,14 @@ import QuoteEntity from "../types/QuoteEntity";
 import { Typography } from "@mui/material";
 import { CardBody } from "@material-tailwind/react";
 import ProductSelector from "../components/ProductSelector";
+import { Spinner } from "@shopify/polaris";
 
 interface SettingX {
     [key: string]: string | number | boolean;
 }
 
 const Setting = () => {
+  const fetch = useAuthenticatedFetch();
     const {state, dispatch} = useContext(StoreContext);
     const setSection = (sections: payloadObject[]) => {
         sections.map((section) => {
@@ -36,7 +38,7 @@ const Setting = () => {
         });
     };
     const [value, setValue] = React.useState('1');
-
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
@@ -52,38 +54,37 @@ const Setting = () => {
             <SettingComponentPreview/>
         </CardContent>
     );
-    const {
-        data,
-        refetch: refetchQuoteEntity,
-        isLoading: isLoadingQuoteEntity,
-        isRefetching: isRefetchingQuoteEntity,
-    } = useAppQuery<QuoteEntity[]>({
-        url: "/api/quote-entity",
-        reactQueryOptions: {
-            onSuccess: () => {
-            },
-        },
-    });
-    React.useEffect(() => {
+
+    const fetchQuoteEntity = useCallback( async () => {
+      setIsLoading(true)
+      try {
+        const response = await fetch(`/api/quote-entity`, { method: 'GET' });
+        const data = await response.json();
         if (data) {
-            let setting: SettingX = {};
-            data.map((entity: QuoteEntity) => {
-                switch (entity.name) {
-                    case 'hide_price':
-                    case 'all_product':
-                    case 'hide_buy_now':
-                    case 'show_request_for_quote':
-                        if (entity.value === '1') setting = {...setting, [entity.name]: true};
-                        else setting = {...setting, [entity.name]: false};
-                        break;
-                    default:
-                        setting = {...setting, [entity.name]: entity.value};
-                        break;
-                }
-            });
-            dispatch(actions.setInitSetting(setting));
-        }
-    }, [data])
+          let setting: SettingX = {};
+          data.map((entity: QuoteEntity) => {
+            switch (entity.name) {
+              case 'hide_price':
+              case 'all_product':
+              case 'hide_buy_now':
+              case 'show_request_for_quote':
+                if (entity.value === '1') setting = {...setting, [entity.name]: true};
+                else setting = {...setting, [entity.name]: false};
+                break;
+              default:
+                setting = {...setting, [entity.name]: entity.value};
+                break;
+            }
+        });
+        dispatch(actions.setInitSetting(setting));
+        }    
+      } catch (error) {
+      }
+      setIsLoading(false)
+    }, [])
+    React.useEffect(() => {
+      fetchQuoteEntity()
+    }, [])
 
     const configSetting = (
         <Grid
@@ -192,8 +193,8 @@ const Setting = () => {
 
     return (
         <>
-            {/*<Box sx={{width: '100%', typography: 'body1'}}>*/}
-            <TabContext value={value} sx={{width: '100%'}}>
+          {isLoading ? <div style={{marginLeft: '50%'}}><Spinner /></div> :
+            <TabContext value={value}>
                 {/*<ValidatorForm onSubmit={handleSubmit}>*/}
                 <Grid container spacing={1} sx={{width: "100%"}}>
                     <Grid
@@ -234,8 +235,7 @@ const Setting = () => {
                                 </TabList>
                             </Box>
                             <Box sx={{mr: 2}}>
-                                <SaveSetting isFetchingQuoteEntity={isRefetchingQuoteEntity || isLoadingQuoteEntity}
-                                             refetchQuoteEntity={refetchQuoteEntity}/>
+                                <SaveSetting  fetchQuoteEntity={fetchQuoteEntity}/>
                             </Box>
                         </Box>
 
@@ -253,7 +253,7 @@ const Setting = () => {
 
 
                 </Grid>
-            </TabContext>
+            </TabContext>}
             {/*</Box>*/}
             {/*</Container>*/}
             {/*</Box>*/}

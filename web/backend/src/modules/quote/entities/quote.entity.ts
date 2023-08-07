@@ -29,7 +29,7 @@ export class Quote {
   updated_at: Date;
   @Column({ nullable: false })
   store_id: number;
-  @ManyToOne(() => Store, store => store.quotes)
+  @ManyToOne(() => Store, store => store.quotes, { onDelete: 'CASCADE' })
   @JoinColumn({name: 'store_id'})
   store: Store;
 }

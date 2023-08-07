@@ -24,8 +24,8 @@ export class ProductService {
     return await this.productRepository.insert(product);
   }
 
-  async findAll(store_id: number): Promise<Product[]> {
-    return await this.productRepository.findBy({store_id});
+  async findAll(store_id: number, skip: number, take: number) {
+    return await this.productRepository.findAndCount({ where: { store_id }, skip, take, });
   }
 
   async findByProductIds(productIds:string[]) {
@@ -67,5 +67,9 @@ export class ProductService {
       .from(Product)
       .where('id = :id AND store_id = :store_id', { id, store_id }) 
       .execute();
+    }
+
+    async deleteMany (ids: number[], store_id: number) {
+      await this.productRepository.delete({id: In(ids), store_id});
     }
 }

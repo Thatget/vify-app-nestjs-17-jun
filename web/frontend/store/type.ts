@@ -22,5 +22,6 @@ export type StoreContextType = {
 export enum actionType {
     SET_NEW_SETTING = 'SET_NEW_SETTING',
     SET_INIT_SETTING = 'SET_INIT_SETTING',
+    RESET_NEW_SETTING = 'RESET_NEW_SETTING',
     SET_SETTING_TAB = 'SET_SETTING_TAB',
 }

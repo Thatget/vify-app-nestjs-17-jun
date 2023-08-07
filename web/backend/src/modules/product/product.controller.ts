@@ -12,14 +12,12 @@ import {
 } from '@nestjs/common';
 import {ProductService} from './product.service';
 import {CreateProductDto} from './dto/create-product.dto';
-import {UpdateProductDto} from './dto/update-product.dto';
 import {StoreService} from '../store/store.service';
-
 import fetchProducts from '../helpers/products';
 import {Request, Response} from 'express';
-import {Product} from './entities/product.entity';
 import ProductResponse, { ProductVariant } from '../../types/ProductResponse';
 import ProductSelect from 'src/types/ProductSelect';
+import { log } from 'console';
 
 @Controller('api/products')
 export class ProductController {
@@ -31,14 +29,15 @@ export class ProductController {
 
     @Get()
     async getAllProducts(
+      @Query('page') page: number,
         @Req() req: Request,
         @Res() res: Response,
     ) {
         try {
           const { shop } = res.locals.shopify.session;
           const foundStore = await this.storeService.findByShopDomain(shop);
-            const products = await this.productService.findAll(foundStore.id);
-            return res.status(200).send(products);
+            const [products, count] = await this.productService.findAll(foundStore.id, page, 10);
+            return res.status(200).send({products, count});
         } catch (e) {
           return res.status(500).send({message: 'Failed when get products'});
         }
@@ -55,7 +54,6 @@ export class ProductController {
           if (!title) title = '';
           const session = res.locals.shopify.session;
           if (!(reverse === true)) reverse = false;
-
           const productPage = await fetchProducts(session, title, reverse);
           const shopProducts = productPage.productList;
           const pageInfo = productPage.pageInfo;
@@ -141,6 +139,21 @@ export class ProductController {
           return res.status(200).send('OK');
         } catch (e) {
           return res.status(500).send({message: 'Failed when get products'});
+        }
+      }
+      @Post('/delete')
+      async delete(@Body() ids: number[], @Res() res: Response) {
+        try {
+          console.log(typeof ids[0]);
+          const shopDomain = res.locals.shopify.session.shop;
+          const foundStore = await this.storeService.findByShopDomain(shopDomain);
+          if (foundStore) {
+            const store_id = foundStore.id;
+            await this.productService.deleteMany(ids, store_id);
+          }
+          return res.status(200).send("OK");
+        } catch (error) {
+          res.status(500).json({message: 'An error occurred'})
         }
       }
 }
