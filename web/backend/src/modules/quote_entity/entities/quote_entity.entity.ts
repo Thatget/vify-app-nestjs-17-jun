@@ -19,7 +19,7 @@ export class QuoteEntity {
     value: string;
     @Column({nullable: false})
     store_id: number;
-    @ManyToOne(() => Store, (store) => store.quote_entities)
+    @ManyToOne(() => Store, (store) => store.quote_entities, { onDelete: 'CASCADE' })
     @JoinColumn({name: 'store_id'})
     store: Store;
 }

@@ -26,7 +26,11 @@ export class StoreService {
     }
 
     async findByShopDomain(shop: string): Promise<Store> {
-      return await this.storesRepository.findOne({where: {shop: shop}});
+      if (shop) {
+        return await this.storesRepository.findOneBy({shop: shop});
+      } else {
+        return null;
+      }
     }
 
     async update(id: number, updateStoreDto: UpdateStoreDto) {

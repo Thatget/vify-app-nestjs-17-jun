@@ -1,15 +1,10 @@
-import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import CardMedia from "@mui/material/CardMedia"
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Button from "@mui/material/Button";
 import {
     Card,
-    CardHeader,
     CardBody,
-    CardFooter,
 } from "@material-tailwind/react";
 
 const AllProductsSelected = (
@@ -28,33 +23,23 @@ const AllProductsSelected = (
     </Card>
 )
 export default function AllProducts() {
-    const [show, setShow] = React.useState(true)
-    const handleSave = () => {
-        alert("You have saved your setting")
-    }
-    return (
-        <>
-            <br/>
-            <Container>
-                <Box sx={{minWidth: 275}}>
-                    {/*<Card>{AllProductsSelected}</Card>*/}
-                    <br/>
-                    <Box
-                        display="flex"
-                        justifyContent="flex-end"
-                        alignItems="flex-end"
-                        sx={{width: '100%'}}
-                    >
-                        {/*{show &&*/}
-                        {/*    <Button*/}
-                        {/*        variant="contained"*/}
-                        {/*        onClick={() => handleSave()}*/}
-                        {/*    >Save Your Setting</Button>*/}
-                        {/*}*/}
-                    </Box>
-                </Box>
-            </Container>
-        </>
-    );
+  return (
+    <>
+      <br/>
+      <Container>
+        <Box sx={{minWidth: 275}}>
+          <Card>{AllProductsSelected}</Card>
+          <br/>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="flex-end"
+            sx={{width: '100%'}}
+          >
+          </Box>
+        </Box>
+      </Container>
+    </>
+  );
 }
 

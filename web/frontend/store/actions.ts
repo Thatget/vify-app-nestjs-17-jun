@@ -14,6 +14,10 @@ export const setNewSetting = (payload: object) => ({
   payload
 })
 
+export const resetNewSetting = () => ({
+  type: actionType.RESET_NEW_SETTING,
+})
+
 export const setSettingTab = (tab: payloadObject) => ({
   type: actionType.SET_SETTING_TAB,
   tab

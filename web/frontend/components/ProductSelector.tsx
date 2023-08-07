@@ -27,8 +27,7 @@ export default function ProductSelector() {
         // <Box sx={{ width: '100%'}}>
         <>
             <FormControl sx={{width: '100%'}}>
-                <FormLabel id="demo-row-radio-buttons-group-label">{<Typography variant="body1">Apply quotes
-                    to</Typography>} </FormLabel>
+                <FormLabel id="demo-row-radio-buttons-group-label">{<Typography variant="body1">Apply quotes to</Typography>} </FormLabel>
                 <RadioGroup
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"

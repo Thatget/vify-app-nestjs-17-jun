@@ -8,84 +8,61 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from "@mui/material/IconButton";
-import Button from '@mui/material/Button'
-import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
+import {useAuthenticatedFetch} from "../../hooks";
 import Typography from "@mui/material/Typography";
 import Product from '../../types/Product';
 import Resource_Picker from './Resource_Picker';
+import { Button, ButtonGroup, Pagination, Spinner } from '@shopify/polaris';
 
 
 export default function SelectedProductsList() {
+  const fetch = useAuthenticatedFetch();
     const [isLoading, setIsLoading] = React.useState(true);
-    const [selectedProductList, setSelectedProductList] = React.useState<Product[]>([]);
-    const fetch = useAuthenticatedFetch();
-    const [show, setShow] = React.useState(true)
+    const [selectedProducts, setSelectedProducts] = React.useState([])
+    const [deleteList, setDeleteList] = React.useState<number[]>([]);
+    const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([]);
+    const [page, setPage] = React.useState<number>(0);
+    const [count, setCount] = React.useState<number>(0);
     const getSelectedProducts = (productsResource_Picker: any) => {
         setSelectedProducts(productsResource_Picker)
-        setShow(true)
     }
-    const {
-        data,
-        refetch: refetchProduct,
-        isLoading: isLoadingQuote,
-        isRefetching: isRefetchingQuote,
-    } = useAppQuery<Product[]>({
-        url: "/api/products",
-        reactQueryOptions: {
-            onSuccess: () => {
-                setIsLoading(false);
-            }
-        },
-    });
+    const fetchData = React.useCallback(async (page: number) => {
+      try {
+        const response = await fetch(`/api/products?page=${page}`, { method: 'GET' });
+        const data = await response.json();
+        setVisibleProduct(data.products || []);
+        setCount(data.count || 0);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }, []);
 
+    React.useEffect(() => { 
+      setIsLoading(true);
+      fetchData(page);
+    }, [page]);
     React.useEffect(() => {
-        if (data) {
-            setSelectedProductList(data);
+        const subSet = new Set(deleteList);
+        let resultArray = [];
+        if (visibleProduct) {
+          resultArray = visibleProduct.filter((item) => !subSet.has(item.id));
         }
-    }, [data]);
+        setVisibleProduct(resultArray);
+    }, [deleteList]);
 
-    const [selectedProducts, setSelectedProducts] = React.useState([])
-    const handleRemove = async (id: string) => {
-        await fetch(`/api/products/${id}`, {
-            method: "DELETE"
+    const handleRemove = async (ids: number[]) => {
+      try {
+        await fetch(`/api/products/delete`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(ids)
         })
-        refetchProduct()
-        const newList = selectedProducts.filter((item) => item.id !== id)
-        setSelectedProducts(newList)
-    }
-    const handleSave = () => {
-        const productList = selectedProducts.map(selectedProduct => {
-            let currentProduct: Product = {
-                id: '',
-                productDescription: '',
-                imageURL: '',
-                title: '',
-                variants: ''
-            };
-            let variants = selectedProduct.variants.map((variant: { id: any; title: any; }) => ({
-                id: variant.id,
-                title: variant.title
-            }))
-            currentProduct.variants = variants;
-            const parts = selectedProduct.id.split("/");
-            currentProduct.id = parts[parts.length - 1];
-            currentProduct.title = selectedProduct.title;
-            currentProduct.productDescription = selectedProduct.descriptionHtml;
-            currentProduct.imageURL = selectedProduct.images[0]?.originalSrc || null;
-
-            return currentProduct;
-        })
-        console.log(productList)
-        fetch("/api/products/insert",
-            {
-                method: "Post",
-                body: JSON.stringify(productList),
-                headers: {"Content-Type": "application/json"}
-            }
-        ).then((data: Response): void => {
-            console.log("data from handleSelection", data)
-        });
-        alert("Okay, data has saved")
+        setDeleteList([])
+        setPage(0);
+      } catch (error) {
+        
+      }
     }
 
     return (
@@ -95,23 +72,24 @@ export default function SelectedProductsList() {
                 <Resource_Picker parentCallback={getSelectedProducts}/>
             </Box>
             <Box sx={{width: '100%'}}>
-                <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
-                    {selectedProductList && selectedProductList.map((product) => {
+              {isLoading ?
+                <div style={{marginLeft: '50%'}}>
+                  <Spinner />
+                </div>:
+              <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
+                {visibleProduct && visibleProduct.length > 0 && visibleProduct.map((product) => {
                         const labelId = `checkbox-list-secondary-label-${product.id}`;
                         return (
                             <ListItem
                                 key={product.id}
                                 secondaryAction={
-                                    <IconButton edge="end" aria-label="delete" onClick={() => {
-                                        handleRemove(product.id)
-                                    }}>
-                                        <DeleteIcon/>
-                                    </IconButton>
+                                  <IconButton edge="end" aria-label="delete" onClick={() => {setDeleteList(preSet => [...preSet, product.id])}}>
+                                      <DeleteIcon/>
+                                  </IconButton>
                                 }
                                 disablePadding
                             >
-                                <ListItem
-                                >
+                                <ListItem>
                                     <ListItemAvatar>
                                         <Avatar
                                             alt={''}
@@ -124,8 +102,9 @@ export default function SelectedProductsList() {
                             </ListItem>
                         );
                     })}
-                </List>
-                {show && <Divider variant="middle" sx={{bgcolor: "#1a237e", height: 0.2}}/>}
+              </List>
+              }
+                <Divider variant="middle" sx={{ bgcolor: "#1a237e",height:2 }}/>
                 <br/>
                 <Box
                     display="flex"
@@ -133,10 +112,19 @@ export default function SelectedProductsList() {
                     alignItems="flex-end"
                     sx={{width: '100%'}}
                 >
-                    {show &&
-                        <Button variant="contained" onClick={() => handleSave()}
-                        >Save</Button>
-                    }
+                  <Pagination
+                    label="Results"
+                    hasPrevious={page!==0}
+                    onPrevious={() => {setPage((prePage) => prePage-1)}}
+                    hasNext={(page+1)*10 < count}
+                    onNext={() => {setPage((prePage) => prePage+1)}}
+                  />
+                  { deleteList.length > 0 && <>
+                    <ButtonGroup>
+                      <Button destructive onClick={() => setDeleteList([])} >UnChange</Button>
+                      <Button primary onClick={() => handleRemove(deleteList)} >Save</Button>
+                    </ButtonGroup>
+                  </> }
                 </Box>
             </Box>
         </Box>
