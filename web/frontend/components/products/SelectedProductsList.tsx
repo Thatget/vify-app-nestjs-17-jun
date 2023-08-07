@@ -23,11 +23,9 @@ export default function SelectedProductsList() {
     const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([]);
     const [page, setPage] = React.useState<number>(0);
     const [count, setCount] = React.useState<number>(0);
-    const getSelectedProducts = (productsResource_Picker: any) => {
-        setSelectedProducts(productsResource_Picker)
-    }
     const fetchData = React.useCallback(async (page: number) => {
       try {
+        setIsLoading(true);
         const response = await fetch(`/api/products?page=${page}`, { method: 'GET' });
         const data = await response.json();
         setVisibleProduct(data.products || []);
@@ -39,7 +37,6 @@ export default function SelectedProductsList() {
     }, []);
 
     React.useEffect(() => { 
-      setIsLoading(true);
       fetchData(page);
     }, [page]);
     React.useEffect(() => {
@@ -69,7 +66,7 @@ export default function SelectedProductsList() {
         <Box sx={{width: '100%'}}>
             <Box sx={{width: '100%'}}>
                 {/* <ProductPicker /> */}
-                <Resource_Picker parentCallback={getSelectedProducts}/>
+                <Resource_Picker handleUpdateProduct={() => fetchData(0)} />
             </Box>
             <Box sx={{width: '100%'}}>
               {isLoading ?

@@ -17,6 +17,7 @@ import {StoreService} from '../store/store.service';
 import {QuoteService} from '../quote/quote.service';
 import {CreateQuoteDto} from '../quote/dto/create-quote.dto';
 import {ProductService} from '../product/product.service';
+import { log } from 'console';
 
 @Controller('api/proxy')
 export class StoreFrontendController {
@@ -32,11 +33,15 @@ export class StoreFrontendController {
 
     @Post('new_quote')
     async create(
+      @Param() param,
         @Body() data,
         @Query() query,
         @Res() res: Response,
     ) {
         try {
+          log(param)
+          log(data)
+          log(query)
             const shop = query.shop;
             const formValue = data.formValue
             const selected_variant = data.selected_variant

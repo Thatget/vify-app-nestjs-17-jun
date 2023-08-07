@@ -2,12 +2,16 @@ import {ResourcePicker} from "@shopify/app-bridge-react";
 import {useEffect, useState} from "react";
 import '../../css/style.css'
 import Box from "@mui/material/Box";
-import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
+import {useAuthenticatedFetch} from "../../hooks";
 import ProductSelect from "../../types/ProductSelect";
 import Product from "types/Product";
 import { ButtonGroup, Button, Divider } from "@shopify/polaris";
 
-export default function Resource_Picker(props: any) {
+interface ResourcePickerProp {
+  handleUpdateProduct: () => void
+}
+
+export default function Resource_Picker({handleUpdateProduct}: ResourcePickerProp) {
     const fetch = useAuthenticatedFetch();
     const [open, setOpen] = useState(false);
     const [initialSelectionIds, setInitialSelectionIds] = useState<ProductSelect[]>([]);
@@ -41,24 +45,28 @@ export default function Resource_Picker(props: any) {
     const handleSelection = (resources: any) => {
       const selection = resources.selection || [];
       const newOrUpdate = [];
-      const deleteProducts = initialSelectionIds.filter(initSelect => !selection.find(item => item.id === initSelect.id));
+      const deleteProducts = initialSelectionIds.filter(initSelect => !selection.find((item: { id: string; }) => item.id === initSelect.id));
       selection.map(select => {
         let checkUpdate = false;
-        const initId = initialSelectionIds.find(item => item.id === select.id);
+        const initId = initialSelectionIds.find(item => item.id === select.id);        
         if (initId) {
           if (initId.variants.length !== select.variants.length) {
             checkUpdate = true;
           } else {
             for (let i = 0; i < initId.variants.length; i++) {
-              const element = initId.variants[i];
-              if (select.variants.find(variant => variant.id !== element.id)) {
+              const element = initId.variants[i];              
+              if (!select.variants.find(variant => variant.id === element.id)) {
                 checkUpdate = true;
                 break;
               }
             }
           }
+          if (checkUpdate) {
+            newOrUpdate.push(select);
+          }
+        } else {          
+          newOrUpdate.push(select);
         }
-        newOrUpdate.push(select);
       });
 
       const productList = newOrUpdate.map(selectedProduct => {
@@ -97,7 +105,7 @@ export default function Resource_Picker(props: any) {
     )
     setDeleteList([]);
     setNewList([]);
-    alert("Okay, data has saved")
+    handleUpdateProduct()
     }
 
     return (
@@ -107,7 +115,7 @@ export default function Resource_Picker(props: any) {
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-                <Button variant='contained' onClick={() => {
+                <Button onClick={() => {
                     setOpen(true)
                 }}
                 >Add Products</Button>
