@@ -156,7 +156,7 @@ const SaveSetting = ({fetchQuoteEntity,}: SaveSettingProps) => {
                     }
                     break;
                 case 'hide_add_to_cart':
-                        if (value !== setting.hide_add_to_cart) {
+                        if (value !== setting?.hide_add_to_cart) {
                             defaultAddToCart = {...defaultAddToCart, value: value};
                             changeAddToCart = true;
                         }
