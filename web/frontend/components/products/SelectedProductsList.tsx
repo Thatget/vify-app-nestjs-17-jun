@@ -116,7 +116,7 @@ export default function SelectedProductsList() {
                     label="Results"
                     hasPrevious={page!==0}
                     onPrevious={() => {setPage((prePage) => prePage-1)}}
-                    hasNext={page*10 < count}
+                    hasNext={(page+1)*10 < count}
                     onNext={() => {setPage((prePage) => prePage+1)}}
                   />
                   { deleteList.length > 0 && <>

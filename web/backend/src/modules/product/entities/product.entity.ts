@@ -26,7 +26,7 @@ export class Product {
 
   @Column({ nullable: false })
   store_id: number;
-  @ManyToOne(() => Store, store => store.products)
+  @ManyToOne(() => Store, store => store.products, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'store_id' })
   store: Store;
 }
