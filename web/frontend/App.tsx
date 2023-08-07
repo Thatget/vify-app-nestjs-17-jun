@@ -1,4 +1,4 @@
-// import CssBaseline from "@mui/material/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
 import {BrowserRouter, Route, Routes, Link} from "react-router-dom";
 import HomePage from "./pages";
 import React, {useState} from "react";
@@ -11,7 +11,7 @@ import SaleOff from "./components/SaleOff";
 import {AppBridgeProvider, PolarisProvider, QueryProvider} from "./components";
 import NotFound from "./pages/NotFound";
 import ContextProvider from "./store/ContextProvider";
-import {createTheme, makeStyles} from "@mui/material/styles";
+import {createTheme, makeStyles, ThemeProvider} from "@mui/material/styles";
 
 import {PaletteColor, PaletteColorOptions} from "@mui/material";
 import {blue, brown, cyan, deepPurple, green, grey, lightBlue, orange, purple} from "@mui/material/colors";
@@ -100,21 +100,21 @@ const App: React.FunctionComponent<IApplicationProps> = (props) => {
             <BrowserRouter>
                 <AppBridgeProvider>
                     <QueryProvider>
-                        {/*<ThemeProvider>*/}
-                        {/*<CssBaseline/>*/}
-                        <ContextProvider>
-                            <ResponsiveAppBar parentCallback={getPath}/>
-                            {/*<SaleOff/>*/}
-                            <Routes>
-                                <Route path="/" element={<GettingStarted/>}/>
-                                <Route path="GettingStarted" element={<GettingStarted/>}/>
-                                <Route path="Quotes" element={<Quotes/>}/>
-                                <Route path="Products" element={<Products/>}/>
-                                <Route path="Setting" element={<Setting/>}/>
-                                <Route path="*" element={<NotFound/>}/>
-                            </Routes>
-                        </ContextProvider>
-                        {/*</ThemeProvider>*/}
+                        <ThemeProvider theme={theme}>
+                            <CssBaseline/>
+                            <ContextProvider>
+                                <ResponsiveAppBar parentCallback={getPath}/>
+                                {/*<SaleOff/>*/}
+                                <Routes>
+                                    <Route path="/" element={<GettingStarted/>}/>
+                                    <Route path="GettingStarted" element={<GettingStarted/>}/>
+                                    <Route path="Quotes" element={<Quotes/>}/>
+                                    <Route path="Products" element={<Products/>}/>
+                                    <Route path="Setting" element={<Setting/>}/>
+                                    <Route path="*" element={<NotFound/>}/>
+                                </Routes>
+                            </ContextProvider>
+                        </ThemeProvider>
                     </QueryProvider>
                 </AppBridgeProvider>
             </BrowserRouter>

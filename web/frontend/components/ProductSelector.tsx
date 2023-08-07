@@ -9,17 +9,17 @@ import SelectedProductsList from "./products/SelectedProductsList";
 import Divider from '@mui/material/Divider';
 import Typography from "@mui/material/Typography";
 import {StoreContext, actions} from '../store'
-import { defaultConfigSetting } from './Setting/ConfigSetting';
+import {defaultConfigSetting} from './Setting/ConfigSetting';
 
 export default function ProductSelector() {
-  const {state, dispatch} = React.useContext(StoreContext);
-  const localConfigSetting = ({...defaultConfigSetting, ...state.setting, ...state.currentSetting});
+    const {state, dispatch} = React.useContext(StoreContext);
+    const localConfigSetting = ({...defaultConfigSetting, ...state.setting, ...state.currentSetting});
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.value === 'AllProducts') {
-          dispatch(actions.setNewSetting({all_product: true}));
+            dispatch(actions.setNewSetting({all_product: true}));
         } else {
-          dispatch(actions.setNewSetting({all_product: false}));
+            dispatch(actions.setNewSetting({all_product: false}));
         }
     }
 
@@ -45,7 +45,7 @@ export default function ProductSelector() {
                 {/*<Divider variant="middle" light={true} />*/}
                 <br/>
             </FormControl>
-            {!localConfigSetting.all_product && <Divider variant="middle" sx={{bgcolor: "#1a237e", height: 2}}/>}
+            {!localConfigSetting.all_product && <Divider variant="middle" sx={{bgcolor: "#1a237e", height: 0.2}}/>}
             <br/>
             {/*{openSelectProducts && <hr/>}*/}
             {localConfigSetting.all_product ? <AllProducts/> : <SelectedProductsList/>}

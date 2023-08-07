@@ -71,16 +71,12 @@ const StyledTextarea = styled(TextareaAutosize)(
     background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
     border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
     box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
-  
     &:hover {
       border-color: ${blue[400]};
     }
-  
     &:focus {
       border-color: ${blue[400]};
-      
     }
-  
     // firefox
     &:focus-visible {
       outline: 0;
@@ -88,9 +84,6 @@ const StyledTextarea = styled(TextareaAutosize)(
   `,
 );
 const messageSample: string = "Hello,We are visiting your website and your products meet my requirements very well.Please send me the price, specification, and similar model will be OK.Feel free to chat with me.Thanks! "
-const newMessage = ReactDOMServer.renderToString(
-    <p>abc</p>
-)
 type Props = {
     isOpen: boolean;
     handleModal: (modal: string) => void;
@@ -160,6 +153,7 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
     const [formEmailPlaceholder, setEmailPlaceholder] = useState<quoteEntity>(initialValue)
     const [formMessagePlaceholder, setMessagePlaceholder] = useState<quoteEntity>(initialValue)
     const [formFormTitle, setFormTitle] = useState<quoteEntity>(initialValue)
+    const [formHidePrice, setHidePrice] = useState<quoteEntity>(initialValue)
     const {
         register,
         handleSubmit,
@@ -185,8 +179,6 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
                 field = {...field, message: value}
                 console.log("field", field)
                 break;
-
-
             default:
                 break;
         }
@@ -229,6 +221,7 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
             if (temp.name === 'message_placeholder') setMessagePlaceholder(temp)
             if (temp.name === 'name_placeholder') setNamePlaceholder(temp)
             if (temp.name === 'form_title') setFormTitle(temp)
+            if (temp.name === 'hide_price') setHidePrice(temp)
         })
     }, [dataSettings])
     const sendQuote = () => {
@@ -319,9 +312,12 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
                                 {/*<Typography variant="body1"*/}
                                 {/*            sx={{m: 1}}>Description: {initialLineItem.description}</Typography>*/}
                                 <Typography variant="body1" sx={{m: 1}}>
-                                    Title: {initialLineItem.variant.name}</Typography>
+                                    {initialLineItem.variant.name}</Typography>
                                 <Typography variant="body1" sx={{m: 1}}>
-                                    Price:{initialLineItem.variant.price_formatted}</Typography>
+                                    {initialLineItem.variant.title}</Typography>
+                                {/*{formHidePrice &&*/}
+                                {/*    <Typography variant="body1" sx={{m: 1}}>*/}
+                                {/*        {initialLineItem.variant.price_formatted}</Typography>}*/}
 
                             </div>
 
@@ -381,7 +377,7 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
                                 placeholder={formMessagePlaceholder.value}
                                 // value={formValue.message}
                                 onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setFormData(e.target.value, "message")}
-                                sx={{width: '46ch', mr: 0, ml: 'auto'}}
+                                sx={{width: '49ch', mr: 0, ml: 'auto'}}
                             />
                         </Box>
                         <Button variant="contained" type="submit"

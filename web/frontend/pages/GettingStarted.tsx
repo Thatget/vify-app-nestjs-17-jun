@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useAuthenticatedFetch} from "../hooks";
 import {Card} from '@mui/material';
+import {Page, Layout, LegacyCard} from '@shopify/polaris'
 
 export default function GettingStarted() {
     const fetch = useAuthenticatedFetch()
@@ -100,28 +101,23 @@ export default function GettingStarted() {
     );
 
     return (
-        <>
-            <>
+        <Page>
+            <Layout sectioned>
+                <LegacyCard>{selectProducts}</LegacyCard>
                 <br/>
-                <Container>
-                    {/*<Box sx={{minWidth: 275}}>*/}
-                    <Card variant="outlined">{selectProducts}</Card>
-                    {/*</Box>*/}
-                    <br/>
-                    {/*<Box sx={{minWidth: 275}}>*/}
-                    <Card variant="outlined">{enableApp}</Card>
-                    {/*</Box>*/}
-                    <br/>
-                    {/*<Box sx={{minWidth: 275}}>*/}
-                    <Card variant="outlined">{themes}</Card>
-                    {/*</Box>*/}
-                    <br/>
-                    {/*<Box sx={{minWidth: 275}}>*/}
-                    <Card variant="outlined">{otherSetting}</Card>
-                    {/*</Box>*/}
-                </Container>
-            </>
-        </>
+                {/*<Box sx={{minWidth: 275}}>*/}
+                <LegacyCard>{enableApp}</LegacyCard>
+                {/*</Box>*/}
+                <br/>
+                {/*<Box sx={{minWidth: 275}}>*/}
+                <LegacyCard>{themes}</LegacyCard>
+                {/*</Box>*/}
+                <br/>
+                {/*<Box sx={{minWidth: 275}}>*/}
+                <LegacyCard>{otherSetting}</LegacyCard>
+                {/*</Box>*/}
+            </Layout>
+        </Page>
     );
 
 };

@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import '../../css/style.css'
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import { useAppQuery, useAuthenticatedFetch } from "../../hooks";
+import {useAppQuery, useAuthenticatedFetch} from "../../hooks";
 import ProductSelect from "../../types/ProductSelect";
 
 export default function Resource_Picker(props: any) {
@@ -11,26 +11,26 @@ export default function Resource_Picker(props: any) {
     const [open, setOpen] = useState(false);
     const [initialSelectionIds, setInitialSelectionIds] = useState<ProductSelect[]>([]);
     const fetchProducts = async () => {
-      try {
-        const response = await fetch('/api/products/product_picked', { method: 'GET' });
-        const data = await response.json();
-        if (data) {
-          const initSelected = data.map((product) => ({ ...product,id: "gid://shopify/Product/" + product.id}))
-          setInitialSelectionIds(initSelected)
+        try {
+            const response = await fetch('/api/products/product_picked', {method: 'GET'});
+            const data = await response.json();
+            if (data) {
+                const initSelected = data.map((product) => ({...product, id: "gid://shopify/Product/" + product.id}))
+                setInitialSelectionIds(initSelected)
+            }
+            return data;
+        } catch (error) {
+            console.error('Error fetching products: ', error);
+            throw error;
         }
-        return data;
-      } catch (error) {
-        console.error('Error fetching products: ', error);
-        throw error;
-      }
     };
     useEffect(() => {
-      fetchProducts()
+        fetchProducts()
     }, [])
-    
+
     const handleSelection = (resources: any) => {
-      props.parentCallback(resources.selection);
-      setOpen(false)
+        props.parentCallback(resources.selection);
+        setOpen(false)
     }
     return (
         <>
@@ -39,10 +39,10 @@ export default function Resource_Picker(props: any) {
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-                <Button onClick={() => {
+                <Button variant='contained' onClick={() => {
                     setOpen(true)
                 }}
-                >Select Products</Button>
+                >Add Products</Button>
             </Box>
             <ResourcePicker
                 resourceType={"Product"}

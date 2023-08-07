@@ -25,54 +25,57 @@ export default function SelectedProductsList() {
         setShow(true)
     }
     const {
-      data,
-      refetch: refetchProduct,
-      isLoading: isLoadingQuote,
-      isRefetching: isRefetchingQuote,
+        data,
+        refetch: refetchProduct,
+        isLoading: isLoadingQuote,
+        isRefetching: isRefetchingQuote,
     } = useAppQuery<Product[]>({
-      url: "/api/products",
-      reactQueryOptions: {
-        onSuccess: () => {
-          setIsLoading(false);
-        }
-      },
+        url: "/api/products",
+        reactQueryOptions: {
+            onSuccess: () => {
+                setIsLoading(false);
+            }
+        },
     });
 
     React.useEffect(() => {
-      if(data) {
-      setSelectedProductList(data);
-      }
+        if (data) {
+            setSelectedProductList(data);
+        }
     }, [data]);
 
     const [selectedProducts, setSelectedProducts] = React.useState([])
     const handleRemove = async (id: string) => {
-      await fetch(`/api/products/${id}`, {
-        method: "DELETE"
-      })
-      refetchProduct()
+        await fetch(`/api/products/${id}`, {
+            method: "DELETE"
+        })
+        refetchProduct()
         const newList = selectedProducts.filter((item) => item.id !== id)
         setSelectedProducts(newList)
     }
     const handleSave = () => {
-      const productList = selectedProducts.map(selectedProduct => {
-        let currentProduct: Product = {
-          id: '',
-          productDescription: '',
-          imageURL: '',
-          title: '',
-          variants: ''
-        };
-        let variants = selectedProduct.variants.map((variant: { id: any; title: any; }) => ({ id: variant.id, title: variant.title }))
-        currentProduct.variants = variants;
-        const parts = selectedProduct.id.split("/");
-        currentProduct.id = parts[parts.length - 1];
-        currentProduct.title = selectedProduct.title;
-        currentProduct.productDescription = selectedProduct.descriptionHtml;
-        currentProduct.imageURL = selectedProduct.images[0]?.originalSrc || null;
+        const productList = selectedProducts.map(selectedProduct => {
+            let currentProduct: Product = {
+                id: '',
+                productDescription: '',
+                imageURL: '',
+                title: '',
+                variants: ''
+            };
+            let variants = selectedProduct.variants.map((variant: { id: any; title: any; }) => ({
+                id: variant.id,
+                title: variant.title
+            }))
+            currentProduct.variants = variants;
+            const parts = selectedProduct.id.split("/");
+            currentProduct.id = parts[parts.length - 1];
+            currentProduct.title = selectedProduct.title;
+            currentProduct.productDescription = selectedProduct.descriptionHtml;
+            currentProduct.imageURL = selectedProduct.images[0]?.originalSrc || null;
 
-        return currentProduct;
-      })
-      console.log(productList)
+            return currentProduct;
+        })
+        console.log(productList)
         fetch("/api/products/insert",
             {
                 method: "Post",
@@ -89,17 +92,19 @@ export default function SelectedProductsList() {
         <Box sx={{width: '100%'}}>
             <Box sx={{width: '100%'}}>
                 {/* <ProductPicker /> */}
-                <Resource_Picker parentCallback={getSelectedProducts} />
+                <Resource_Picker parentCallback={getSelectedProducts}/>
             </Box>
             <Box sx={{width: '100%'}}>
                 <List dense sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}>
-                {selectedProductList && selectedProductList.map((product) => {
+                    {selectedProductList && selectedProductList.map((product) => {
                         const labelId = `checkbox-list-secondary-label-${product.id}`;
                         return (
                             <ListItem
                                 key={product.id}
                                 secondaryAction={
-                                    <IconButton edge="end" aria-label="delete" onClick={() => {handleRemove(product.id)}}>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => {
+                                        handleRemove(product.id)
+                                    }}>
                                         <DeleteIcon/>
                                     </IconButton>
                                 }
@@ -113,13 +118,14 @@ export default function SelectedProductsList() {
                                             src={`${product.imageURL || ''}`}
                                         />
                                     </ListItemAvatar>
-                                    <ListItemText id={labelId} primary={<Typography variant="body1">{`${product.title}`}</Typography>}/>
+                                    <ListItemText id={labelId} primary={<Typography
+                                        variant="body1">{`${product.title}`}</Typography>}/>
                                 </ListItem>
                             </ListItem>
                         );
                     })}
                 </List>
-                {show && <Divider variant="middle" sx={{ bgcolor: "#1a237e",height:2 }}/>}
+                {show && <Divider variant="middle" sx={{bgcolor: "#1a237e", height: 0.2}}/>}
                 <br/>
                 <Box
                     display="flex"

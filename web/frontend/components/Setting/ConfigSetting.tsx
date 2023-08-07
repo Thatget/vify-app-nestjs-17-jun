@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack'
 export const defaultConfigSetting = {
     hide_price: false,
     hide_buy_now: false,
+    hide_add_to_cart: false,
     show_request_for_quote: false,
     all_product: true
 };
@@ -27,6 +28,9 @@ const ConfigSetting = () => {
             case 'show_request_for_quote':
                 dispatch(actions.setNewSetting({show_request_for_quote: !localConfigSetting.show_request_for_quote}))
                 break;
+            case 'hide_add_to_cart':
+                dispatch(actions.setNewSetting({hide_add_to_cart: !localConfigSetting.hide_add_to_cart}))
+                break;
             default:
                 break;
         }
@@ -45,6 +49,11 @@ const ConfigSetting = () => {
                      onClick={() => handleChangeConfig('hide_buy_now')}>
                     <Typography variant="body1" sx={{ml: 2}}>Hide Buy Now</Typography>
                     <Switch checked={localConfigSetting.hide_buy_now} name='hide_buy_now' sx={{mr: 2}}/>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center'}}
+                     onClick={() => handleChangeConfig('hide_add_to_cart')}>
+                    <Typography variant="body1" sx={{ml: 2}}>Hide Add To Card</Typography>
+                    <Switch checked={localConfigSetting.hide_add_to_cart} name='hide_add_to_cart' sx={{mr: 2}}/>
                 </div>
                 <div style={{display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center'}}
                      onClick={() => handleChangeConfig('show_request_for_quote')}>

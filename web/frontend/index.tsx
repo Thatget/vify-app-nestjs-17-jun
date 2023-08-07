@@ -10,9 +10,9 @@ const rootElement = document.getElementById("app")
 ReactDOM.render(
     <>
         {/*<CssBaseline />*/}
-        <ThemeProvider>
-            <App/>
-        </ThemeProvider>
+        {/*<ThemeProvider>*/}
+        <App/>
+        {/*</ThemeProvider>*/}
     </>,
     rootElement
 )
