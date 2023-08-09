@@ -3,6 +3,8 @@ import { StoreService } from '../store/store.service';
 import { Session, Shopify } from '@shopify/shopify-api';
 import { ShopifyService } from '../shopify/shopify.service';
 import { Response } from 'express';
+import fetchShopInfo from '../helpers/shop';
+import { StoreDto } from '../store/dto/store.dto';
 
 @Controller('api/auth')
 export class AuthController {
@@ -28,7 +30,8 @@ export class AuthController {
       if (session.isOnline) {
         // await this.handleOnlineCallback(req, res, session)
       } else {
-        await this.storeService.createOrUpdate({...session,id: null, shop: query.shop })
+        const shopInfo: StoreDto = await fetchShopInfo(session)
+        await this.storeService.createOrUpdate( shopInfo, session.accessToken)
       }
       const embeddedAppUrl = await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
         rawRequest: req,

@@ -20,6 +20,7 @@ import { QuoteModule } from '../modules/quote/quote.module';
 import { QuoteEntityModule } from '../modules/quote_entity/quote_entity.module';
 import { StoreFrontendModule } from '../modules/store-frontend/store-frontend.module';
 import configuration from '../config/configuration';
+import { WebhookModule } from '../modules/webhook/webhook.module';
 
 const STATIC_PATH =
     process.env.NODE_ENV === "production"
@@ -32,6 +33,7 @@ const STATIC_PATH =
         StoreModule,
         ProductModule,
         QuoteModule,
+        WebhookModule,
         QuoteEntityModule,
         StoreFrontendModule,
         ConfigModule.forRoot({

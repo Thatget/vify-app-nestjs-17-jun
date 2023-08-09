@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { StoreService } from './store.service';
-import { CreateStoreDto } from './dto/create-store.dto';
+import { StoreDto } from './dto/store.dto';
 
 @Controller('/api/store')
 export class StoreController {
@@ -8,7 +8,7 @@ export class StoreController {
     }
 
   @Post()
-  create(@Body() createStoreDto: CreateStoreDto) {
-    return this.storeService.createOrUpdate(createStoreDto);
+  create(@Body() createStoreDto: StoreDto) {
+    // return this.storeService.createOrUpdate(createStoreDto);
   }
 }
