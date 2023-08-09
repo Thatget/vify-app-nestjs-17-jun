@@ -12,7 +12,10 @@ const STATIC_PATH =
         : `${process.cwd()}/frontend/`;
 
 export async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bodyParser: false,
+    rawBody: true,
+  });
   const configService = app.get(ConfigService);
   const PORT = configService.get<string>('port');
   app.useGlobalPipes(new ValidationPipe());

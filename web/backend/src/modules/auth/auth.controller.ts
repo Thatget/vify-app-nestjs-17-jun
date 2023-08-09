@@ -5,13 +5,19 @@ import { ShopifyService } from '../shopify/shopify.service';
 import { Response } from 'express';
 import fetchShopInfo from '../helpers/shop';
 import { StoreDto } from '../store/dto/store.dto';
+import { WebhookService } from '../webhook/webhook.service';
+import { WEBHOOK_TOPIC, WebhookSubscriptionFormat } from '../../types/webhook';
+import { ConfigService } from '@nestjs/config'
+import { log } from 'console';
 
 @Controller('api/auth')
 export class AuthController {
   shopify: Shopify
   constructor(
     @Inject(StoreService) private readonly storeService: StoreService,
-    private readonly shopifyService: ShopifyService
+    private readonly shopifyService: ShopifyService,
+    private readonly webhookService: WebhookService,
+    private readonly configService: ConfigService,
   ) {}
   
   @Get()
@@ -31,7 +37,19 @@ export class AuthController {
         // await this.handleOnlineCallback(req, res, session)
       } else {
         const shopInfo: StoreDto = await fetchShopInfo(session)
-        await this.storeService.createOrUpdate( shopInfo, session.accessToken)
+        await this.storeService.createOrUpdate( shopInfo, session.accessToken);
+        try {
+        const uninstallEndpoint = this.configService.get<string>('app.host') + '/api/webhooks'
+        await this.webhookService.createWebhook(session, {
+          topic: WEBHOOK_TOPIC.APP_UNINSTALLED,
+          input: {
+              callbackUrl: uninstallEndpoint,
+              format: WebhookSubscriptionFormat.JSON
+          }
+        })
+        } catch (error) {
+          console.log("error.messag: ",error.message);
+        }
       }
       const embeddedAppUrl = await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
         rawRequest: req,
@@ -39,6 +57,7 @@ export class AuthController {
       })
       return res.redirect(embeddedAppUrl)
     } catch (e) {
+      log("callback: log install !")
       res.status(500).send((<Error>e).message)
     }
   }

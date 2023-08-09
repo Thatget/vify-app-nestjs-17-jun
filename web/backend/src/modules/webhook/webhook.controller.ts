@@ -1,12 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Req } from '@nestjs/common';
+import { log } from 'console';
+import { Request } from 'express';
 
-@Controller('/api/store')
+@Controller('/api/webhooks')
 export class WebhookController {
     constructor() {
     }
 
   @Post()
-  create(@Body() createStoreDto) {
-    // return this.storeService.createOrUpdate(createStoreDto);
+  uninstalledHandle(@Body() body: any) {
+    try {
+      log("Quyet webhook ! post")
+    // const shopDomain = req.header('x-shopify-shop-domain') as string
+    // log("shopDomain api/webhooks: ", shopDomain)
+    } catch(e) {
+      log(" quyet webhooks api uninstall !")
+      // log(e.message)
+    }
   }
 }

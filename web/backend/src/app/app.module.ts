@@ -21,6 +21,9 @@ import { QuoteEntityModule } from '../modules/quote_entity/quote_entity.module';
 import { StoreFrontendModule } from '../modules/store-frontend/store-frontend.module';
 import configuration from '../config/configuration';
 import { WebhookModule } from '../modules/webhook/webhook.module';
+import { RawBodyMiddleware } from '../middleware/raw-body.middleware';
+import { WebhookController } from '../modules/webhook/webhook.controller';
+import { JsonBodyMiddleware } from '../middleware/json-body.middleware';
 
 const STATIC_PATH =
     process.env.NODE_ENV === "production"
@@ -47,7 +50,12 @@ const STATIC_PATH =
 })
 
 export class AppModule implements NestModule {
-    configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+    .apply(RawBodyMiddleware)
+    .forRoutes(WebhookController)
+    .apply(JsonBodyMiddleware)
+    .forRoutes('*')
         // Authentication Middleware
         consumer.apply(shopify.auth.begin()).forRoutes({
             path: shopify.config.auth.path,
@@ -62,7 +70,7 @@ export class AppModule implements NestModule {
         consumer
             .apply(shopify.validateAuthenticatedSession())
             .exclude({path: "/api/auth/(.*)", method: RequestMethod.ALL}, {
-                path: "/api/webhook/(.*)",
+                path: "/api/webhooks",
                 method: RequestMethod.ALL
             }, {
               path: "/api/proxy/(.*)",
