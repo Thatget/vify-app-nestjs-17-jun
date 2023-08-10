@@ -11,7 +11,6 @@ import {join} from "path";
 import shopify from "../modules/helpers/shopify";
 import {Request, Response, NextFunction} from "express";
 import {readFileSync} from "fs";
-import GDPRWebhookHandlers from "../modules/helpers/gdpr";
 import {StoreModule} from '../modules/store/store.module';
 import {AuthModule} from '../modules/auth/auth.module';
 import {DatabaseModule} from '../modules/database/database.module';
@@ -21,8 +20,8 @@ import { QuoteEntityModule } from '../modules/quote_entity/quote_entity.module';
 import { StoreFrontendModule } from '../modules/store-frontend/store-frontend.module';
 import configuration from '../config/configuration';
 import { WebhookModule } from '../modules/webhook/webhook.module';
-import { RawBodyMiddleware } from '../middleware/raw-body.middleware';
 import { WebhookController } from '../modules/webhook/webhook.controller';
+import { RawBodyMiddleware } from '../middleware/raw-body.middleware';
 import { JsonBodyMiddleware } from '../middleware/json-body.middleware';
 
 const STATIC_PATH =
@@ -54,39 +53,28 @@ export class AppModule implements NestModule {
     consumer
     .apply(RawBodyMiddleware)
     .forRoutes(WebhookController)
-    .apply(JsonBodyMiddleware)
-    .forRoutes('*')
-        // Authentication Middleware
-        consumer.apply(shopify.auth.begin()).forRoutes({
-            path: shopify.config.auth.path,
-            method: RequestMethod.GET,
-        });
-        consumer.apply(shopify.auth.callback()).forRoutes({
-            path: shopify.config.auth.callbackPath,
-            method: RequestMethod.GET,
-        });
+    // .apply(JsonBodyMiddleware)
+    // .forRoutes('*')
 
-        // Validate Authenticated Session Middleware for Backend Routes
-        consumer
-            .apply(shopify.validateAuthenticatedSession())
-            .exclude({path: "/api/auth/(.*)", method: RequestMethod.ALL}, {
-                path: "/api/webhooks",
-                method: RequestMethod.ALL
-            }, {
-              path: "/api/proxy/(.*)",
-              method: RequestMethod.ALL
-          })
-            .forRoutes({path: "/api/*", method: RequestMethod.ALL});
+    // Authentication Middleware
+    consumer.apply(shopify.auth.begin()).forRoutes({
+      path: shopify.config.auth.path,
+      method: RequestMethod.GET,
+    });
+    consumer.apply(shopify.auth.callback()).forRoutes({
+        path: shopify.config.auth.callbackPath,
+        method: RequestMethod.GET,
+    });
 
-        // Webhooks
-        consumer
-            .apply(
-                ...shopify.processWebhooks({webhookHandlers: GDPRWebhookHandlers})
-            )
-            .forRoutes({
-                path: shopify.config.webhooks.path,
-                method: RequestMethod.POST,
-            });
+    // Validate Authenticated Session Middleware for Backend Routes
+    consumer.apply(shopify.validateAuthenticatedSession())
+    .exclude(
+      { path: "/api/auth", method: RequestMethod.ALL },
+      { path: "/api/auth/(.*)", method: RequestMethod.ALL },
+      { path: "/api/webhooks", method: RequestMethod.ALL },
+      { path: "/api/proxy/(.*)", method: RequestMethod.ALL }
+      )
+    .forRoutes({path: "/api/*", method: RequestMethod.ALL});
 
         // Ensure Installed On Shop Middleware for Client Routes.
         // Except for backend routes /api/(.*)

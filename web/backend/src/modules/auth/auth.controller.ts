@@ -3,12 +3,12 @@ import { StoreService } from '../store/store.service';
 import { Session, Shopify } from '@shopify/shopify-api';
 import { ShopifyService } from '../shopify/shopify.service';
 import { Response } from 'express';
-import fetchShopInfo from '../helpers/shop';
+import fetchShopInfo from '../helpers/shop.helper';
 import { StoreDto } from '../store/dto/store.dto';
 import { WebhookService } from '../webhook/webhook.service';
 import { WEBHOOK_TOPIC, WebhookSubscriptionFormat } from '../../types/webhook';
 import { ConfigService } from '@nestjs/config'
-import { log } from 'console';
+import { logger } from '../helpers/logger.helper';
 
 @Controller('api/auth')
 export class AuthController {
@@ -48,7 +48,7 @@ export class AuthController {
           }
         })
         } catch (error) {
-          console.log("error.messag: ",error.message);
+          logger.error(error.message);
         }
       }
       const embeddedAppUrl = await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
@@ -57,7 +57,6 @@ export class AuthController {
       })
       return res.redirect(embeddedAppUrl)
     } catch (e) {
-      log("callback: log install !")
       res.status(500).send((<Error>e).message)
     }
   }

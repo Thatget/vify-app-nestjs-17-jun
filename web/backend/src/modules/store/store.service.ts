@@ -27,4 +27,7 @@ export class StoreService {
       return null;
     }
   }
+  async deleteByShopDomain (shop: string): Promise<void> {
+    await this.storesRepository.delete({shop});
+  }
 }
