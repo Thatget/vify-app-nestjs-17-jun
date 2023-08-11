@@ -14,9 +14,9 @@ export class StoreService {
   async createOrUpdate(storeDto: StoreDto, accessToken: string): Promise<StoreDto> {
     const store = await this.storesRepository.findOneBy({shop: storeDto.shop});
     if (store) {
-      await this.storesRepository.save({...storeDto, id: store.id, accessToken })
-    }
-    this.storesRepository.create({ ...storeDto, accessToken})
+      Object.assign(store, storeDto, accessToken);
+      await this.storesRepository.save(store)
+    } else await this.storesRepository.save({ ...storeDto, accessToken})
     return store;
   }
 

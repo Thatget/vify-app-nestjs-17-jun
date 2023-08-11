@@ -23,35 +23,35 @@ export class QuoteEntityController {
     }
 
     @Post()
-    async create(@Body() quoteEntities: QuoteEntityDto[], @Res() res: Response) {
-        try {
-            const {shop} = res.locals.shopify.session;
-            if (shop) {
-                const foundStore = await this.storeService.findByShopDomain(shop);
-                // Filter allowed quote entities
-                // let value;
-                const passedQuoteEntities = quoteEntities
-                    // .filter((entity) => this.defaultQuoteEntity.includes(entity.name))
-                    .map((entity) => (
-                        {
-                            ...entity, store_id: foundStore.id, id: null
-                        }
-                    ));
-                await this.quoteEntityService.createUpdateEntity(passedQuoteEntities);
-                return res
-                    .status(HttpStatus.OK)
-                    .json({message: 'Data updated successfully'});
+  async create(@Body() quoteEntities: QuoteEntityDto[], @Res() res: Response) {
+    try {
+      const {shop} = res.locals.shopify.session;
+      if (shop) {
+        const foundStore = await this.storeService.findByShopDomain(shop);
+        // Filter allowed quote entities
+        // let value;
+        const passedQuoteEntities = quoteEntities
+          .filter((entity) => this.defaultQuoteEntity.includes(entity.name))
+          .map((entity) => (
+            {
+              ...entity, store_id: foundStore.id, id: null
             }
-            return res
-                .status(HttpStatus.BAD_REQUEST)
-                .json({message: 'Missing store name'});
-            // return response
-        } catch (error) {
-            console.log(error);
-            res
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .json({message: 'An error occurred'});
+          ));
+        await this.quoteEntityService.createUpdateEntity(passedQuoteEntities);
+        return res
+          .status(HttpStatus.OK)
+          .json({message: 'Data updated successfully'});
+        } else {
+        return res
+            .status(HttpStatus.BAD_REQUEST)
+            .json({message: 'Missing store name'});
         }
+          // return response
+      } catch (error) {
+          res
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .json({message: error.message});
+      }
     }
 
     @Get()
@@ -69,7 +69,7 @@ export class QuoteEntityController {
         } catch (error) {
             res
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .json({message: 'An error occurred'});
+                .json({message: error.message});
         }
     }
 }

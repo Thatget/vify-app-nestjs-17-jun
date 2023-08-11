@@ -53,8 +53,8 @@ export class AppModule implements NestModule {
     consumer
     .apply(RawBodyMiddleware)
     .forRoutes(WebhookController)
-    // .apply(JsonBodyMiddleware)
-    // .forRoutes('*')
+    .apply(JsonBodyMiddleware)
+    .forRoutes('*')
 
     // Authentication Middleware
     consumer.apply(shopify.auth.begin()).forRoutes({
