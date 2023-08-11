@@ -25,9 +25,9 @@ import { RawBodyMiddleware } from '../middleware/raw-body.middleware';
 import { JsonBodyMiddleware } from '../middleware/json-body.middleware';
 
 const STATIC_PATH =
-    process.env.NODE_ENV === "production"
-        ? `${process.cwd()}/../frontend/dist`
-        : `${process.cwd()}/../frontend/`;
+  process.env.NODE_ENV === 'production'
+    ? `${process.cwd()}/../frontend/dist`
+    : `${process.cwd()}/../frontend/`;
 
 @Module({
     imports: [
@@ -47,7 +47,6 @@ const STATIC_PATH =
     controllers: [AppController],
     providers: [AppService],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
@@ -76,19 +75,19 @@ export class AppModule implements NestModule {
       )
     .forRoutes({path: "/api/*", method: RequestMethod.ALL});
 
-        // Ensure Installed On Shop Middleware for Client Routes.
-        // Except for backend routes /api/(.*)
-        consumer
-            .apply(
-                shopify.ensureInstalledOnShop(),
-                (_req: Request, res: Response, _next: NextFunction) => {
-                    return res
-                        .status(200)
-                        .set("Content-Type", "text/html")
-                        .send(readFileSync(join(STATIC_PATH, "index.html")));
-                }
-            )
-            .exclude({path: "/api/(.*)", method: RequestMethod.ALL})
-            .forRoutes({path: "/*", method: RequestMethod.ALL});
-    }
+    // Ensure Installed On Shop Middleware for Client Routes.
+    // Except for backend routes /api/(.*)
+    consumer
+      .apply(
+        shopify.ensureInstalledOnShop(),
+        (_req: Request, res: Response, _next: NextFunction) => {
+          return res
+            .status(200)
+            .set('Content-Type', 'text/html')
+            .send(readFileSync(join(STATIC_PATH, 'index.html')));
+        },
+      )
+      .exclude({ path: '/api/(.*)', method: RequestMethod.ALL })
+      .forRoutes({ path: '/*', method: RequestMethod.ALL });
+  }
 }

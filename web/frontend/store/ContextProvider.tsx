@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Context from './Context';
-import reducer, { initialState } from './reducer';
+import * as React from 'react'
+import Context from './Context'
+import reducer, { initialState } from './reducer'
 
 export interface ContextProviderProps {
   children: React.ReactNode
@@ -9,7 +9,7 @@ export interface ContextProviderProps {
 const ContextProvider: React.FC<ContextProviderProps> = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState)
   return (
-    <Context.Provider value={{state, dispatch}}>
+    <Context.Provider value={{ state, dispatch }}>
       {children}
     </Context.Provider>
   )

@@ -1,4 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Inject , Res, Req, Redirect } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  Inject,
+  Res,
+  Req,
+  Redirect,
+} from '@nestjs/common';
 import { StoreService } from '../store/store.service';
 import { Session, Shopify } from '@shopify/shopify-api';
 import { ShopifyService } from '../shopify/shopify.service';
@@ -12,27 +25,33 @@ import { logger } from '../helpers/logger.helper';
 
 @Controller('api/auth')
 export class AuthController {
-  shopify: Shopify
+  shopify: Shopify;
+
   constructor(
     @Inject(StoreService) private readonly storeService: StoreService,
     private readonly shopifyService: ShopifyService,
     private readonly webhookService: WebhookService,
     private readonly configService: ConfigService,
   ) {}
-  
+
   @Get()
   async redirect(@Req() req: Request, @Res() res: Response) {
-    const embeddedAppUrl = await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
-      rawRequest: req,
-      rawResponse: res
-    })
-    return res.redirect(embeddedAppUrl)
+    const embeddedAppUrl =
+      await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
+        rawRequest: req,
+        rawResponse: res,
+      });
+    return res.redirect(embeddedAppUrl);
   }
 
   @Get('callback')
-  async getStoreCallBack(@Req() req: Request, @Query() query, @Res() res: Response) {
+  async getStoreCallBack(
+    @Req() req: Request,
+    @Query() query,
+    @Res() res: Response,
+  ) {
     try {
-      const { session } =  res.locals.shopify;
+      const { session } = res.locals.shopify;
       if (session.isOnline) {
         // await this.handleOnlineCallback(req, res, session)
       } else {
@@ -51,13 +70,14 @@ export class AuthController {
           logger.error(error.message);
         }
       }
-      const embeddedAppUrl = await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
-        rawRequest: req,
-        rawResponse: res
-      })
-      return res.redirect(embeddedAppUrl)
+      const embeddedAppUrl =
+        await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
+          rawRequest: req,
+          rawResponse: res,
+        });
+      return res.redirect(embeddedAppUrl);
     } catch (e) {
-      res.status(500).send((<Error>e).message)
+      res.status(500).send((<Error>e).message);
     }
   }
 }

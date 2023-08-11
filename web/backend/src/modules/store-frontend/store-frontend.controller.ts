@@ -7,13 +7,13 @@ import {
     Res,
     Inject,
 } from '@nestjs/common';
-import {Response} from 'express';
-import {QuoteEntityService} from '../quote_entity/quote_entity.service';
-import {StoreFrontendService} from './store-frontend.service';
-import {StoreService} from '../store/store.service';
-import {QuoteService} from '../quote/quote.service';
-import {CreateQuoteDto} from '../quote/dto/create-quote.dto';
-import {ProductService} from '../product/product.service';
+import { Response } from 'express';
+import { QuoteEntityService } from '../quote_entity/quote_entity.service';
+import { StoreFrontendService } from './store-frontend.service';
+import { StoreService } from '../store/store.service';
+import { QuoteService } from '../quote/quote.service';
+import { CreateQuoteDto } from '../quote/dto/create-quote.dto';
+import { ProductService } from '../product/product.service';
 
 @Controller('api/proxy')
 export class StoreFrontendController {
