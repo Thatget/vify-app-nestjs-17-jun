@@ -73,16 +73,19 @@ export class StoreFrontendController {
       const store_id = store.id;
       const quoteEntities = await this.quoteEntityService.findByStore_Id(store_id);
       this.defaultQuoteEntity.forEach(entity => {
+        let entityValue = null;
         const quoteEntity = quoteEntities.find(quoteEntity => quoteEntity.name === entity)
+        if (quoteEntity) {
+          entityValue = quoteEntity.value;
+        }
         switch (entity) {
           case 'all_product':
-            const allProduct = quoteEntities.find(quoteEntity => quoteEntity.name === 'all_product')
-            if (allProduct && allProduct.value === '1') {
-              show = true
-            } else show = false;
+            if (entityValue && entityValue === '0') {
+              show = false
+            } else show = true;
             break;
           default:
-            settings.push({name: entity, value: quoteEntity.value })
+            settings.push({name: entity, value: entityValue })
             break;
         }
       })
