@@ -1,21 +1,19 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {QuoteEntityDto} from './dto/quote_entity.dto';
 import {In, Repository} from 'typeorm';
-import {QuoteEntity} from './entities/quote_entity.entity';
 import {Store} from '../store/entities/store.entity';
 
 @Injectable()
 export class QuoteEntityService {
     constructor(
         @Inject('QUOTE_ENTITY_REPOSITORY')
-
         private quoteEntityRepository: Repository<QuoteEntityDto>,
     ) {
     }
 
     async createUpdateEntity(entities: QuoteEntityDto[]) {
         try {
-            await this.quoteEntityRepository.upsert(entities, ['name', 'store_id']);
+            await this.quoteEntityRepository.upsert(entities, ['name', 'store_id', 'id']);
         } catch (error) {
             throw error;
         }

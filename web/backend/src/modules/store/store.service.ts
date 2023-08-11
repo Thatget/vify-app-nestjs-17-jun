@@ -1,43 +1,33 @@
 import {Repository} from 'typeorm';
 import {Injectable, Inject} from '@nestjs/common';
-import {CreateStoreDto} from './dto/create-store.dto';
-import {UpdateStoreDto} from './dto/update-store.dto';
+import {StoreDto} from './dto/store.dto';
 import {Store} from './entities/store.entity';
 
 @Injectable()
 export class StoreService {
-    constructor(
-        @Inject('STORE_REPOSITORY')
-        private storesRepository: Repository<Store>,
-    ) {
-    }
+  constructor(
+    @Inject('STORE_REPOSITORY')
+    private storesRepository: Repository<Store>,
+  ) {
+  }
 
-    async createOrUpdate(createStoreDto: CreateStoreDto) {
-      const store = await this.storesRepository.findOneBy({shop: createStoreDto.shop});
-      if (store) {
-        await this.storesRepository.save({...createStoreDto, id: store.id })
-      }
-      this.storesRepository.create({ ...createStoreDto})
-      return store;
-    }
+  async createOrUpdate(storeDto: StoreDto, accessToken: string): Promise<StoreDto> {
+    const store = await this.storesRepository.findOneBy({shop: storeDto.shop});
+    if (store) {
+      Object.assign(store, storeDto, accessToken);
+      await this.storesRepository.save(store)
+    } else await this.storesRepository.save({ ...storeDto, accessToken})
+    return store;
+  }
 
-    async findAll() {
-        return `This action returns all store`;
+  async findByShopDomain(shop: string): Promise<Store> {
+    if (shop) {
+      return await this.storesRepository.findOneBy({shop: shop});
+    } else {
+      return null;
     }
-
-    async findByShopDomain(shop: string): Promise<Store> {
-      if (shop) {
-        return await this.storesRepository.findOneBy({shop: shop});
-      } else {
-        return null;
-      }
-    }
-
-    async update(id: number, updateStoreDto: UpdateStoreDto) {
-        return `This action updates a #${id} store`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} store`;
-    }
+  }
+  async deleteByShopDomain (shop: string): Promise<void> {
+    await this.storesRepository.delete({shop});
+  }
 }

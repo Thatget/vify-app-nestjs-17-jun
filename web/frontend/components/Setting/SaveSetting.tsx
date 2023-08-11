@@ -109,122 +109,122 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
             }
             break
 
-          case 'message_placeholder':
-            if (value !== setting?.message_placeholder) {
-              defaultMessagePlaceholder = { ...defaultMessagePlaceholder, value }
-              changeMessagePlaceholder = true
+                case 'message_placeholder':
+                    if (value !== setting?.message_placeholder) {
+                        defaultMessagePlaceholder = {...defaultMessagePlaceholder, value: value};
+                        changeMessagePlaceholder = true;
+                    }
+                    break;
+                case 'hide_price':
+                    if (value !== setting?.hide_price) {
+                        defaultHidePrice = {...defaultHidePrice, value: value};
+                        changedHidePrice = true;
+                    }
+                    break;
+                case 'hide_buy_now':
+                    if (value !== setting?.hide_buy_now) {
+                        defaultHideByNow = {...defaultHideByNow, value: value};
+                        changedHideByNow = true;
+                    }
+                    break;
+                case 'show_request_for_quote':
+                    if (value !== setting?.show_request_for_quote) {
+                        defaultRequestQuote = {...defaultRequestQuote, value: value};
+                        changedRequestQuote = true;
+                    }
+                    break;
+                case 'thank_title':
+                    if (value !== setting?.thank_title) {
+                        defaultThankTitle = {...defaultThankTitle, value: value};
+                        changeThankTitle = true;
+                    }
+                    break;
+                case 'thank_content':
+                    if (value !== setting?.thank_content) {
+                        defaultThankContent = {...defaultThankContent, value: value};
+                        changeThankContent = true;
+                    }
+                    break;
+                case 'shopping_button':
+                    if (value !== setting?.shopping_button) {
+                        defaultContinueShoppingButton = {...defaultContinueShoppingButton, value: value};
+                        changeShoppingButton = true;
+                    }
+                    break;
+                case 'all_product':
+                  if (value !== setting?.all_product) {
+                    dataPost.push({name: 'all_product', value})
+                  }
+                  break;
+                case 'form_title':
+                    if (value !== setting?.form_title) {
+                        defaultFormTitle = {...defaultFormTitle, value: value};
+                        changeFormTitle = true;
+                    }
+                    break;
+                case 'hide_add_to_cart':
+                        if (value !== setting.hide_add_to_cart) {
+                            defaultAddToCart = {...defaultAddToCart, value: value};
+                            changeAddToCart = true;
+                        }
+                        break;
+                default:
+                    break;
             }
-            break
-          case 'hide_price':
-            if (value !== setting?.hide_price) {
-              defaultHidePrice = { ...defaultHidePrice, value }
-              changedHidePrice = true
-            }
-            break
-          case 'hide_buy_now':
-            if (value !== setting?.hide_buy_now) {
-              defaultHideByNow = { ...defaultHideByNow, value }
-              changedHideByNow = true
-            }
-            break
-          case 'show_request_for_quote':
-            if (value !== setting?.show_request_for_quote) {
-              defaultRequestQuote = { ...defaultRequestQuote, value }
-              changedRequestQuote = true
-            }
-            break
-          case 'thank_title':
-            if (value !== setting?.thank_title) {
-              defaultThankTitle = { ...defaultThankTitle, value }
-              changeThankTitle = true
-            }
-            break
-          case 'thank_content':
-            if (value !== setting?.thank_content) {
-              defaultThankContent = { ...defaultThankContent, value }
-              changeThankContent = true
-            }
-            break
-          case 'shopping_button':
-            if (value !== setting?.shopping_button) {
-              defaultContinueShoppingButton = { ...defaultContinueShoppingButton, value }
-              changeShoppingButton = true
-            }
-            break
-          case 'all_product':
-            if (value !== setting?.all_product) {
-              dataPost.push({ name: 'all_product', value })
-            }
-            break
-          case 'form_title':
-            if (value !== setting?.form_title) {
-              defaultFormTitle = { ...defaultFormTitle, value }
-              changeFormTitle = true
-            }
-            break
-          case 'hide_add_to_cart':
-            if (value !== setting.hide_add_to_cart) {
-              defaultAddToCart = { ...defaultAddToCart, value }
-              changeAddToCart = true
-            }
-            break
-          default:
-            break
+        })
+        if (changedName) {
+            dataPost.push(defaultName);
         }
-      })
-      if (changedName) {
-        dataPost.push(defaultName)
+        if (changeNamePlaceholder) {
+            dataPost.push(defaultNamePlaceholder);
+        }
+        if (changedEmail) {
+            dataPost.push(defaultEmail);
+        }
+        if (changeEmailPlaceholder) {
+            dataPost.push(defaultEmailPlaceholder);
+        }
+        if (changedMessage) {
+            dataPost.push(defaultMessage);
+        }
+        if (changeMessagePlaceholder) {
+            dataPost.push(defaultMessagePlaceholder);
+        }
+        if (changedHidePrice) {
+            dataPost.push(defaultHidePrice)
+        }
+        if (changedHideByNow) {
+            dataPost.push(defaultHideByNow)
+        }
+        if (changedRequestQuote) {
+            dataPost.push(defaultRequestQuote)
+        }
+        if (changeThankTitle) {
+            dataPost.push(defaultThankTitle)
+        }
+        if (changeThankContent) {
+            dataPost.push(defaultThankContent)
+        }
+        if (changeShoppingButton) {
+            dataPost.push(defaultContinueShoppingButton)
+        }
+        if (changeFormTitle) {
+            dataPost.push(defaultFormTitle)
+        }
+        if (changeAddToCart) {
+            dataPost.push(defaultAddToCart)
+        }
+        const data: any = await fetch("/api/quote-entity", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataPost)
+        })
+        fetchQuoteEntity();
       }
-      if (changeNamePlaceholder) {
-        dataPost.push(defaultNamePlaceholder)
-      }
-      if (changedEmail) {
-        dataPost.push(defaultEmail)
-      }
-      if (changeEmailPlaceholder) {
-        dataPost.push(defaultEmailPlaceholder)
-      }
-      if (changedMessage) {
-        dataPost.push(defaultMessage)
-      }
-      if (changeMessagePlaceholder) {
-        dataPost.push(defaultMessagePlaceholder)
-      }
-      if (changedHidePrice) {
-        dataPost.push(defaultHidePrice)
-      }
-      if (changedHideByNow) {
-        dataPost.push(defaultHideByNow)
-      }
-      if (changedRequestQuote) {
-        dataPost.push(defaultRequestQuote)
-      }
-      if (changeThankTitle) {
-        dataPost.push(defaultThankTitle)
-      }
-      if (changeThankContent) {
-        dataPost.push(defaultThankContent)
-      }
-      if (changeShoppingButton) {
-        dataPost.push(defaultContinueShoppingButton)
-      }
-      if (changeFormTitle) {
-        dataPost.push(defaultFormTitle)
-      }
-      if (changeAddToCart) {
-        dataPost.push(defaultAddToCart)
-      }
-      await fetch('/api/quote-entity', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataPost)
-      })
-      void fetchQuoteEntity()
     }
-  }
 
   return (
     <>
