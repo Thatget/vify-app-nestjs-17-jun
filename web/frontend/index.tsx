@@ -1,26 +1,17 @@
-import {ThemeProvider} from "@material-tailwind/react";
-import App from "./App";
-import React from "react";
-// import ReactDOM from "react-dom"
-import ReactDOM from "react-dom";
-// import {CssBaseline} from "@mui/material";
-import "./css/style.css";
+import App from './App'
+import React from 'react'
+// import './css/style.css'
+import { createRoot } from 'react-dom/client'
+import en from '@shopify/polaris/locales/en.json'
+import { AppProvider } from '@shopify/polaris'
+import '@shopify/polaris/build/esm/styles.css'
 
-const rootElement = document.getElementById("app")
-ReactDOM.render(
-    <>
-        {/*<CssBaseline />*/}
-        {/*<ThemeProvider>*/}
-        <App/>
-        {/*</ThemeProvider>*/}
-    </>,
-    rootElement
+const rootElement = document.getElementById('app')
+const root = createRoot(rootElement)
+root.render(
+  <>
+    <AppProvider i18n={en}>
+      <App/>
+    </AppProvider>
+  </>
 )
-// const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-// root.render(
-//     <React.StrictMode>
-//         <ThemeProvider>
-//             <App/>
-//         </ThemeProvider>
-//     </React.StrictMode>,
-// );
