@@ -6,11 +6,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 
-const STATIC_PATH =
-    process.env.NODE_ENV === "production"
-        ? `${process.cwd()}/frontend/dist`
-        : `${process.cwd()}/frontend/`;
-
 export async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
@@ -18,6 +13,11 @@ export async function bootstrap() {
   });
   const configService = app.get(ConfigService);
   const PORT = configService.get<string>('port');
+  const node_env = configService.get<string>('app.node_env')
+  const STATIC_PATH =
+  node_env === "production"
+      ? `${process.cwd()}/frontend/dist/`
+      : `${process.cwd()}/frontend/`;
   app.useGlobalPipes(new ValidationPipe());
   app.use(serveStatic(STATIC_PATH, {index: false}));
   await app.listen(PORT);

@@ -13,11 +13,9 @@ import {
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { StoreService } from '../store/store.service';
-import fetchProducts from '../helpers/products';
 import { Request, Response } from 'express';
 import ProductResponse, { ProductVariant } from '../../types/ProductResponse';
 import ProductSelect from 'src/types/ProductSelect';
-import { log } from 'console';
 
 @Controller('api/products')
 export class ProductController {
@@ -50,7 +48,11 @@ export class ProductController {
       if (!title) title = '';
       const session = res.locals.shopify.session;
       if (!(reverse === true)) reverse = false;
-      const productPage = await fetchProducts(session, title, reverse);
+      // const productPage = await fetchProducts(session, title, reverse);
+      const productPage = {
+        productList: [],
+        pageInfo: {}
+      };
       const shopProducts = productPage.productList;
       const pageInfo = productPage.pageInfo;
       const shopProductIds = shopProducts.map((product) => product.id);

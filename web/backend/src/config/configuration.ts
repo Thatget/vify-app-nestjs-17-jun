@@ -1,6 +1,7 @@
 export default () => ({
   port: parseInt(process.env.PORT, 10) || 3000,
   app: {
+    node_env: process.env.NODE_ENV|| 'developement',
     name: '',
     path: '',
     host: process.env.HOST || '',
@@ -14,6 +15,6 @@ export default () => ({
   shopify: {
     api_key: process.env.SHOPIFY_API_KEY,
     api_secret: process.env.SHOPIFY_API_SECRET,
-    scopes: process.env.SCOPES,
+    scopes: process.env.SCOPES.replace(/\s/g, '').split(','),
   }
 });

@@ -2,12 +2,23 @@ import {Repository} from 'typeorm';
 import {Injectable, Inject} from '@nestjs/common';
 import {StoreDto} from './dto/store.dto';
 import {Store} from './entities/store.entity';
+import { ShopifyService } from '../shopify/shopify.service';
+import { GraphqlQueryError, Session } from '@shopify/shopify-api';
+import Shopinfo from "src/types/ShopInfo";
+import { GET_SHOP } from '../../graphql/query/shop/get_shop.graphql';
+
+interface QueryResponse {
+  data: {
+    shop: Shopinfo;
+  };
+}
 
 @Injectable()
 export class StoreService {
   constructor(
     @Inject('STORE_REPOSITORY')
-    private storesRepository: Repository<Store>,
+    private readonly storesRepository: Repository<Store>,
+    private readonly shopifyService: ShopifyService,
   ) {
   }
 
@@ -29,5 +40,32 @@ export class StoreService {
   }
   async deleteByShopDomain (shop: string): Promise<void> {
     await this.storesRepository.delete({shop});
+  }
+
+  public async getShopInfo (session: Session): Promise<StoreDto> {
+    const client = new this.shopifyService.shopify.api.clients.Graphql({session});
+    try {
+      const { body } = await client.query<QueryResponse>({
+        data: {
+          query: GET_SHOP,
+        }
+      })
+      const { shop } = body.data;
+      const shopInfo: StoreDto = {
+        name: shop.name,
+        shop: shop.myshopifyDomain,
+        email: shop.email,
+  
+      }
+      return shopInfo;
+    } catch (error) {
+      if (error instanceof GraphqlQueryError) {
+        throw new Error(
+          `${error.message}\n${JSON.stringify(error.response, null, 2)}`
+        );
+      } else {
+        throw error;
+      }
+    }
   }
 }

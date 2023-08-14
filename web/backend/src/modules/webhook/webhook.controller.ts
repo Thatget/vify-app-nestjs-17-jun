@@ -1,12 +1,11 @@
 import { Controller, Post, Req, Res, UseGuards, InternalServerErrorException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Request, Response } from 'express';
-import shopify from '../helpers/shopify';
 import { WebhookGuard } from './webhook.guard';
 import { IncomingMessage } from 'http';
 import { StoreService } from '../store/store.service';
 import { logger } from '../helpers/logger.helper';
 
-@Controller(shopify.config.webhooks.path)
+@Controller('/api/webhooks')
 @UseGuards(WebhookGuard)
 export class WebhookController {
     constructor(
