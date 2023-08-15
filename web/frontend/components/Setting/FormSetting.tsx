@@ -60,7 +60,6 @@ function FormSetting () {
   }
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}>
-      <Typography variant="body2" sx={{ m: 0.5 }}>Form Setting</Typography>
       <form
         onSubmit={onSubmit}
         style={{ width: '100%' }}

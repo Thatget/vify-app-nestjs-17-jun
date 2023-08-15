@@ -1,34 +1,69 @@
 import React, { type ReactElement, useCallback, useContext, useState } from 'react'
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-import CardContent from '@mui/material/CardContent'
 import { actions, StoreContext } from '../store'
 import { useAuthenticatedFetch } from '../hooks'
-import SaveSetting from '../components/Setting/SaveSetting'
 import FormSetting from '../components/Setting/FormSetting'
 import ConfigSetting from '../components/Setting/ConfigSetting'
 import ConfigSettingPreview from '../components/Setting/ConfigSettingPreview'
-import Tab from '@mui/material/Tab'
-import TabContext from '@mui/lab/TabContext'
-import TabList from '@mui/lab/TabList'
-import TabPanel from '@mui/lab/TabPanel'
 import FormSettingPreview from '../components/Setting/FormSettingPreview'
 import ThanksFormSetting from '../components/Setting/ThanksFormSetting'
 import ThanksPagePreview from '../components/Setting/ThanksPagePreview'
 import type QuoteEntity from '../types/QuoteEntity'
-import { Typography } from '@mui/material'
-import { CardBody } from '@material-tailwind/react'
 import ProductSelector from '../components/Products/ProductSelector'
-import { Spinner, Page, Layout } from '@shopify/polaris'
+import { Grid, Layout, LegacyCard, Page, Tabs } from '@shopify/polaris'
+import { useNavigate } from 'react-router-dom'
 
 type SettingX = Record<string, string | number | boolean>
+const pages = [
+  {
+    title: 'GeneralSetting',
+    href: '/Setting/GeneralSetting'
+  },
+  {
+    title: 'FormSetting',
+    href: '/FormSetting'
+  },
+  {
+    title: 'ThanksPageSetting',
+    href: '/ThanksPageSetting'
+  }
+]
 
 const Setting = (): ReactElement | null => {
   const fetch = useAuthenticatedFetch()
+  const history = useNavigate()
   const { dispatch } = useContext(StoreContext)
   const [value, setValue] = React.useState('1')
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [selected, setSelected] = useState(0)
+  const handleTabChange = useCallback(
+    (selectedTabIndex: number) => {
+      setSelected(selectedTabIndex)
+    },
+    []
+  )
+  const tabs = [
+    {
+      id: 'all-customers-1',
+      content: 'General Setting',
+      accessibilityLabel: 'All customers',
+      panelID: 'all-customers-content-1'
+    },
+    {
+      id: 'accepts-marketing-1',
+      content: 'Form Setting',
+      panelID: 'accepts-marketing-content-1'
+    },
+    {
+      id: 'repeat-customers-1',
+      content: 'ThanksPage Setting',
+      panelID: 'repeat-customers-content-1'
+    }
+  ]
+  const handleCloseNavMenu = (href: string): void => {
+    history(href)
+    console.log('close')
+  }
+
   const handleChange = (event: React.SyntheticEvent, newValue: string): void => {
     setValue(newValue)
   }
@@ -64,163 +99,100 @@ const Setting = (): ReactElement | null => {
   }, [])
 
   const configSetting = (
-    <Grid
-      container
-      item
-      spacing={1}
-      sx={{ mt: 5, mx: 0.2, width: '100%', position: 'fixed', overflow: 'auto' }}
-    >
-      <Grid item xs={7} sx={{ width: '100%', overflow: 'auto' }}>
-        <div style={{
-          maxHeight: '80vh',
-          overflow: 'auto'
-        }}>
-          <Card>
-            <CardContent>
+    <div style={{ marginTop: '10px' }}>
+      <Grid>
+        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 8, xl: 8 }}>
+          <div style={{
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <LegacyCard title="General Setting" sectioned>
               <ConfigSetting/>
-            </CardContent>
-          </Card>
-          <Card style={{ marginTop: '20px' }}>
-            <CardContent>
-              <CardBody>
-                <Typography variant="body1">
-                  <b>Products Quotes Setting: </b>
-                </Typography>
-                <br/>
-                <ProductSelector/>
-              </CardBody>
-            </CardContent>
-          </Card>
-        </div>
-      </Grid>
-      <Grid item xs={5} sx={{ width: '100%', overflow: 'auto' }}>
-        <div style={{ maxHeight: '80vh', overflow: 'auto', width: '95%' }}>
-          <Card>
-            <CardContent>
+            </LegacyCard>
+            <LegacyCard title="Product Selector" sectioned>
+              <ProductSelector/>
+            </LegacyCard>
+          </div>
+        </Grid.Cell>
+
+        <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 2, lg: 4, xl: 4 }}>
+          <div style={{
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <LegacyCard title="" sectioned>
               <ConfigSettingPreview/>
-            </CardContent>
-          </Card>
-        </div>
+            </LegacyCard>
+          </div>
+        </Grid.Cell>
       </Grid>
-    </Grid>
+    </div>
   )
   const formSetting = (
-    <Grid
-      container
-      item
-      spacing={1}
-      sx={{ mt: 5, mx: 0.5, width: '100%', position: 'fixed', overflow: 'auto' }}
-    >
-      <Grid item xs={7} sx={{ width: '100%', overflow: 'auto' }}>
-        <div style={{
-          maxHeight: '80vh',
-          overflow: 'auto'
-        }}>
-          <Card>
-            <CardContent>
+    <div style={{ marginTop: '10px' }}>
+      <Grid>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+          <div style={{
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <LegacyCard title="General Setting" sectioned>
               <FormSetting/>
-            </CardContent>
-          </Card>
-        </div>
-      </Grid>
-      <Grid item xs={5} sx={{ width: '100%', overflow: 'auto' }}>
-        <div style={{ maxHeight: '80vh', overflow: 'auto', width: '95%' }}>
-          <Card>
-            <CardContent>
+            </LegacyCard>
+          </div>
+        </Grid.Cell>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+          <div style={{
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <LegacyCard title="" sectioned>
               <FormSettingPreview/>
-            </CardContent>
-          </Card>
-        </div>
+            </LegacyCard>
+          </div>
+        </Grid.Cell>
       </Grid>
-    </Grid>
+    </div>
   )
   const thanksSetting = (
-    <Grid
-      container
-      item
-      spacing={1}
-      sx={{ mt: 5.3, mx: 0.5, width: '100%', position: 'fixed', overflow: 'auto' }}
-    >
-      <Grid item xs={7} sx={{ width: '100%', overflow: 'auto' }}>
-        <div style={{
-          maxHeight: '80vh',
-          overflow: 'auto'
-
-        }}>
-          <Card>
-            <CardContent>
+    <div style={{ marginTop: '10px' }}>
+      <Grid>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+          <div style={{
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <LegacyCard title="General Setting" sectioned>
               <ThanksFormSetting/>
-            </CardContent>
-          </Card>
-        </div>
-      </Grid>
-      <Grid item xs={5} sx={{ width: '100%', overflow: 'auto' }}>
-        <div style={{ maxHeight: '80vh', overflow: 'auto', width: '95%' }}>
-          <Card>
-            <CardContent>
+            </LegacyCard>
+          </div>
+        </Grid.Cell>
+        <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+          <div style={{
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <LegacyCard title="" sectioned>
               <ThanksPagePreview/>
-            </CardContent>
-          </Card>
-        </div>
+            </LegacyCard>
+          </div>
+        </Grid.Cell>
       </Grid>
-    </Grid>
+    </div>
   )
 
   return (
     <Page>
-      <Layout>
-        {isLoading
-          ? <div style={{ marginLeft: '50%' }}><Spinner/></div>
-          : <TabContext value={value}>
-            <Grid container spacing={1} sx={{ width: '100%' }}>
-              <Grid
-                container
-                item
-                sx={{
-                  m: 1.2,
-                  position: 'fixed',
-                  justifyContent: 'flex-end',
-                  width: '100%',
-                  zIndex: 'modal'
-
-                }}
-              >
-                <Box sx={{
-                  borderBottom: 1,
-                  borderColor: 'divider',
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                  width: '100%',
-                  bgcolor: 'background.paper'
-                }}>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <TabList
-                      onChange={handleChange}
-                      aria-label="lab API tabs example"
-                      textColor="primary"
-                      indicatorColor="primary"
-                    >
-                      <Tab
-                        label="General Setting"
-                        value="1"/>
-                      <Tab label="Form Setting" value="2"/>
-                      <Tab label="ThanksPage Setting" value="3"/>
-                    </TabList>
-                  </Box>
-                  <Box sx={{ mr: 2 }}>
-                    <SaveSetting fetchQuoteEntity={fetchQuoteEntity}/>
-                  </Box>
-                </Box>
-              </Grid>
-              <Box sx={{ width: '100%' }}>
-                <TabPanel value="1" sx={{ width: '100%' }}>{configSetting}</TabPanel>
-                <TabPanel value="2">{formSetting}</TabPanel>
-                <TabPanel value="3">{thanksSetting}</TabPanel>
-              </Box>
-
-            </Grid>
-          </TabContext>}
+      <Layout sectioned>
+        {/* <LegacyCard> */}
+        <div style={{ position: 'absolute', top: '0' }}>
+          <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
+            {selected === 0 && configSetting}
+            {selected === 1 && formSetting}
+            {selected === 2 && thanksSetting}
+          </Tabs>
+        </div>
+        {/* </LegacyCard> */}
       </Layout>
     </Page>
   )
