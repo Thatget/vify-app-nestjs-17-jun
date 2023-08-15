@@ -9,7 +9,11 @@ import { useAuthenticatedFetch } from '../hooks'
 import { Layout, LegacyCard, Link, Page } from '@shopify/polaris'
 import { useNavigate } from '@shopify/app-bridge-react'
 
-export default function GettingStarted (): ReactElement | null {
+interface Props {
+  showModalSupport: (modalActive: boolean) => void
+}
+
+export default function GettingStarted (props: Props): ReactElement | null {
   const fetch = useAuthenticatedFetch()
   const navigate = useNavigate()
   useEffect(() => {
@@ -49,38 +53,19 @@ export default function GettingStarted (): ReactElement | null {
     </>
   )
 
-  const enableApp = (
-    <>
-      <CardContent>
-        <Typography variant="body1" component="div">
-          <b>Step 2: Enable App</b>
-        </Typography>
-        <br/>
-        <Typography variant="body1">
-          Click <Link onClick={() => {
-          navigate('/Setting')
-        }}>Enable </Link> to make App functional
-        </Typography>
-      </CardContent>
-      <CardActions>
-      </CardActions>
-    </>
-  )
   const themes = (
     <>
       <CardContent>
         <Typography variant="body1" component="div">
-          <b>Step 3: For Online Store 2.0 themes </b>
+          <b>Step 2: For Online Store 2.0 themes </b>
         </Typography>
         <br/>
         <Typography variant="body1">
           Customize your Current theme and add a block to your target page <br/>
           Select <b>Simple Quote</b> when you find it available <br/>
-          Click <Link onClick={() => {
-          navigate('/Setting')
-        }}>Enable </Link> to make App functional <br/>
           <Link onClick={() => {
-            navigate('/Setting')
+            props.showModalSupport(true)
+            console.log("clicked");
           }}>Contact us </Link> if the button does not show <br/>
         </Typography>
       </CardContent>
@@ -115,8 +100,6 @@ export default function GettingStarted (): ReactElement | null {
     <Page>
       <Layout sectioned>
         <LegacyCard>{selectProducts}</LegacyCard>
-        <br/>
-        <LegacyCard>{enableApp}</LegacyCard>
         <br/>
         <LegacyCard>{themes}</LegacyCard>
         <br/>

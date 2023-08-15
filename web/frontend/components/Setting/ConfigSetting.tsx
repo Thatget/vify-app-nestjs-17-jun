@@ -38,7 +38,7 @@ const ConfigSetting = (): JSX.Element => {
   return (
     <>
       <Stack spacing={1} sx={{}}>
-        <Typography variant="body2">General Setting</Typography>
+        {/* <Typography variant="body2">General Setting</Typography> */}
         <div style={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer', alignItems: 'center' }}
              onClick={() => {
                handleChangeConfig('hide_price')
