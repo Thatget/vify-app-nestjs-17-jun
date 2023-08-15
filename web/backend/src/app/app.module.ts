@@ -8,8 +8,6 @@ import {
 } from "@nestjs/common";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {join} from "path";
-import {Request, Response, NextFunction} from "express";
-import {readFileSync} from "fs";
 import {StoreModule} from '../modules/store/store.module';
 import {AuthModule} from '../modules/auth/auth.module';
 import {DatabaseModule} from '../modules/database/database.module';
@@ -42,7 +40,9 @@ import { ServeStaticModule } from '@nestjs/serve-static'
         }),
         DatabaseModule,
       ServeStaticModule.forRoot({
-        rootPath: join(process.cwd(), '/../frontend/dist'),
+        rootPath: join(process.env.NODE_ENV === 'production'
+        ? `${process.cwd()}/../frontend/dist/`
+        : `${process.cwd()}/../frontend/`),
       }),
     ],
     controllers: [AppController],
@@ -53,15 +53,8 @@ export class AppModule implements NestModule {
     private readonly configService: ConfigService,
     private readonly shopifyService: ShopifyService,
   ) {
-
   }
   configure(consumer: MiddlewareConsumer) {
-    const node_env = this.configService.get<string>('app.node_env')
-    const STATIC_PATH =
-      node_env === 'production'
-        ? `${process.cwd()}/../frontend/dist/`
-        : `${process.cwd()}/../frontend/`;
-
     consumer
     .apply(RawBodyMiddleware)
     .forRoutes(WebhookController)
@@ -90,17 +83,11 @@ export class AppModule implements NestModule {
 
     // Ensure Installed On Shop Middleware for Client Routes.
     // Except for backend routes /api/(.*)
-    consumer
-      .apply(
-        this.shopifyService.shopify.ensureInstalledOnShop(),
-        (_req: Request, res: Response, _next: NextFunction) => {
-          return res
-            .status(200)
-            .set('Content-Type', 'text/html')
-            .send(readFileSync(join(STATIC_PATH, 'index.html')));
-        },
-      )
-      .exclude({ path: '/api/(.*)', method: RequestMethod.ALL })
-      .forRoutes({ path: '/*', method: RequestMethod.ALL });
+    // consumer
+    //   .apply(
+    //     this.shopifyService.shopify.ensureInstalledOnShop()
+    //   )
+    //   .exclude({ path: '/api/(.*)', method: RequestMethod.ALL })
+    //   .forRoutes({ path: '/*', method: RequestMethod.ALL })
   }
 }

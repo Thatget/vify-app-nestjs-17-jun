@@ -16,8 +16,8 @@ export async function bootstrap() {
   const node_env = configService.get<string>('app.node_env')
   const STATIC_PATH =
   node_env === "production"
-      ? `${process.cwd()}/frontend/dist/`
-      : `${process.cwd()}/frontend/`;
+      ? `${process.cwd()}/frontend/dist`
+      : `${process.cwd()}/frontend`;
   app.useGlobalPipes(new ValidationPipe());
   app.use(serveStatic(STATIC_PATH, {index: false}));
   await app.listen(PORT);
