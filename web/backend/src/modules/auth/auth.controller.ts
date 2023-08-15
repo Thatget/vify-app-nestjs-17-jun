@@ -1,22 +1,15 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Query,
   Inject,
   Res,
   Req,
-  Redirect,
 } from '@nestjs/common';
 import { StoreService } from '../store/store.service';
 import { Session, Shopify } from '@shopify/shopify-api';
 import { ShopifyService } from '../shopify/shopify.service';
 import { Response } from 'express';
-import fetchShopInfo from '../helpers/shop.helper';
 import { StoreDto } from '../store/dto/store.dto';
 import { WebhookService } from '../webhook/webhook.service';
 import { WEBHOOK_TOPIC, WebhookSubscriptionFormat } from '../../types/webhook';
@@ -26,7 +19,6 @@ import { logger } from '../helpers/logger.helper';
 @Controller('api/auth')
 export class AuthController {
   shopify: Shopify;
-
   constructor(
     @Inject(StoreService) private readonly storeService: StoreService,
     private readonly shopifyService: ShopifyService,
@@ -37,7 +29,7 @@ export class AuthController {
   @Get()
   async redirect(@Req() req: Request, @Res() res: Response) {
     const embeddedAppUrl =
-      await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
+      await this.shopifyService.shopify.api.auth.getEmbeddedAppUrl({
         rawRequest: req,
         rawResponse: res,
       });
@@ -55,7 +47,8 @@ export class AuthController {
       if (session.isOnline) {
         // await this.handleOnlineCallback(req, res, session)
       } else {
-        const shopInfo: StoreDto = await fetchShopInfo(session)
+        // const shopInfo: StoreDto = await fetchShopInfo(session)
+        const shopInfo: StoreDto = await this.storeService.getShopInfo(session)
         await this.storeService.createOrUpdate( shopInfo, session.accessToken);
         try {
         const uninstallEndpoint = this.configService.get<string>('app.host') + '/api/webhooks'
@@ -71,7 +64,7 @@ export class AuthController {
         }
       }
       const embeddedAppUrl =
-        await this.shopifyService.shopify.auth.getEmbeddedAppUrl({
+        await this.shopifyService.shopify.api.auth.getEmbeddedAppUrl({
           rawRequest: req,
           rawResponse: res,
         });
