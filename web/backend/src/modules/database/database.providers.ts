@@ -4,13 +4,14 @@ export const databaseProviders = [
     {
         provide: 'DATA_SOURCE',
         useFactory: async () => {
+          console.log("process.env.DATABASE_USER", process.env.DATABASE_USER)
             const dataSource = new DataSource({
                 type: 'mysql',
                 host: 'localhost',
                 port: 3306,
-                username: 'root',
-                password: 'root',
-                database: 'vify_database',
+                username: process.env.DATABASE_USER,
+                password: process.env.DATABASE_PASSWORD,
+                database: process.env.DATABASE_NAME,
                 synchronize: true,
                 entities: [__dirname + '/../**/*.entity{.ts,.js}'],
             });
