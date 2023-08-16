@@ -17,6 +17,8 @@ interface AppBridgeProviderProps {
     children: ReactNode;
 }
 
+const apiKey = import.meta.env.VITE_SHOPIFY_API_KEY
+
 export function AppBridgeProvider({children}: AppBridgeProviderProps) {
     const location = useLocation();
     const navigate = useNavigate();
@@ -48,13 +50,13 @@ export function AppBridgeProvider({children}: AppBridgeProviderProps) {
 
         return {
             host,
-            apiKey: process.env.SHOPIFY_API_KEY,
+            apiKey,
             forceRedirect: true,
         };
     });
 
-    if (!process.env.SHOPIFY_API_KEY || !appBridgeConfig.host) {
-        const bannerProps = !process.env.SHOPIFY_API_KEY
+    if (!apiKey || !appBridgeConfig.host) {
+        const bannerProps = !apiKey
             ? {
                 title: "Missing Shopify API Key",
                 children: (
