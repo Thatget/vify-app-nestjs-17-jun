@@ -1,13 +1,11 @@
-import * as React from 'react'
-import { type ReactElement, useEffect } from 'react'
-import { styled } from '@mui/material/styles'
-import Paper from '@mui/material/Paper'
+import React from 'react'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-import { useAuthenticatedFetch } from '../hooks'
-import { Layout, LegacyCard, Link, Page } from '@shopify/polaris'
 import { useNavigate } from '@shopify/app-bridge-react'
+import { Layout, LegacyCard, Link, Page } from '@shopify/polaris'
+import { useEffect, type ReactElement } from 'react'
+import { useAuthenticatedFetch } from '../hooks'
 
 interface Props {
   showModalSupport: (modalActive: boolean) => void
@@ -22,18 +20,12 @@ export default function GettingStarted (props: Props): ReactElement | null {
       const res = new Promise<Response>((resolve, reject) => {
         resolve(data.json())
       })
-      res.then((value: Response) => {
+      void res.then((value: Response) => {
         console.log('value:', value)
       })
     })
   }, [])
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  }))
+
   const selectProducts = (
     <>
       <CardContent>
@@ -63,10 +55,10 @@ export default function GettingStarted (props: Props): ReactElement | null {
         <Typography variant="body1">
           Customize your Current theme and add a block to your target page <br/>
           Select <b>Simple Quote</b> when you find it available <br/>
-          <Link onClick={() => {
+          {/* <Link onClick={() => {
             props.showModalSupport(true)
-            console.log("clicked");
-          }}>Contact us </Link> if the button does not show <br/>
+            console.log('clicked')
+          }}>Contact us </Link> if the button does not show <br/> */}
         </Typography>
       </CardContent>
     </>
@@ -101,8 +93,8 @@ export default function GettingStarted (props: Props): ReactElement | null {
       <Layout sectioned>
         <LegacyCard>{selectProducts}</LegacyCard>
         <br/>
-        <LegacyCard>{themes}</LegacyCard>
-        <br/>
+        {/* <LegacyCard>{themes}</LegacyCard>
+        <br/> */}
         <LegacyCard>{otherSetting}</LegacyCard>
       </Layout>
     </Page>

@@ -12,6 +12,7 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
+import saleImg from 'assets/50.jpeg'
 
 const Sales = (
   <React.Fragment>
@@ -32,7 +33,7 @@ const Sales = (
         <CardMedia
           component="img"
           height="240"
-          image="./assets/50.jpeg"
+          image= {saleImg}
           alt="green iguana"
         />
       </Grid>

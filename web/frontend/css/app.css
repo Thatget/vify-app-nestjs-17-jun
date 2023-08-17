@@ -1,0 +1,9 @@
+.Polaris-TopBar__Contents {
+  justify-content: flex-start;
+}
+.Polaris-TopBar__SearchField {
+  display: none;
+}
+.Polaris-TopBar__LogoDisplayControl {
+  flex: unset
+}

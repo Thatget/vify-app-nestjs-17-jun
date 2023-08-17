@@ -1,3 +1,4 @@
+
 import HomeIcon from '@mui/icons-material/Home'
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
 import TableViewIcon from '@mui/icons-material/TableView'
@@ -36,6 +37,8 @@ import Products from './pages/Products'
 import Quotes from './pages/Quotes'
 import Setting from './pages/Setting'
 import ContextProvider from './store/ContextProvider'
+import './css/app.css'
+import vifyLogoImg from './assets/vifylog.png'
 export interface IApplicationProps {}
 
 const App: React.FC<IApplicationProps> = (props) => {
@@ -128,12 +131,12 @@ const App: React.FC<IApplicationProps> = (props) => {
       '.Polaris-TopBar__LogoDisplayControl'
     )
     logoDisplay.style.flex = 'unset'
-    // const button: HTMLElement = document.querySelector(
-    //   '.Polaris-Button--primary'
-    // )
-    // console.log("button",button);
-    
-    // button.style.backgroundColor = 'unset'
+    // // const button: HTMLElement = document.querySelector(
+    // //   '.Polaris-Button--primary'
+    // // )
+    // // console.log("button",button);
+
+    // // button.style.backgroundColor = 'unset'
   }, [])
   const handleCloseNavMenu = (href: string): void => {
     history(href)
@@ -284,7 +287,7 @@ const App: React.FC<IApplicationProps> = (props) => {
     />
   )
 
-  const navigationMarkup = show && (
+  const navigationMarkup = false && (
     <Navigation location="/">
       <Navigation.Section
         items={[
@@ -299,7 +302,7 @@ const App: React.FC<IApplicationProps> = (props) => {
       />
       <Navigation.Section
         separator
-        title="Vify Quotes App"
+        // title="Vify Quotes App"
         items={[
           {
             label: 'Getting Started',
@@ -364,8 +367,8 @@ const App: React.FC<IApplicationProps> = (props) => {
 
   const logo = {
     width: 40,
-    topBarSource: '/assets/vifylog.png',
-    contextualSaveBarSource: '/assets/vifylog.png',
+    topBarSource: vifyLogoImg,
+    contextualSaveBarSource: vifyLogoImg ,
     url: '#',
     accessibilityLabel: 'Vify Quotes'
   }
@@ -415,13 +418,13 @@ const App: React.FC<IApplicationProps> = (props) => {
                 <Frame
                   logo={logo}
                   topBar={topBarMarkup}
-                  navigation={navigationMarkup}
-                  showMobileNavigation={mobileNavigationActive}
-                  onNavigationDismiss={toggleMobileNavigationActive}
+                  // navigation={navigationMarkup}
+                  // showMobileNavigation={mobileNavigationActive}
+                  // onNavigationDismiss={toggleMobileNavigationActive}
                   skipToContentTarget={skipToContentRef}
                 >
                   {toastMarkup}
-                  {modalMarkup}
+                  {/* {modalMarkup} */}
                   <Routes>
                   <Route
                       path="/"

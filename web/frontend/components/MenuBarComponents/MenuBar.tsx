@@ -47,7 +47,7 @@ function ResponsiveAppBar (props: any): ReactElement | null {
           <Typography> &nbsp;&nbsp;&nbsp;</Typography>
           <Avatar
             alt="Remy Sharp"
-            src="/assets/vifylog.png"
+            src={ vifyLogoImg }
             sx={{ width: 24, height: 24 }}
           />
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
