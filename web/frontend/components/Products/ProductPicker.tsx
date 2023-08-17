@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import '../../css/style.css'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'

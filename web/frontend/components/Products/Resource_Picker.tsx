@@ -1,6 +1,5 @@
 import { ResourcePicker } from '@shopify/app-bridge-react'
 import { useEffect, useState } from 'react'
-import '../../css/style.css'
 import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
 import type ProductSelect from '../../types/ProductSelect'
