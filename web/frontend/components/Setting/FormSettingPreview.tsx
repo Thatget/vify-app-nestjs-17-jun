@@ -8,6 +8,7 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import { defaultFormSetting } from './FormSetting'
+import productCard from '../../assets/product-card.jpg.avif'
 
 function FormSettingPreview (): ReactElement | null {
   const { state } = useContext(StoreContext)
@@ -23,7 +24,7 @@ function FormSettingPreview (): ReactElement | null {
         <CardMedia
           component="img"
           sx={{ height: 180, width: 180 }}
-          image="assets/product-card.jpg.avif"
+          image={productCard}
           alt=""
         />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -89,7 +90,6 @@ function FormSettingPreview (): ReactElement | null {
                   sx={{ mx: 1, mb: 0, mt: 0.5, width: '100%', height: 40 }}>
             <Typography variant="body2">{localFormSetting.submit_button_text}</Typography>
           </Button>
-
         </FormControl>
       </Box>
     </>

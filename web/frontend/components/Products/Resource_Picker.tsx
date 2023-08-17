@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
 import type ProductSelect from '../../types/ProductSelect'
 import type Product from 'types/Product'
-import { ButtonGroup, Button, Divider } from '@shopify/polaris'
+import { Button } from '@shopify/polaris'
 
 interface ResourcePickerProp {
   handleUpdateProduct: () => void
@@ -14,8 +14,6 @@ export default function Resource_Picker ({ handleUpdateProduct }: ResourcePicker
   const fetch = useAuthenticatedFetch()
   const [open, setOpen] = useState(false)
   const [initialSelectionIds, setInitialSelectionIds] = useState<ProductSelect[]>([])
-  const [newList, setNewList] = useState([])
-  const [deleteList, setDeleteList] = useState<ProductSelect[]>([])
 
   const fetchProducts = async () => {
     try {
@@ -41,7 +39,7 @@ export default function Resource_Picker ({ handleUpdateProduct }: ResourcePicker
     }
   }, [open])
 
-  const handleSelection = (resources: any) => {
+  const handleSelection = async (resources: any) => {
     const selection = resources.selection || []
     const newOrUpdate = []
     const deleteProducts = initialSelectionIds.filter(initSelect => !selection.find((item: { id: string }) => item.id === initSelect.id))
@@ -81,12 +79,11 @@ export default function Resource_Picker ({ handleUpdateProduct }: ResourcePicker
       }
       return currentProduct
     })
-    setDeleteList(deleteProducts)
-    setNewList(productList)
+    await handleSave(deleteProducts, productList)
     setOpen(false)
   }
 
-  const handleSave = async () => {
+  const handleSave = async (deleteList: ProductSelect[], newList: any[]) => {
     const deleeteIds = deleteList.map(list => (list.id.split('/')[list.id.split('/').length - 1]))
     await fetch('/api/products/delete',
       {
@@ -102,8 +99,6 @@ export default function Resource_Picker ({ handleUpdateProduct }: ResourcePicker
         headers: { 'Content-Type': 'application/json' }
       }
     )
-    setDeleteList([])
-    setNewList([])
     handleUpdateProduct()
   }
 
@@ -115,6 +110,8 @@ export default function Resource_Picker ({ handleUpdateProduct }: ResourcePicker
                 alignItems="flex-end"
             >
                 <Button onClick={() => {
+                  console.log("Why ?");
+                  
                   setOpen(true)
                 }}
                 >Add Products</Button>
@@ -127,15 +124,6 @@ export default function Resource_Picker ({ handleUpdateProduct }: ResourcePicker
                 selectMultiple={true}
                 initialSelectionIds={initialSelectionIds}
             />
-          {(newList.length > 0 || deleteList.length > 0) &&
-          <>
-            <ButtonGroup>
-              <Button destructive onClick={() => { setNewList([]); setDeleteList([]) }} >Cancel</Button>
-              <Button primary onClick={async () => { await handleSave() }} >Save</Button>
-            </ButtonGroup>
-            <br />
-            <Divider borderWidth="2" borderColor="border-critical-subdued" />
-          </>}
         </>
   )
 }

@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useContext } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -7,6 +6,7 @@ import Button from '@mui/material/Button'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { defaultConfigSetting } from './ConfigSetting'
+import productCard from '../../assets/product-card.jpg.avif'
 
 const ConfigSettingPreview = (): JSX.Element => {
   const { state } = useContext(StoreContext)
@@ -27,7 +27,7 @@ const ConfigSettingPreview = (): JSX.Element => {
     <>
       <Box sx={{ flexWrap: 'wrap', width: '100%' }}>
         <div>
-          <img src="assets/product-card.jpg.avif" alt="" width="100%" height="100%"/>
+          <img src={productCard} alt="" width="100%" height="100%"/>
         </div>
         <div>
           {Boolean(localConfigSetting.hide_price === false) &&

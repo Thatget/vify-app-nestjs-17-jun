@@ -17,13 +17,15 @@ import { Button, ButtonGroup, Pagination, Spinner } from '@shopify/polaris'
 export default function SelectedProductsList () {
   const fetch = useAuthenticatedFetch()
   const [isLoading, setIsLoading] = React.useState(true)
-  const [selectedProducts, setSelectedProducts] = React.useState([])
   const [deleteList, setDeleteList] = React.useState<number[]>([])
   const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([])
   const [page, setPage] = React.useState<number>(0)
   const [count, setCount] = React.useState<number>(0)
-  const getSelectedProducts = (productsResource_Picker: any) => {
-    setSelectedProducts(productsResource_Picker)
+  const getSelectedProducts = () => {
+    if (page === 0) {
+      fetchData(0)
+    }
+    setPage(0);
   }
   const fetchData = React.useCallback(async (page: number) => {
     try {
@@ -64,11 +66,12 @@ export default function SelectedProductsList () {
     }
   }
 
+  const label = <>{page+1}/{Math.ceil(count/10)}</>
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ width: '100%' }}>
         {/* <ProductPicker /> */}
-        <Resource_Picker parentCallback={getSelectedProducts}/>
+        <Resource_Picker handleUpdateProduct={getSelectedProducts}/>
       </Box>
       <Box sx={{ width: '100%' }}>
         {isLoading
@@ -114,7 +117,7 @@ export default function SelectedProductsList () {
           sx={{ width: '100%' }}
         >
           <Pagination
-            label="Results"
+            label={label}
             hasPrevious={page !== 0}
             onPrevious={() => {
               setPage((prePage) => prePage - 1)
