@@ -18,7 +18,9 @@ import { RawBodyMiddleware } from '../middleware/raw-body.middleware';
 import { JsonBodyMiddleware } from '../middleware/json-body.middleware';
 import { ShopifyModule } from '../modules/shopify/shopify.module';
 import { ShopifyService } from '../modules/shopify/shopify.service';
-import { ServeStaticModule } from '@nestjs/serve-static';
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { Response, NextFunction } from 'express';
+import { readFileSync } from 'fs';
 
 @Module({
   imports: [
@@ -82,8 +84,18 @@ export class AppModule implements NestModule {
     // Ensure Installed On Shop Middleware for Client Routes.
     // Except for backend routes /api/(.*)
     consumer
-      .apply(this.shopifyService.shopify.ensureInstalledOnShop())
-      .exclude({ path: '/api/(.*)', method: RequestMethod.ALL })
-      .forRoutes({ path: '/*', method: RequestMethod.ALL });
+    .apply(
+        this.shopifyService.shopify.ensureInstalledOnShop(),
+        (_req: Request, res: Response, _next: NextFunction) => {
+            return res
+                .status(200)
+                .set("Content-Type", "text/html")
+                .send(readFileSync(join(process.env.NODE_ENV === 'production'
+                ? `${process.cwd()}/../frontend/dist/`
+                : `${process.cwd()}/../frontend/`, "index.html")));
+        }
+    )
+    .exclude({path: "/api/(.*)", method: RequestMethod.ALL}, {path: "/assets/(.*)", method: RequestMethod.ALL})
+    .forRoutes({path: "/*", method: RequestMethod.ALL});
   }
 }

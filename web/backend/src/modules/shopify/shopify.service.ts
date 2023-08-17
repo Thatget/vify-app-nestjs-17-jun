@@ -16,6 +16,7 @@ export class ShopifyService {
         apiSecretKey: this.configService.get('shopify.api_secret'),
         scopes: this.configService.get('shopify.scopes'),
         // hostName: this.configService.get('app.host'),
+        hostScheme: 'https',
         apiVersion: LATEST_API_VERSION,
         restResources,
       },
@@ -28,10 +29,10 @@ export class ShopifyService {
       },
       sessionStorage: MySQLSessionStorage.withCredentials(
         'localhost',
-        'vify_database',
-        'root',
-        'root',
-        { connectionPoolLimit: 10 }, // optional
+        process.env.DATABASE_NAME,
+        process.env.DATABASE_USER,
+        process.env.DATABASE_PASSWORD,
+        {connectionPoolLimit: 10}, // optional
       ),
     });
   }

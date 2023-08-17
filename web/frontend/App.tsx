@@ -122,21 +122,15 @@ const App: React.FC<IApplicationProps> = (props) => {
     const topbarContent: HTMLElement = document.querySelector(
       '.Polaris-TopBar__Contents'
     )
-    topbarContent.style.justifyContent = 'flex-start'
+    // topbarContent.style.justifyContent = 'flex-start'
     const searchMenu: HTMLElement = document.querySelector(
       '.Polaris-TopBar__SearchField'
     )
-    searchMenu.style.display = 'none'
+    // searchMenu.style.display = 'none'
     const logoDisplay: HTMLElement = document.querySelector(
       '.Polaris-TopBar__LogoDisplayControl'
     )
     logoDisplay.style.flex = 'unset'
-    // // const button: HTMLElement = document.querySelector(
-    // //   '.Polaris-Button--primary'
-    // // )
-    // // console.log("button",button);
-
-    // // button.style.backgroundColor = 'unset'
   }, [])
   const handleCloseNavMenu = (href: string): void => {
     history(href)
