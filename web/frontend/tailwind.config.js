@@ -1,7 +1,7 @@
 /** @type {(tailwindConfig: object) => object} */
-const withMT = require('@material-tailwind/react/utils/withMT')
+import withMT from '@material-tailwind/react/utils/withMT'
 
-module.exports = withMT({
+export default withMT({
   content: [
     './**/*.{html,js,jsx,ts,tsx}',
     './components/**/*.{html,js,jsx,ts,tsx}',
@@ -13,5 +13,8 @@ module.exports = withMT({
   theme: {
     extend: {}
   },
-  plugins: []
+  plugins: [],
+  corePlugins: {
+    preflight: false
+  }
 })

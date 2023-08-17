@@ -28,5 +28,7 @@ module.exports = {
     "plugins": [
         "react"
     ],
-    "rules": {}
+    "rules": {
+      "@typescript-eslint/no-confusing-void-expression": "error"
+    }
 }

@@ -1,39 +1,22 @@
-import React, { type ReactElement, useCallback, useContext, useState } from 'react'
-import { actions, StoreContext } from '../store'
-import { useAuthenticatedFetch } from '../hooks'
-import FormSetting from '../components/Setting/FormSetting'
+import { Grid, Layout, LegacyCard, Page, Tabs } from '@shopify/polaris'
+import React, { useCallback, useContext, useState, type ReactElement } from 'react'
+import ProductSelector from '../components/Products/ProductSelector'
 import ConfigSetting from '../components/Setting/ConfigSetting'
 import ConfigSettingPreview from '../components/Setting/ConfigSettingPreview'
+import FormSetting from '../components/Setting/FormSetting'
 import FormSettingPreview from '../components/Setting/FormSettingPreview'
 import ThanksFormSetting from '../components/Setting/ThanksFormSetting'
 import ThanksPagePreview from '../components/Setting/ThanksPagePreview'
+import { useAuthenticatedFetch } from '../hooks'
+import { StoreContext, actions } from '../store'
 import type QuoteEntity from '../types/QuoteEntity'
-import ProductSelector from '../components/Products/ProductSelector'
-import { Grid, Layout, LegacyCard, Page, Tabs } from '@shopify/polaris'
-import { useNavigate } from 'react-router-dom'
+import SaveSetting from '../components/Setting/SaveSetting'
 
 type SettingX = Record<string, string | number | boolean>
-const pages = [
-  {
-    title: 'GeneralSetting',
-    href: '/Setting/GeneralSetting'
-  },
-  {
-    title: 'FormSetting',
-    href: '/FormSetting'
-  },
-  {
-    title: 'ThanksPageSetting',
-    href: '/ThanksPageSetting'
-  }
-]
 
 const Setting = (): ReactElement | null => {
   const fetch = useAuthenticatedFetch()
-  const history = useNavigate()
   const { dispatch } = useContext(StoreContext)
-  const [value, setValue] = React.useState('1')
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [selected, setSelected] = useState(0)
   const handleTabChange = useCallback(
     (selectedTabIndex: number) => {
@@ -59,16 +42,8 @@ const Setting = (): ReactElement | null => {
       panelID: 'repeat-customers-content-1'
     }
   ]
-  const handleCloseNavMenu = (href: string): void => {
-    history(href)
-    console.log('close')
-  }
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string): void => {
-    setValue(newValue)
-  }
   const fetchQuoteEntity = useCallback(async () => {
-    setIsLoading(true)
     try {
       const response = await fetch('/api/quote-entity', { method: 'GET' })
       const data = await response.json()
@@ -80,6 +55,7 @@ const Setting = (): ReactElement | null => {
             case 'all_product':
             case 'hide_buy_now':
             case 'show_request_for_quote':
+            case 'hide_add_to_cart':
               if (entity.value === '1') setting = { ...setting, [entity.name]: true }
               else setting = { ...setting, [entity.name]: false }
               break
@@ -92,7 +68,6 @@ const Setting = (): ReactElement | null => {
       }
     } catch (error) {
     }
-    setIsLoading(false)
   }, [])
   React.useEffect(() => {
     void fetchQuoteEntity()
@@ -183,8 +158,8 @@ const Setting = (): ReactElement | null => {
 
   return (
     <Page>
+      <SaveSetting fetchQuoteEntity={fetchQuoteEntity} />
       <Layout sectioned>
-        {/* <LegacyCard> */}
         <div style={{ position: 'absolute', top: '0' }}>
           <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
             {selected === 0 && configSetting}
@@ -192,7 +167,6 @@ const Setting = (): ReactElement | null => {
             {selected === 2 && thanksSetting}
           </Tabs>
         </div>
-        {/* </LegacyCard> */}
       </Layout>
     </Page>
   )

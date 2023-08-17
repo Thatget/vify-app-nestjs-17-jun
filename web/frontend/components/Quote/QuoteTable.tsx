@@ -10,15 +10,16 @@ import {
   Modal,
   Pagination,
   Text,
-  TextContainer,
   Button,
   type TableData,
   Toast,
-  Badge
+  Badge,
+  VerticalStack
 } from '@shopify/polaris'
 import type ParsedQuote from '../../types/ParsedQuote'
 import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
+import defaultImg from '../../assets/default.jpg'
 
 interface IPropQuoteTable {
   quotes: ParsedQuote[]
@@ -127,7 +128,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       tempColumn[4] = (
         <div style={{}}>
           <img
-            src={(quote.product.selected_product.image.length > 0) ? quote.product.selected_product.image : ''}
+            src={(quote.product.selected_product.image !== undefined) ? quote.product.selected_product.image : defaultImg}
             alt=""
             width="40%"
             height="40%"
@@ -155,7 +156,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
         <Button
           onClick={() => {
             console.log(quote)
-            toggleModal(quote)
+            toggleModal(quote,1)
           }}
           size="slim"
         >
@@ -244,14 +245,11 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
         </div>
       </AlphaCard>
       {toastMarkup}
-      {propModal && (
+      {Boolean(propModal !== undefined) && (
         <div style={{ height: '500px' }}>
           <Modal
             activator={activator}
             open={active}
-            // onClose={() => {
-            //   toggleModal(null)
-            // }}
             onClose={() => {
               toggleModal(propModal, 1)
             }}
@@ -283,27 +281,27 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
                       columnSpan={{ xs: 3, sm: 3, md: 3, lg: 3, xl: 3 }}
                     >
                       <img
-                        src={propModal.product.selected_product.image || ''}
+                        src={(propModal.product.selected_product.image !== undefined) ? propModal.product.selected_product.image : defaultImg}
                         alt=""
-                        width="40%"
-                        height="40%"
+                        width="80%"
+                        height="80%"
                         style={{ borderRadius: '50%' }}
                       />
                     </Grid.Cell>
                     <Grid.Cell
                       columnSpan={{ xs: 3, sm: 3, md: 3, lg: 3, xl: 3 }}
                     >
-                      <TextContainer>
-                        <Text>
-                          {propModal.product.selected_product.title || ''}
+                      <VerticalStack>
+                        <Text as={'h1'}>
+                          {(propModal.product.selected_product.title !== undefined) ? propModal.product.selected_product.title : 'Product Title'}
                         </Text>
-                        <Text>
-                          {propModal.product.selected_variant.title || ''}
+                        <Text as={'h1'}>
+                          {(propModal.product.selected_variant.title !== undefined) ? propModal.product.selected_variant.title : 'Variant Title'}
                         </Text>
-                        <Text>
-                          {propModal.product.selected_variant.id || ''}
+                        <Text as={'h1'}>
+                          {(propModal.product.selected_variant.id !== undefined) ? propModal.product.selected_variant.id : 'Variant Id'}
                         </Text>
-                      </TextContainer>
+                      </VerticalStack>
                     </Grid.Cell>
                   </Grid>
                 </LegacyStack.Item>
@@ -322,11 +320,11 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
                       xl: ['product product sales sales orders orders']
                     }}
                   >
-                    <Grid.Cell area="sales">
-                      <TextContainer>
+                    <Grid.Cell area="product">
+                      <VerticalStack>
                         <p>Name</p>
                         <p>{propModal.name}</p>
-                      </TextContainer>
+                      </VerticalStack>
                     </Grid.Cell>
                     <Grid.Cell area="orders">
                       <Buttonholder
@@ -352,11 +350,11 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
                       xl: ['product product sales sales orders orders']
                     }}
                   >
-                    <Grid.Cell area="sales">
-                      <TextContainer>
+                    <Grid.Cell area="product">
+                      <VerticalStack>
                         <p>Email</p>
                         <p>{propModal.email}</p>
-                      </TextContainer>
+                      </VerticalStack>
                     </Grid.Cell>
                     <Grid.Cell area="orders">
                       <Buttonholder
@@ -382,11 +380,11 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
                       xl: ['product product sales sales orders orders']
                     }}
                   >
-                    <Grid.Cell area="sales">
-                      <TextContainer>
+                    <Grid.Cell area="product">
+                      <VerticalStack>
                         <p>Message</p>
                         <p>{propModal.message}</p>
-                      </TextContainer>
+                      </VerticalStack>
                     </Grid.Cell>
                     <Grid.Cell area="orders">
                       <Buttonholder

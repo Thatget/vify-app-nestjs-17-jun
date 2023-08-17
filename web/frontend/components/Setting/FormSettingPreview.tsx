@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { type ReactElement, useContext } from 'react'
 import { StoreContext } from '../../store'
 import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
@@ -9,7 +9,7 @@ import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import { defaultFormSetting } from './FormSetting'
 
-function FormSettingPreview () {
+function FormSettingPreview (): ReactElement | null {
   const { state } = useContext(StoreContext)
   const localFormSetting = { ...defaultFormSetting, ...state.setting, ...state.currentSetting }
   const formSettingPreview = (
@@ -26,8 +26,10 @@ function FormSettingPreview () {
           image="assets/product-card.jpg.avif"
           alt=""
         />
-        <Typography variant="body1" sx={{ m: 1 }}>Product Title</Typography>
-        <Typography variant="body1" sx={{ m: 1 }}>Product Price</Typography>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography variant="body2" sx={{ m: 1 }}>Product Title</Typography>
+        <Typography variant="body2" sx={{ m: 1 }}>25$</Typography>
+        </div>
       </Card>
 
       <Box sx={{ flexWrap: 'wrap', width: '100%' }}>

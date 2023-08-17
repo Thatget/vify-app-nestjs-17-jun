@@ -291,11 +291,10 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
               display: 'flex', width: '100%', mb: 1, mt: 1.7,
               mr: 1.3, alignItems: 'center'
             }}>
-              <Typography variant="body1" sx={{}}>{formName.value}</Typography>
-              
+              <Typography variant="body1">{formName.value || 'Your Name:'}</Typography>
               <TextField
                 id="name"
-                label={formNamePlaceholder.value}
+                label={formNamePlaceholder.value || 'Write Your Name here '}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(e.target.value, 'name')}
                 type="text"
                 autoComplete="off"
@@ -333,12 +332,11 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
               alignContent: 'space-between',
               alignItems: 'center'
             }}>
-              <Typography variant="body1"
-                          sx={{}}>{formMessage.value}</Typography>
+              <Typography variant="body1">{formMessage.value || "Your Message: "}</Typography>
               <StyledTextarea
                 aria-label="minimum height"
                 minRows={5}
-                placeholder={formMessagePlaceholder.value}
+                placeholder={formMessagePlaceholder.value || 'Write Your Message here'}
                 // value={formValue.message}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setFormData(e.target.value, "message")}
                 sx={{width: '49ch', mr: 0, ml: 'auto'}}

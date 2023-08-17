@@ -17,7 +17,7 @@ interface AppBridgeProviderProps {
     children: ReactNode;
 }
 
-const apiKey = import.meta.env.VITE_SHOPIFY_API_KEY
+const apiKey = import.meta.env.VITE_SHOPIFY_API_KEY || process.env.SHOPIFY_API_KEY
 
 export function AppBridgeProvider({children}: AppBridgeProviderProps) {
     const location = useLocation();

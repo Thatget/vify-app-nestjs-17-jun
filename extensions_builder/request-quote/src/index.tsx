@@ -17,15 +17,34 @@ function Index() {
   
   useEffect(() => {
     const variant_selected_id = (window as any).variant_selected_id
-    fetch(`/apps/vify_rfq-f/quote_setting?variant_selected_id=${variant_selected_id}`)
+    void fetch(`/apps/vify_rfq-f/quote_setting?variant_selected_id=${variant_selected_id}`)
       .then(response => response.json())
       .then(data => {
         setSetting(data);
         setDataSettings(data.settings)
-        const hidepriceElement = document.querySelector('.price--show-badge')
+        console.log("data.settings",data.settings)
+        const hidepriceElement: HTMLElement = document.querySelector('.price--show-badge')
         // if (data.show === true)
         // hidepriceElement.style.display = 'block'
-      })
+      console.log("hidepriceElement.style.display",hidepriceElement);
+      const hide_price: quoteEntity = data.settings.find((result) => result.name === 'hide_price')
+      if(hide_price.value === '0') {
+        hidepriceElement.style.display = 'block'
+      }
+      const hideBuyNowElement: HTMLElement = document.querySelector('.shopify-payment-button')
+      console.log("hideBuyNowElement",hideBuyNowElement);
+      const hide_buy_now: quoteEntity = data.settings.find((result) => result.name === 'hide_buy_now')
+      console.log("hide_buy_now",hide_buy_now);
+      
+      if( hide_buy_now.value === '0') hideBuyNowElement.style.display = 'block'
+      
+      const hideAddToCardElement: HTMLElement = document.querySelector('.product-form__submit')
+      const hide_add_to_cart: quoteEntity = data.settings.find((result) => result.name === 'hide_add_to_cart')
+      if( hide_add_to_cart.value === '0') hideAddToCardElement.style.display = 'block'
+
+      const show_request_for_quote: quoteEntity = data.settings.find((result) => result.name === 'show_request_for_quote')
+      if( show_request_for_quote.value === '0' ) setSetting({show:false})
+    }) 
   }, [])
   const handleChangeModal = (modal: string) => {
     console.log("modal", modal)
@@ -36,7 +55,7 @@ function Index() {
       {setting.show &&
           <div>
               <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                      onClick={() => handleChangeModal('request')}>Request For Quote V1.1</Button>
+                      onClick={() => handleChangeModal('request')}>Request For Quote 1.2</Button>
             {modal === 'request' &&
                 <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}
                              dataSettings={dataSettings}/>}
