@@ -165,9 +165,6 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       )
       temp.push(tempColumn)
       countIndex = countIndex + 1
-      console.log('index', countIndex)
-      console.log('props.skip', props.skip)
-      console.log('props.count', props.count)
     })
     setRows(temp)
   }, [quotesTables, propModal, status, props.isLoading])
@@ -189,6 +186,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
     },
     []
   )
+  const label = <>{props.skip/5 + 1}/{Math.ceil(props.count/5)}</>
   return (
     <>
       <AlphaCard>
@@ -209,7 +207,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
               'Name',
               'Email',
               'Time',
-              'Product',
+              <div>Product</div>,
               'Message',
               'Status',
               'Action'
@@ -226,18 +224,16 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
               }}
             >
               <Pagination
-                label="Result"
+                label={label}
                 hasPrevious={props.skip !== 0}
                 onPrevious={() => {
                   props.setSkip((preSkip) => preSkip - 5)
                   setIndex((prevState) => prevState - 5)
-                  console.log('props.skip', props.skip)
                 }}
                 hasNext={props.skip + 5 < props.count}
                 onNext={() => {
                   props.setSkip((prevState) => prevState + 5)
                   setIndex((prevState) => prevState + 5)
-                  console.log('props.skip', props.skip)
                 }}
               />
             </div>

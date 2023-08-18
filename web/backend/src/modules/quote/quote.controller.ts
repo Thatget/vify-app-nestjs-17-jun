@@ -13,7 +13,7 @@ import {
 import { Response } from 'express';
 import { QuoteService } from './quote.service';
 import { StoreService } from '../store/store.service';
-import { ResponseQuoteDto } from './dto/quote-response.dto';
+import { logger } from '../helpers/logger.helper';
 
 @Controller('api/quote')
 export class QuoteController {
@@ -24,21 +24,28 @@ export class QuoteController {
 
   @Get()
   async findAndPaging(
+    @Query('textSearch') textSearch: string,
     @Query('skip') skip: number,
     @Req() req: Request,
     @Res() res: Response,
   ) {
     try {
+      var [quotes, count] = [[], 0]
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
-      const [quotes, count] = await this.quoteService.findAll(
-        store_id,
-        skip,
-        5,
-      );
+      if (!textSearch) {
+        [quotes, count] = await this.quoteService.findAll(
+          store_id,
+          skip,
+          5,
+        );
+      } else {
+        [quotes, count] = await this.quoteService.searchQuote(textSearch, store_id, skip, 5)
+      }
       return res.status(200).send({ quotes, count });
     } catch (error) {
+      logger.error(error.message)
       return res.status(500).json({ message: error.message });
     }
   }
@@ -103,22 +110,5 @@ export class QuoteController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     // return this.quoteService.remove(+id);
-  }
-
-  @Get(':searchText')
-  async search(
-    @Param('searchText') searchText: string,
-    @Query('skip') skip: number,
-    @Res() res: Response
-    ): Promise<ResponseQuoteDto[]> {
-    try {
-      const shopDomain = res.locals.shopify.session.shop;
-      const foundStore = await this.storeService.findByShopDomain(shopDomain);
-      const store_id = foundStore.id;
-      const [quotes, count]  = await this.quoteService.searchQuote(searchText, store_id, skip, 10)
-      return quotes
-    } catch (error) {
-      return [];
-    }
   }
 }
