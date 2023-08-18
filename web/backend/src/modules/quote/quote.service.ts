@@ -2,6 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { Repository } from 'typeorm';
 import { Quote } from './entities/quote.entity';
+import { ResponseQuoteDto } from './dto/quote-response.dto';
 
 @Injectable()
 export class QuoteService {
@@ -58,5 +59,17 @@ export class QuoteService {
       .from(Quote)
       .where({ id, store_id })
       .execute();
+  }
+
+  async searchQuote(searchText: string, store_id: number,  skip: number, take: number): Promise<ResponseQuoteDto[]> {
+    return await this.quoteRepository
+      .createQueryBuilder()
+      .where('name LIKE :searchText', { searchText: `%${searchText}%` })
+      .orWhere('email LIKE :searchText', { searchText: `%${searchText}%` })
+      .orWhere('MATCH(product)  AGAINST(:searchText IN NATURAL LANGUAGE MODE)', { searchText })
+      .andWhere({store_id})
+      .offset(skip)
+      .limit(take)
+      .getManyAndCount()
   }
 }

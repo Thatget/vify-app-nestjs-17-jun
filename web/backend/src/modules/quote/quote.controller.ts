@@ -13,6 +13,7 @@ import {
 import { Response } from 'express';
 import { QuoteService } from './quote.service';
 import { StoreService } from '../store/store.service';
+import { ResponseQuoteDto } from './dto/quote-response.dto';
 
 @Controller('api/quote')
 export class QuoteController {
@@ -29,7 +30,6 @@ export class QuoteController {
   ) {
     try {
       const shopDomain = res.locals.shopify.session.shop;
-      console.log('here');
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
       const [quotes, count] = await this.quoteService.findAll(
@@ -61,7 +61,6 @@ export class QuoteController {
       await this.quoteService.delete(ids, store_id);
       return res.status(200).send('OK');
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ message: error.message });
     }
   }
@@ -73,14 +72,12 @@ export class QuoteController {
     @Res() res: Response,
   ) {
     try {
-      console.log('store');
       const { shop } = res.locals.shopify.session;
       const foundStore = await this.storeService.findByShopDomain(shop);
       const store_id = foundStore.id;
       await this.quoteService.deleteEach(id, store_id);
       return res.status(200).send('OK');
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ message: error.message });
     }
   }
@@ -96,7 +93,6 @@ export class QuoteController {
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
-      console.log('store_id', store_id);
       await this.quoteService.updateStatus(id, store_id, status);
       return res.status(200).send('OK');
     } catch (error) {
@@ -107,5 +103,22 @@ export class QuoteController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     // return this.quoteService.remove(+id);
+  }
+
+  @Get(':searchText')
+  async search(
+    @Param('searchText') searchText: string,
+    @Query('skip') skip: number,
+    @Res() res: Response
+    ): Promise<ResponseQuoteDto[]> {
+    try {
+      const shopDomain = res.locals.shopify.session.shop;
+      const foundStore = await this.storeService.findByShopDomain(shopDomain);
+      const store_id = foundStore.id;
+      const [quotes, count]  = await this.quoteService.searchQuote(searchText, store_id, skip, 10)
+      return quotes
+    } catch (error) {
+      return [];
+    }
   }
 }

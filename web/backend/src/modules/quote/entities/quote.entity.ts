@@ -6,7 +6,8 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     JoinColumn,
-    ManyToOne
+    ManyToOne,
+    Index
 } from 'typeorm';
 
 @Entity()
@@ -19,6 +20,7 @@ export class Quote {
   email: string;
   @Column({nullable: true})
   message: string;
+  @Index({ fulltext: true })
   @Column('text', {nullable: true})
   product: string;
   @Column('tinyint', {default: 0})

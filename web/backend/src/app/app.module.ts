@@ -87,12 +87,12 @@ export class AppModule implements NestModule {
     .apply(
         this.shopifyService.shopify.ensureInstalledOnShop(),
         (_req: Request, res: Response, _next: NextFunction) => {
-            return res
-                .status(200)
-                .set("Content-Type", "text/html")
-                .send(readFileSync(join(process.env.NODE_ENV === 'production'
-                ? `${process.cwd()}/../frontend/dist/`
-                : `${process.cwd()}/../frontend/`, "index.html")));
+          return res
+            .status(200)
+            .set("Content-Type", "text/html")
+            .send(readFileSync(join(process.env.NODE_ENV === 'production'
+            ? `${process.cwd()}/../frontend/dist/`
+            : `${process.cwd()}/../frontend/`, "index.html")));
         }
     )
     .exclude({path: "/api/(.*)", method: RequestMethod.ALL}, {path: "/assets/(.*)", method: RequestMethod.ALL})
