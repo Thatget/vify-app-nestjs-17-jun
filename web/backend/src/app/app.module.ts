@@ -21,6 +21,7 @@ import { ShopifyService } from '../modules/shopify/shopify.service';
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { Response, NextFunction } from 'express';
 import { readFileSync } from 'fs';
+import { QuoteAnalysisModule } from '../modules/quote-analysis/quote-analysis.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { readFileSync } from 'fs';
     WebhookModule,
     QuoteEntityModule,
     StoreFrontendModule,
+    QuoteAnalysisModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

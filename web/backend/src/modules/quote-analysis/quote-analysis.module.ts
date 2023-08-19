@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { StoreModule } from '../store/store.module';
-import { QuoteAnlysisController } from './quote-analysis.controller';
+import { QuoteAnalysisController } from './quote-analysis.controller';
+import { QuoteModule } from '../quote/quote.module';
 
 @Module({
-  imports: [StoreModule],
-  controllers: [QuoteAnlysisController],
+  imports: [StoreModule, QuoteModule],
+  controllers: [QuoteAnalysisController],
 })
-export class QuoteEntityModule {}
+export class QuoteAnalysisModule {}

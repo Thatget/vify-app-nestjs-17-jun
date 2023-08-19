@@ -2,23 +2,33 @@ import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from '@shopify/app-bridge-react'
-import { Layout, LegacyCard, Link, Page } from '@shopify/polaris'
-import { useEffect, type ReactElement } from 'react'
+import { DataTable, Layout, LegacyCard, Link, Page } from '@shopify/polaris'
+import { useEffect, type ReactElement, useCallback, useState } from 'react'
 import { useAuthenticatedFetch } from '../hooks'
 
 export default function Analysis (): ReactElement | null {
   const fetch = useAuthenticatedFetch()
   const navigate = useNavigate()
-  useEffect(() => {
-    void fetch('/api/store', { method: 'Get' }).then((data: Response): void => {
-      const res = new Promise<Response>((resolve, reject) => {
-        resolve(data.json())
-      })
-      void res.then((value: Response) => {
-      })
-    })
+  const [topProduct, setTopProduct] = useState([])
+
+  const fetchTopProducts = useCallback( async() => {
+    fetch('/api/quote-analysis/products', { method: 'Get' })
   }, [])
 
+  useEffect(() => {
+    fetchTopProducts()
+  }, [])
+  const rows = [
+    ['Emerald Silk Gown', '$875.00', 124689, 140, '$122,500.00'],
+    ['Mauve Cashmere Scarf', '$230.00', 124533, 83, '$19,090.00'],
+    [
+      'Navy Merino Wool Blazer with khaki chinos and yellow belt',
+      '$445.00',
+      124518,
+      32,
+      '$14,240.00',
+    ],
+  ];
   const selectProducts = (
     <>
       <CardContent>
@@ -85,6 +95,26 @@ export default function Analysis (): ReactElement | null {
         {/* <LegacyCard>{themes}</LegacyCard>
         <br/> */}
         <LegacyCard>{otherSetting}</LegacyCard>
+        <LegacyCard>
+        <DataTable
+          columnContentTypes={[
+            'text',
+            'numeric',
+            'numeric',
+            'numeric',
+            'numeric',
+          ]}
+          headings={[
+            'Product',
+            'Price',
+            'SKU Number',
+            'Net quantity',
+            'Net sales',
+          ]}
+          rows={rows}
+          totals={['', '', '', 255, '$155,830.00']}
+        />
+        </LegacyCard>
       </Layout>
     </Page>
   )
