@@ -1,11 +1,7 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
   Res,
-  HttpStatus,
-  Inject,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { StoreService } from '../store/store.service';
@@ -18,7 +14,10 @@ export class QuoteAnalysisController {
     private readonly quoteAnalysisService: QuoteAnalysisService
   ) {}
   @Get('/products')
-  async productsQuote(params:string) {
-    this.quoteAnalysisService.countProduct(1)
+  async productsQuote(@Res() res: Response) {
+    const shopDomain = res.locals.shopify.session.shop;
+    const foundStore = await this.storeService.findByShopDomain(shopDomain);
+    const store_id = foundStore.id;
+    this.quoteAnalysisService.countProduct(store_id)
   }
 }
