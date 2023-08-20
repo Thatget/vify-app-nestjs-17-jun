@@ -123,20 +123,7 @@ const App: React.FC<IApplicationProps> = (props) => {
   const [modalActive, setModalActive] = useState(false)
   const [show, setShow] = useState(true)
   const [isSecondaryMenuOpen, setIsSecondaryMenuOpen] = useState(false)
-  useEffect(() => {
-    const topbarContent: HTMLElement = document.querySelector(
-      '.Polaris-TopBar__Contents'
-    )
-    // topbarContent.style.justifyContent = 'flex-start'
-    const searchMenu: HTMLElement = document.querySelector(
-      '.Polaris-TopBar__SearchField'
-    )
-    // searchMenu.style.display = 'none'
-    const logoDisplay: HTMLElement = document.querySelector(
-      '.Polaris-TopBar__LogoDisplayControl'
-    )
-    logoDisplay.style.flex = 'unset'
-  }, [])
+
   const handleCloseNavMenu = (href: string): void => {
     history(href)
   }
@@ -190,7 +177,6 @@ const App: React.FC<IApplicationProps> = (props) => {
   }, [])
 
   const toggleIsSecondaryMenuOpen = useCallback((page: number) => {
-    console.log('toggleIsLoading')
     switch (page) {
       case 0:
         console.log('Case 0')
@@ -225,9 +211,7 @@ const App: React.FC<IApplicationProps> = (props) => {
       <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<HomeIcon />}>
-            <Typography variant="body2" sx={{ display: 'flex' }}>
               Dashboard
-            </Typography>
           </Button>
         }
         open={isSecondaryMenuOpen}

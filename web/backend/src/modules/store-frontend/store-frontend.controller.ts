@@ -39,11 +39,10 @@ export class StoreFrontendController {
 
       const selected_product = data.selected_product;
       const product = { selected_product, selected_variant };
-      const product_string = JSON.stringify(product);
       if (store) {
         const quote: CreateQuoteDto = {
           ...formValue,
-          product: product_string,
+          product: product,
           store_id: store.id,
         };
         await this.quoteService.create(quote);

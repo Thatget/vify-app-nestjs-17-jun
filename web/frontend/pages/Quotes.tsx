@@ -44,21 +44,6 @@ export default function Quotes (): ReactElement | null {
     }
   }, [])
 
-  // Search quote by name, email and fulltextSearch product
-  const searchQuote = useCallback(async (text: string) => {
-    try {
-      const encodedSearchText = encodeURIComponent(text);
-      const response = await fetch(`/api/quote?textSearch=${encodedSearchText}&skip=${skip}`, { method: 'GET' })
-      const temp = await response.json()
-      
-      setData(temp)
-      setCount((temp.count !== undefined) ? temp.count : 0)
-      setIsLoading(false)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }, [])
-
   const handleSearch = useCallback((newValue: string) => {
     setSkip(0)
     setTextSearch(newValue)
@@ -87,12 +72,7 @@ export default function Quotes (): ReactElement | null {
 
   useEffect(() => {
     const preQuote = (data !== undefined) ? data.quotes : []
-    const updatedQuote = preQuote.map(q => {
-      const parsedProduct = JSON.parse(q.product)
-      const parsedQuote: ParsedQuote = { ...q, product: parsedProduct }
-      return parsedQuote
-    })
-    setQuote(updatedQuote)
+    setQuote(preQuote)
   }, [data])
   return (
     <Page>

@@ -21,7 +21,7 @@ export class Quote {
   @Column({nullable: true})
   message: string;
   @Index({ fulltext: true })
-  @Column('json', {nullable: true})
+  @Column('json', {nullable: false})
   product: string;
   @Column('tinyint', {default: 0})
   status: number;
