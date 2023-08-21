@@ -39,6 +39,7 @@ import Setting from './pages/Setting'
 import ContextProvider from './store/ContextProvider'
 import './css/app.css'
 import vifyLogoImg from './assets/vifylog.png'
+import Analysis from './pages/Analysis'
 export interface IApplicationProps {}
 
 const App: React.FC<IApplicationProps> = (props) => {
@@ -109,6 +110,10 @@ const App: React.FC<IApplicationProps> = (props) => {
     {
       title: 'Setting',
       href: '/Setting'
+    },
+    {
+      title: 'Analysis',
+      href: '/analysis'
     }
   ]
   const history = useNavigate()
@@ -118,23 +123,9 @@ const App: React.FC<IApplicationProps> = (props) => {
   const [modalActive, setModalActive] = useState(false)
   const [show, setShow] = useState(true)
   const [isSecondaryMenuOpen, setIsSecondaryMenuOpen] = useState(false)
-  useEffect(() => {
-    const topbarContent: HTMLElement = document.querySelector(
-      '.Polaris-TopBar__Contents'
-    )
-    // topbarContent.style.justifyContent = 'flex-start'
-    const searchMenu: HTMLElement = document.querySelector(
-      '.Polaris-TopBar__SearchField'
-    )
-    // searchMenu.style.display = 'none'
-    const logoDisplay: HTMLElement = document.querySelector(
-      '.Polaris-TopBar__LogoDisplayControl'
-    )
-    logoDisplay.style.flex = 'unset'
-  }, [])
+
   const handleCloseNavMenu = (href: string): void => {
     history(href)
-    console.log('close')
   }
 
   const [supportSubject, setSupportSubject] = useState('')
@@ -158,7 +149,6 @@ const App: React.FC<IApplicationProps> = (props) => {
   const toggleIsLoading = useCallback((page: number) => {
     switch (page) {
       case 0:
-        console.log('Case 0')
         handleCloseNavMenu(pages[0].href)
         setShow(true)
         break
@@ -168,6 +158,10 @@ const App: React.FC<IApplicationProps> = (props) => {
         break
       case 2:
         handleCloseNavMenu(pages[2].href)
+        setShow(false)
+        break
+      case 3:
+        handleCloseNavMenu(pages[3].href)
         setShow(false)
         break
       default:
@@ -183,7 +177,6 @@ const App: React.FC<IApplicationProps> = (props) => {
   }, [])
 
   const toggleIsSecondaryMenuOpen = useCallback((page: number) => {
-    console.log('toggleIsLoading')
     switch (page) {
       case 0:
         console.log('Case 0')
@@ -197,6 +190,10 @@ const App: React.FC<IApplicationProps> = (props) => {
       case 2:
         setShow(false)
         handleCloseNavMenu(pages[2].href)
+        break
+      case 3:
+        setShow(false)
+        handleCloseNavMenu(pages[3].href)
         break
       default:
         break
@@ -214,9 +211,7 @@ const App: React.FC<IApplicationProps> = (props) => {
       <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<HomeIcon />}>
-            <Typography variant="body2" sx={{ display: 'flex' }}>
               Dashboard
-            </Typography>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -263,6 +258,25 @@ const App: React.FC<IApplicationProps> = (props) => {
         }}
         onClose={() => {
           toggleIsSecondaryMenuOpen(2)
+        }}
+        actions={[
+          {
+            items: [{ content: 'Community forums' }]
+          }
+        ]}
+      />
+      <TopBar.Menu
+        activatorContent={
+          <Button variant="text" startIcon={<SettingsSuggestIcon />}>
+            Analysis
+          </Button>
+        }
+        open={isSecondaryMenuOpen}
+        onOpen={() => {
+          toggleIsSecondaryMenuOpen(3)
+        }}
+        onClose={() => {
+          toggleIsSecondaryMenuOpen(3)
         }}
         actions={[
           {
@@ -412,13 +426,9 @@ const App: React.FC<IApplicationProps> = (props) => {
                 <Frame
                   logo={logo}
                   topBar={topBarMarkup}
-                  // navigation={navigationMarkup}
-                  // showMobileNavigation={mobileNavigationActive}
-                  // onNavigationDismiss={toggleMobileNavigationActive}
                   skipToContentTarget={skipToContentRef}
                 >
                   {toastMarkup}
-                  {/* {modalMarkup} */}
                   <Routes>
                   <Route
                       path="/"
@@ -441,6 +451,7 @@ const App: React.FC<IApplicationProps> = (props) => {
                     <Route path="Quotes" element={<Quotes />} />
                     <Route path="Products" element={<Products />} />
                     <Route path="Setting" element={<Setting />} />
+                    <Route path="analysis" element={<Analysis />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Frame>

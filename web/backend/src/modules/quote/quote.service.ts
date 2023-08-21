@@ -2,7 +2,6 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { Repository } from 'typeorm';
 import { Quote } from './entities/quote.entity';
-import { ResponseQuoteDto } from './dto/quote-response.dto';
 
 @Injectable()
 export class QuoteService {
@@ -24,6 +23,7 @@ export class QuoteService {
       where: { store_id },
       skip,
       take,
+      order: { created_at: "DESC" }
     });
   }
 
@@ -33,9 +33,6 @@ export class QuoteService {
 
   async updateStatus(id: number, store_id: number, status: number) {
     const quote = await this.quoteRepository.findOneBy({ id });
-    if (quote.store_id !== undefined) {
-      console.log('quote.store_id', quote.store_id);
-    }
     if (quote && quote.store_id && quote.store_id === store_id) {
       quote.status = status;
       return await this.quoteRepository.save(quote);
@@ -52,7 +49,6 @@ export class QuoteService {
   }
 
   async deleteEach(id: number, store_id: number) {
-    console.log(id, store_id);
     return this.quoteRepository
       .createQueryBuilder()
       .delete()
@@ -61,15 +57,16 @@ export class QuoteService {
       .execute();
   }
 
-  async searchQuote(searchText: string, store_id: number,  skip: number, take: number): Promise<ResponseQuoteDto[]> {
+  async searchQuote(textSearch: string, store_id: number,  skip: number, take: number) {
     return await this.quoteRepository
-      .createQueryBuilder()
-      .where('name LIKE :searchText', { searchText: `%${searchText}%` })
-      .orWhere('email LIKE :searchText', { searchText: `%${searchText}%` })
-      .orWhere('MATCH(product)  AGAINST(:searchText IN NATURAL LANGUAGE MODE)', { searchText })
+      .createQueryBuilder("quote")
+      .where('quote.name LIKE :textSearch', { textSearch })
+      .orWhere("quote.email LIKE :textSearch", { textSearch: `%${textSearch}%` })
+      .orWhere('MATCH(product)  AGAINST(:textSearch IN NATURAL LANGUAGE MODE)', { textSearch })
       .andWhere({store_id})
       .offset(skip)
       .limit(take)
+      .orderBy("created_at", "DESC")
       .getManyAndCount()
   }
 }
