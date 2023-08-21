@@ -10,7 +10,7 @@ coverage
 
 # Ignore Apple macOS Desktop Services Store
 .DS_Store
-
+.history
 # Logs
 logs
 *.log

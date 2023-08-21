@@ -8,9 +8,9 @@ export const databaseProviders = [
         type: 'mysql',
         host: 'localhost',
         port: 3306,
-        username: 'root',
-        password: 'root',
-        database: 'vify_database',
+        username: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
         synchronize: true,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       });
@@ -18,4 +18,3 @@ export const databaseProviders = [
     },
   },
 ];
-  
