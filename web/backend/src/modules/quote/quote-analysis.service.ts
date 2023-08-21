@@ -9,7 +9,7 @@ export class QuoteAnalysisService {
     private readonly quoteRepository: Repository<Quote>,
   ) {}
   async countProduct(store_id: number, skip = 0, limit = 10) {
-    return await this.quoteRepository
+    const a = await this.quoteRepository
       .createQueryBuilder('quote')
       .select('JSON_UNQUOTE(JSON_EXTRACT(quote.product, "$.selected_product.id"))', 'productId')
       .addSelect('JSON_UNQUOTE(JSON_EXTRACT(quote.product, "$.selected_product.title"))', 'productTitle')
@@ -23,5 +23,7 @@ export class QuoteAnalysisService {
       .groupBy('variantId')
       .orderBy('count', 'DESC')
       .getRawMany()
+    console.log(a)
+    return a;
   }
 }

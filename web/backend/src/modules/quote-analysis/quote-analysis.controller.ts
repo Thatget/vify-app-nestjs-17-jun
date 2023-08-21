@@ -15,9 +15,15 @@ export class QuoteAnalysisController {
   ) {}
   @Get('/products')
   async productsQuote(@Res() res: Response) {
-    const shopDomain = res.locals.shopify.session.shop;
-    const foundStore = await this.storeService.findByShopDomain(shopDomain);
-    const store_id = foundStore.id;
-    this.quoteAnalysisService.countProduct(store_id)
+    try {
+      console.log(new Date().getTimezoneOffset())
+      const shopDomain = res.locals.shopify.session.shop;
+      const foundStore = await this.storeService.findByShopDomain(shopDomain);
+      const store_id = foundStore.id;
+      const topProducts = await this.quoteAnalysisService.countProduct(store_id)
+      return res.status(200).send({data: topProducts})
+    } catch (error) {
+      return res.status(500).json({message: error.message})
+    }
   }
 }
