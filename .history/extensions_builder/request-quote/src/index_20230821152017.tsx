@@ -34,9 +34,9 @@ function Index() {
     console.log("Come here");
     console.log(selected_product.id)
     
-    void fetch(`/apps/vify_rfq-f/product_setting?product_id=${selected_product.id}`)
+    void fetch(`/apps/vify_rfq-f/product?product_id=${selected_product.id}`)
     .then(response => response.json())
-    .then((data) => {
+    .then((data: CreateProductDto) => {
         console.log("data",data);
         setSelectedProduct(selectedProduct)
     })
@@ -48,8 +48,8 @@ function Index() {
         const foundVariant = (window as any).vifyRequestFQ.lineItem.variants.find(variant => variant.title === event.target.value)
         setSelectedVariant(foundVariant)
         console.log("variant_selected", foundVariant)
-        // const variantInProduct = selectedProduct.variants.find(variant => variant.id === foundVariant.id)
-        // console.log('variantInProduct',variantInProduct);
+        const variantInProduct = selectedProduct.variants.find(variant => variant.id === foundVariant.id)
+        console.log('variantInProduct',variantInProduct);
         
       }
     })
@@ -95,7 +95,7 @@ function Index() {
       {setting.show &&
           <div>
               <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                      onClick={() => handleChangeModal('request')}>Request For Quote 1.3</Button>
+                      onClick={() => handleChangeModal('request')}>Request For Quote 1.4</Button>
             {modal === 'request' &&
                 <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}
                              dataSettings={dataSettings}/>}

@@ -57,7 +57,7 @@ export class StoreFrontendController {
   }
   @Get('product_setting')
   async findProduct(@Query() query, @Res() res: Response) {
-    let product;
+    let products
     try {
       const product_id: string = query.product_id;
       console.log('query.product_id', query.product_id);
@@ -66,9 +66,32 @@ export class StoreFrontendController {
       if (!store || !this.storeFrontendService.verifySignature(query)) {
         return res.status(401).json({ message: 'Failed to authenticate' });
       }
-      product = await this.productService.findByProductId(product_id);
-      console.log('product', product);
-      return res.status(200).send(product);
+      const store_id = store.id;
+      const quoteEntities = await this.quoteEntityService.findByStore_Id(
+        store_id,
+      );
+      this.defaultQuoteEntity.forEach(async (entity) => {
+        let entityValue = null;
+        const quoteEntity = quoteEntities.find(
+          (quoteEntity) => quoteEntity.name === entity,
+        );
+        if (quoteEntity) {
+          entityValue = quoteEntity.value;
+        }
+        switch (entity) {
+          case 'all_product':
+            if (entityValue && entityValue === '0') {
+              products = null;
+              break;
+            } else {
+              products = await this.productService.findByProductId(product_id);
+              break;
+            }
+          default:
+            break;
+        }
+      });
+      return res.status(200).send(products);
     } catch (e) {
       return res
         .status(500)
@@ -79,8 +102,8 @@ export class StoreFrontendController {
   @Get('quote_setting')
   async findSetting(@Query() query, @Res() res: Response) {
     let show = true;
-    console.log('come quote setting');
-
+    console.log("come quote setting");
+    
     const settings: { name: string; value: string }[] = [];
     try {
       const shop = query.shop;

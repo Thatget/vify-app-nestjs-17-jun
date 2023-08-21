@@ -6,7 +6,6 @@ import {useEffect} from "react";
 import {useState} from 'react'
 import {CreateProductDto} from '../../../web/backend/src/modules/product/dto/create-product.dto.ts'
 
-
 type quoteEntity = {
   name: string;
   value: string;
@@ -30,13 +29,9 @@ function Index() {
   const [selectedVariant, setSelectedVariant] = useState(variant_selected)
 
   useEffect(() => {
-    const selected_product = (window as any).vifyRequestFQ.lineItem
-    console.log("Come here");
-    console.log(selected_product.id)
-    
-    void fetch(`/apps/vify_rfq-f/product_setting?product_id=${selected_product.id}`)
+    void fetch('/apps/vify_rfq-f/product')
     .then(response => response.json())
-    .then((data) => {
+    .then((data: CreateProductDto) => {
         console.log("data",data);
         setSelectedProduct(selectedProduct)
     })
@@ -48,8 +43,8 @@ function Index() {
         const foundVariant = (window as any).vifyRequestFQ.lineItem.variants.find(variant => variant.title === event.target.value)
         setSelectedVariant(foundVariant)
         console.log("variant_selected", foundVariant)
-        // const variantInProduct = selectedProduct.variants.find(variant => variant.id === foundVariant.id)
-        // console.log('variantInProduct',variantInProduct);
+        const variantInProduct = selectedProduct.variants.find(variant => variant.id === foundVariant.id)
+        console.log('variantInProduct',variantInProduct);
         
       }
     })
@@ -95,7 +90,7 @@ function Index() {
       {setting.show &&
           <div>
               <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                      onClick={() => handleChangeModal('request')}>Request For Quote 1.3</Button>
+                      onClick={() => handleChangeModal('request')}>Request For Quote 1.1</Button>
             {modal === 'request' &&
                 <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}
                              dataSettings={dataSettings}/>}

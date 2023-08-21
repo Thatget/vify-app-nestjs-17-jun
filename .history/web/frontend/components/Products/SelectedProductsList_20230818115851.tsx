@@ -35,12 +35,12 @@ export default function SelectedProductsList (): React.ReactElement | null {
     try {
       const response = await fetch(`/api/products?page=${page}`, { method: 'GET' })
       const data: responseProduct = await response.json()
-      console.log('data', data)
-
+      console.log("data",data);
+      
       // (data.products !== undefined)
       //   ? setVisibleProduct(data.products)
       //   : setVisibleProduct([])
-      setVisibleProduct(data.products || [])
+        setVisibleProduct(data.products || [])
       setCount(data.count || 0)
       setIsLoading(false)
     } catch (error) {

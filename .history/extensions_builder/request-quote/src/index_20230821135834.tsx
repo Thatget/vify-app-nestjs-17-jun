@@ -4,43 +4,20 @@ import FormRequest from './components/FormRequest/Index.tsx';
 import Thankyou from './components/ThankyouPage/Index.tsx';
 import {useEffect} from "react";
 import {useState} from 'react'
-import {CreateProductDto} from '../../../web/backend/src/modules/product/dto/create-product.dto.ts'
-
 
 type quoteEntity = {
   name: string;
   value: string;
 }
-type dataReturn = {
-  show: boolean;
-  settings: quoteEntity[]
-}
-type variantType = {
-  title: string;
-  id: number;
-  name: string;
-}
+
 
 function Index() {
   const [setting, setSetting] = useState({show: true});
   const [modal, setModal] = useState('');
   const [dataSettings, setDataSettings] = useState<Array<quoteEntity>>([])
-  const [selectedProduct,setSelectedProduct] = useState<CreateProductDto>()
   let variant_selected = (window as any).variant_selected
   const [selectedVariant, setSelectedVariant] = useState(variant_selected)
-
-  useEffect(() => {
-    const selected_product = (window as any).vifyRequestFQ.lineItem
-    console.log("Come here");
-    console.log(selected_product.id)
-    
-    void fetch(`/apps/vify_rfq-f/product_setting?product_id=${selected_product.id}`)
-    .then(response => response.json())
-    .then((data) => {
-        console.log("data",data);
-        setSelectedProduct(selectedProduct)
-    })
-  })
+  const [clicked,setClicked] = useState(false)
   
   useEffect(() => {
     document.getElementsByClassName('product-form__input')[0].addEventListener('click', function(event: any) {
@@ -48,18 +25,21 @@ function Index() {
         const foundVariant = (window as any).vifyRequestFQ.lineItem.variants.find(variant => variant.title === event.target.value)
         setSelectedVariant(foundVariant)
         console.log("variant_selected", foundVariant)
-        // const variantInProduct = selectedProduct.variants.find(variant => variant.id === foundVariant.id)
-        // console.log('variantInProduct',variantInProduct);
-        
+        console.log("clicked",true)
+        setClicked(true)
       }
     })
   },[])
-
   
+
   useEffect(() => {
-    void fetch('/apps/vify_rfq-f/quote_setting')
+    const variant_selected_id: number = (selectedVariant === undefined)? variant_selected.id : selectedVariant.id
+    console.log("variant_selected_id",variant_selected_id);
+    const test: string = variant_selected_id.toString()
+    
+    void fetch(`/apps/vify_rfq-f/quote_setting?variant_selected_id=${variant_selected_id}`)
       .then(response => response.json())
-      .then((data: dataReturn) => {
+      .then(data => {
         setSetting(data);
         setDataSettings(data.settings)
         console.log("data.settings",data.settings)
@@ -95,7 +75,7 @@ function Index() {
       {setting.show &&
           <div>
               <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                      onClick={() => handleChangeModal('request')}>Request For Quote 1.3</Button>
+                      onClick={() => handleChangeModal('request')}>Request For Quote 1.7</Button>
             {modal === 'request' &&
                 <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}
                              dataSettings={dataSettings}/>}

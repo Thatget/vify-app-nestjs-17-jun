@@ -73,10 +73,14 @@ type Props = {
   form: string,
   dataSettings: Array<quoteEntity>
 }
+type Variant = {
+  name: string;
+  title: string;
+}
 type LineItem = {
   description: string;
   id: number;
-  variant: any;
+  variant: Variant;
   title: string;
   images: string;
   
@@ -90,6 +94,7 @@ type VariantDTO = {
   title: string;
   price: number;
 }
+
 type ProductDTO = {
   id: string;
   title: string;
@@ -97,7 +102,10 @@ type ProductDTO = {
 }
 const initialLineItem: LineItem = {
   id: 1,
-  variant: {},
+  variant: {
+    name:'',
+    title:'',
+  },
   description: 'Product description',
   title: 'Product Title',
   images: '',
@@ -136,6 +144,17 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
   const [formMessagePlaceholder, setMessagePlaceholder] = useState<quoteEntity>(initialValue)
   const [formFormTitle, setFormTitle] = useState<quoteEntity>(initialValue)
   const [formHidePrice, setHidePrice] = useState<quoteEntity>(initialValue)
+ 
+  
+  let variant_selected_id = (window as any).variant_selected_id
+  const [variantSelectedId, setVariantSelectedId] = useState(variant_selected_id)
+  console.log('variant_selected_id',variant_selected_id);
+  
+  useEffect(() => {
+    setVariantSelectedId(variant_selected_id)
+    console.log("variantSelectedId",variantSelectedId);
+     
+  },[variant_selected_id])
   const {
     register,
     handleSubmit,
@@ -170,10 +189,8 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
   useEffect(() => {
     console.log("version 1.9");
     const product = (window as any).vifyRequestFQ.lineItem;
-    // const customer = (window as any).vifyRequestFQ.customer;
-    const variant_selected_id = (window as any).variant_selected_id
     product.variants.map((variant) => {
-      if (variant_selected_id === variant.id) {
+      if (variantSelectedId === variant.id) {
         initialLineItem.variant = variant
       }
     })
@@ -196,11 +213,11 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
       if (temp.name === 'form_title') setFormTitle(temp)
       if (temp.name === 'hide_price') setHidePrice(temp)
     })
-  }, [dataSettings])
+  }, [dataSettings,variantSelectedId])
   const sendQuote = () => {
     setOpen(false)
     handleModal('thankyou');
-    const variant_selected_id = (window as any).variant_selected_id
+    // const variant_selected_id = (window as any).variant_selected_id
     const product = (window as any).vifyRequestFQ.lineItem;
     let selected_product: ProductDTO
     selected_product = {
@@ -210,7 +227,7 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
     }
     let selected_variant: VariantDTO
     product.variants.map(variant => {
-      if (variant.id === variant_selected_id) {
+      if (variant.id === variantSelectedId) {
         selected_variant = {
           id: variant.id,
           title: variant.title,
@@ -262,7 +279,6 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
                 onSubmit={handleSubmit(onSubmit, (errors) => {
                   console.log(errors);
                 })}
-          
           >
             <Box sx={{height: '50%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mb: 1.2}}>
               <IconButton aria-label="cancel" color="inherit" onClick={() => handleModal('')}>

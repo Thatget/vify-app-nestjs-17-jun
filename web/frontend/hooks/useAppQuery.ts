@@ -1,6 +1,6 @@
 import { useAuthenticatedFetch } from './useAuthenticatedFetch'
 import { useMemo } from 'react'
-import { useQuery, type UseQueryOptions } from 'react-query'
+import { useQuery, type UseQueryResult, type UseQueryOptions } from 'react-query'
 
 /**
  * A hook for querying your custom app data.
@@ -25,7 +25,7 @@ export const useAppQuery = <TData>({
   url,
   fetchInit = {},
   reactQueryOptions
-}: UseAppQueryOptions<TData>) => {
+}: UseAppQueryOptions<TData>): UseQueryResult => {
   try {
     const authenticatedFetch = useAuthenticatedFetch()
     const fetch = useMemo(() => {

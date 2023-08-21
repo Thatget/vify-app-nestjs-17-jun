@@ -95,7 +95,7 @@ function Index() {
       {setting.show &&
           <div>
               <Button style={{backgroundColor: "#212121"}} variant="contained" sx={{width: '100%'}}
-                      onClick={() => handleChangeModal('request')}>Request For Quote 1.3</Button>
+                      onClick={() => handleChangeModal('request')}>Request For Quote 1.1</Button>
             {modal === 'request' &&
                 <FormRequest isOpen={modal === 'request'} handleModal={handleChangeModal} form={''}
                              dataSettings={dataSettings}/>}

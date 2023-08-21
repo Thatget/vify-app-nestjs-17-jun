@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { type ReactElement, useContext } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { StoreContext } from '../../store'
@@ -7,8 +7,9 @@ import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { defaultConfigSetting } from './ConfigSetting'
 import productCard from '../../assets/product-card.jpg.avif'
+import React from 'react'
 
-const ConfigSettingPreview = (): JSX.Element => {
+const ConfigSettingPreview = (): ReactElement | null => {
   const { state } = useContext(StoreContext)
   const localConfigSetting = ({ ...defaultConfigSetting, ...state.setting, ...state.currentSetting })
   const colors = [
@@ -68,7 +69,7 @@ const ConfigSettingPreview = (): JSX.Element => {
                   Now</Button>}
         </div>
         <div>
-          {Boolean(localConfigSetting.show_request_for_quote === false) &&
+          {Boolean(localConfigSetting.show_request_for_quote === true) &&
               <Button style={{ backgroundColor: '#212121' }} variant="contained" sx={{ m: 0.5, width: '100%' }}>Request
                   For Quote</Button>}
         </div>
