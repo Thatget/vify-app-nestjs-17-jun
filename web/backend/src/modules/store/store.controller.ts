@@ -1,13 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
-import { Response } from 'express';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { StoreService } from './store.service';
 import { StoreDto } from './dto/store.dto';
 
 @Controller('/api/store')
 export class StoreController {
-    constructor(private readonly storeService: StoreService) {
-  }
-
+  constructor(private readonly storeService: StoreService) {}
   @Get()
   async storeInfo(@Res() res: Response) {
     try {

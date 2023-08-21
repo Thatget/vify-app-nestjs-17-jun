@@ -10,6 +10,7 @@ export class ShopifyService {
   shopify: ShopifyApp;
 
   constructor(private readonly configService: ConfigService) {
+    // console.log("test", process.env);
     this.shopify = shopifyApp({
       api: {
         apiKey: this.configService.get('shopify.api_key'),

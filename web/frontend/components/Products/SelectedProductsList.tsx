@@ -13,24 +13,33 @@ import Typography from '@mui/material/Typography'
 import type Product from '../../types/Product'
 import Resource_Picker from './Resource_Picker'
 import { Button, ButtonGroup, Pagination, Spinner } from '@shopify/polaris'
+// import { useAuthenticatedFetch } from '@shopify/app-bridge-react'
+interface responseProduct {
+  products: object[]
+}
 
-export default function SelectedProductsList () {
+export default function SelectedProductsList (): React.ReactElement | null {
   const fetch = useAuthenticatedFetch()
   const [isLoading, setIsLoading] = React.useState(true)
   const [deleteList, setDeleteList] = React.useState<number[]>([])
   const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([])
   const [page, setPage] = React.useState<number>(0)
   const [count, setCount] = React.useState<number>(0)
-  const getSelectedProducts = () => {
+  const getSelectedProducts = async (): Promise<void> => {
     if (page === 0) {
-      fetchData(0)
+      await fetchData(0)
     }
-    setPage(0);
+    setPage(0)
   }
   const fetchData = React.useCallback(async (page: number) => {
     try {
       const response = await fetch(`/api/products?page=${page}`, { method: 'GET' })
-      const data = await response.json()
+      const data: responseProduct = await response.json()
+      console.log('data', data)
+
+      // (data.products !== undefined)
+      //   ? setVisibleProduct(data.products)
+      //   : setVisibleProduct([])
       setVisibleProduct(data.products || [])
       setCount(data.count || 0)
       setIsLoading(false)
@@ -41,12 +50,14 @@ export default function SelectedProductsList () {
 
   React.useEffect(() => {
     setIsLoading(true)
-    fetchData(page)
+    (async () => {
+      await fetchData(page)
+    })
   }, [page])
   React.useEffect(() => {
     const subSet = new Set(deleteList)
     let resultArray = []
-    if (visibleProduct) {
+    if (visibleProduct !== undefined) {
       resultArray = visibleProduct.filter((item) => !subSet.has(item.id))
     }
     setVisibleProduct(resultArray)
@@ -66,7 +77,7 @@ export default function SelectedProductsList () {
     }
   }
 
-  const label = <>{page+1}/{Math.ceil(count/10)}</>
+  const label = <>{page + 1}/{Math.ceil(count / 10)}</>
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ width: '100%' }}>

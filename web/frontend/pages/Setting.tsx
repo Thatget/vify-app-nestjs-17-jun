@@ -76,7 +76,7 @@ const Setting = (): ReactElement | null => {
   const configSetting = (
     <div style={{ marginTop: '10px' }}>
       <Grid>
-        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 6, xl: 6 }}>
+        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 8, xl: 8 }}>
           <div style={{
             maxHeight: '80vh',
             overflow: 'auto'
@@ -90,7 +90,7 @@ const Setting = (): ReactElement | null => {
           </div>
         </Grid.Cell>
 
-        <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 2, lg: 6, xl: 6 }}>
+        <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 2, lg: 4, xl: 4 }}>
           <div style={{
             maxHeight: '80vh',
             overflow: 'auto'
@@ -160,7 +160,7 @@ const Setting = (): ReactElement | null => {
     <Page>
       <SaveSetting fetchQuoteEntity={fetchQuoteEntity} />
       <Layout sectioned>
-        <div style={{ position: 'absolute', top: '0', left: '0' }}>
+        <div style={{ position: 'absolute', top: '0', left: '0.2' }}>
           <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
             {selected === 0 && configSetting}
             {selected === 1 && formSetting}
