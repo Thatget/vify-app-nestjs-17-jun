@@ -1,44 +1,37 @@
 <script>
-    {% assign current_variant = product.selected_or_first_available_variant %}
-    var vifyRequestFQ = {};
-    vifyRequestFQ.lineItem = {{ product | json }}
-    var jsVariants = [];
-    {% for variant in product.variants %}
-    jsVariants.push({
-        ...{{ variant | json }},
-        price_formatted: `{{ variant.price | money }}`
-    })
-    {% endfor %}
-    if (vifyRequestFQ) {
-        vifyRequestFQ.lineItem.variants = jsVariants;
-        window.vifyRequestFQ = vifyRequestFQ;
+  var variant_selected = '';
+  {% assign current_variant = product.selected_or_first_available_variant %}
+  var vifyRequestFQ = {};
+  vifyRequestFQ.lineItem = {{ product | json }};
+  document.getElementsByClassName('product-form__input')[0].addEventListener('click', function(event) {
+    if (event.target && event.target.matches('input[type=radio]')) {
+      const foundVariant = vifyRequestFQ.lineItem.variants.find(variant => variant.title === event.target.value)
+      variant_selected = foundVariant
+      console.log("variant_selected", variant_selected)
     }
-
-    var jsProduct = {};
-    jsProduct = vifyRequestFQ
-    var variant_selected_id = '';
-    variant_selected_id = {{ current_variant.id }}
+  })
+  variant_selected_id = {{ current_variant.id }}
 </script>
-<style>
-    .price--show-badge {
-        display: none;
-    }
-    .shopify-payment-button {
-      display: none;
-    }
-    .product-form__submit {
-        display: none;
-    }
-</style>
-<!-- Product price -->
-<div id="vify_rfq-f">b</div>
-{% schema %}
-{
-  "name": "Vify Quote",
-  "target": "section",
-  "stylesheet": "index.css",
-  "javascript": "index.js",
-  "settings": []
-}
-{% endschema %}
 
+<style>
+  .price--show-badge {
+    display: none;
+  }
+  .shopify-payment-button {
+    display: none;
+  }
+  .product-form__submit {
+    display: none;
+  }
+</style>
+
+<div id="vify_rfq-f"></div>
+{% schema %}
+  {
+    "name": "Vify Quote",
+    "target": "section",
+    "stylesheet": "index.css",
+    "javascript": "index.js",
+    "settings": []
+  }
+{% endschema %}

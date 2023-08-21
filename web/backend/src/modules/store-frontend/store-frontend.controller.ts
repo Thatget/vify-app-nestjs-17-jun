@@ -14,6 +14,7 @@ import { StoreService } from '../store/store.service';
 import { QuoteService } from '../quote/quote.service';
 import { CreateQuoteDto } from '../quote/dto/create-quote.dto';
 import { ProductService } from '../product/product.service';
+import { CreateProductDto } from '../product/dto/create-product.dto';
 
 @Controller('api/proxy')
 export class StoreFrontendController {
@@ -54,14 +55,35 @@ export class StoreFrontendController {
       return res.status(500).send({ message: 'faild to save quote' });
     }
   }
+  @Get('product_setting')
+  async findProduct(@Query() query, @Res() res: Response) {
+    let product;
+    try {
+      const product_id: string = query.product_id;
+      console.log('query.product_id', query.product_id);
+      const shop = query.shop;
+      const store = await this.storeService.findByShopDomain(shop);
+      if (!store || !this.storeFrontendService.verifySignature(query)) {
+        return res.status(401).json({ message: 'Failed to authenticate' });
+      }
+      product = await this.productService.findByProductId(product_id);
+      console.log('product', product);
+      return res.status(200).send(product);
+    } catch (e) {
+      return res
+        .status(500)
+        .send({ message: 'Fail to get Products List from Setting' });
+    }
+  }
 
   @Get('quote_setting')
   async findSetting(@Query() query, @Res() res: Response) {
     let show = true;
+    console.log('come quote setting');
+
     const settings: { name: string; value: string }[] = [];
     try {
       const shop = query.shop;
-      const variant_selected_id = query.variant_selected_id;
       const store = await this.storeService.findByShopDomain(shop);
       if (!store || !this.storeFrontendService.verifySignature(query)) {
         return res.status(401).json({ message: 'Failed to authenticate' });
@@ -89,14 +111,6 @@ export class StoreFrontendController {
             break;
         }
       });
-      if (!show) {
-        const products = await this.productService.findByStoreId(store_id);
-        products.map((product) => {
-          if (product.variants.includes(variant_selected_id)) {
-            show = true;
-          }
-        });
-      }
       return res.status(200).send({ show, settings });
     } catch (e) {
       return res.status(500).send({ message: 'Fail to get setting' });
