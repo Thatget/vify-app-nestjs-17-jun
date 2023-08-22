@@ -59,14 +59,12 @@ export class StoreFrontendController {
     let product;
     try {
       const product_id: string = query.product_id;
-      console.log('query.product_id', query.product_id);
       const shop = query.shop;
       const store = await this.storeService.findByShopDomain(shop);
       if (!store || !this.storeFrontendService.verifySignature(query)) {
         return res.status(401).json({ message: 'Failed to authenticate' });
       }
       product = await this.productService.findByProductId(product_id);
-      console.log('product', product);
       return res.status(200).send(product);
     } catch (e) {
       return res
@@ -78,8 +76,6 @@ export class StoreFrontendController {
   @Get('quote_setting')
   async findSetting(@Query() query, @Res() res: Response) {
     let show = true;
-    console.log('come quote setting');
-
     const settings: { name: string; value: string }[] = [];
     try {
       const shop = query.shop;

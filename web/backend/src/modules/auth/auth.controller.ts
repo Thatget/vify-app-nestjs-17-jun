@@ -15,6 +15,7 @@ import { WebhookService } from '../webhook/webhook.service';
 import { WEBHOOK_TOPIC, WebhookSubscriptionFormat } from '../../types/webhook';
 import { ConfigService } from '@nestjs/config'
 import { logger } from '../helpers/logger.helper';
+import ShopInfo from '../../types/ShopInfo';
 
 @Controller('api/auth')
 export class AuthController {
@@ -47,9 +48,14 @@ export class AuthController {
       if (session.isOnline) {
         // await this.handleOnlineCallback(req, res, session)
       } else {
-        // const shopInfo: StoreDto = await fetchShopInfo(session)
-        const shopInfo: StoreDto = await this.storeService.getShopInfo(session)
-        await this.storeService.createOrUpdate( shopInfo, session.accessToken);
+        const shopInfo: ShopInfo = await this.storeService.getShopInfo(session)
+        const storeInfo: StoreDto = {
+          name: shopInfo.name,
+          shop: shopInfo.myshopifyDomain,
+          email: shopInfo.email,
+          ianaTimezone: shopInfo.ianaTimezone,
+        }
+        await this.storeService.createOrUpdate( storeInfo, session.accessToken);
         try {
         const uninstallEndpoint = this.configService.get<string>('app.host') + '/api/webhooks'
         await this.webhookService.createWebhook(session, {

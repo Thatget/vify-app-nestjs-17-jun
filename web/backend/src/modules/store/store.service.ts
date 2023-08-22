@@ -4,12 +4,12 @@ import {StoreDto} from './dto/store.dto';
 import {Store} from './entities/store.entity';
 import { ShopifyService } from '../shopify/shopify.service';
 import { GraphqlQueryError, Session } from '@shopify/shopify-api';
-import Shopinfo from "src/types/ShopInfo";
+import ShopInfo from "src/types/ShopInfo";
 import { GET_SHOP } from '../../graphql/query/shop/get_shop.graphql';
 
 interface QueryResponse {
   data: {
-    shop: Shopinfo;
+    shop: ShopInfo;
   };
 }
 
@@ -42,7 +42,7 @@ export class StoreService {
     await this.storesRepository.delete({shop});
   }
 
-  public async getShopInfo (session: Session): Promise<StoreDto> {
+  public async getShopInfo (session: Session): Promise<ShopInfo> {
     const client = new this.shopifyService.shopify.api.clients.Graphql({session});
     try {
       const { body } = await client.query<QueryResponse>({
@@ -51,11 +51,11 @@ export class StoreService {
         }
       })
       const { shop } = body.data;
-      const shopInfo: StoreDto = {
+      const shopInfo: ShopInfo = {
         name: shop.name,
-        shop: shop.myshopifyDomain,
+        myshopifyDomain: shop.myshopifyDomain,
         email: shop.email,
-  
+        ianaTimezone: shop.ianaTimezone,
       }
       return shopInfo;
     } catch (error) {

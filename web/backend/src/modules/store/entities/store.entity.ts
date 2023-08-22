@@ -22,6 +22,8 @@ export class Store {
   email: string;
   @Column({ nullable: true })
   accessToken: string;
+  @Column({ nullable: true })
+  ianaTimezone: string;
   @Column({ default: true })
   isActive: boolean;
   @Column({ nullable: true })
