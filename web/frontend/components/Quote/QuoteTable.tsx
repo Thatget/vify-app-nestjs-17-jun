@@ -155,7 +155,6 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       activator = tempColumn[7] = (
         <Button
           onClick={() => {
-            console.log(quote)
             toggleModal(quote,1)
           }}
           size="slim"

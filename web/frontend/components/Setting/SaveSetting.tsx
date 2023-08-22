@@ -2,7 +2,6 @@ import { type ReactElement, useContext, useState, useCallback } from 'react'
 import { StoreContext, actions } from '../../store'
 import { useAuthenticatedFetch } from '../../hooks'
 import { Frame, ContextualSaveBar, Toast, Loading } from '@shopify/polaris'
-import React from 'react'
 
 interface SaveSettingProps {
   fetchQuoteEntity: () => Promise<void>

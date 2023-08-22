@@ -1,30 +1,12 @@
-import React from 'react'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from '@shopify/app-bridge-react'
 import { Layout, LegacyCard, Link, Page } from '@shopify/polaris'
-import { useEffect, type ReactElement } from 'react'
-import { useAuthenticatedFetch } from '../hooks'
+import {  type ReactElement } from 'react'
 
-interface Props {
-  showModalSupport: (modalActive: boolean) => void
-}
-
-export default function GettingStarted (props: Props): ReactElement | null {
-  const fetch = useAuthenticatedFetch()
+export default function GettingStarted (): ReactElement | null {
   const navigate = useNavigate()
-  useEffect(() => {
-    void fetch('/api/store', { method: 'Get' }).then((data: Response): void => {
-      console.log('data', data)
-      const res = new Promise<Response>((resolve, reject) => {
-        resolve(data.json())
-      })
-      void res.then((value: Response) => {
-        console.log('value:', value)
-      })
-    })
-  }, [])
 
   const selectProducts = (
     <>

@@ -5,6 +5,8 @@ import { useAuthenticatedFetch } from '../hooks'
 import type Quote from '../types/Quote'
 import { Page, Toast, Layout, TextField } from '@shopify/polaris'
 import useDebounce from '../hooks/useDebounce'
+import { StoreContext } from '../store'
+import { formatInTimeZone } from 'date-fns-tz'
 
 interface QuoteData {
   quotes: Quote[]
@@ -20,6 +22,7 @@ export default function Quotes (): ReactElement | null {
   const [active, setActive] = useState(false)
   const [textSearch, setTextSearch] = useState<string>('');
   const debouncedSearchTerm = useDebounce(textSearch, 500)
+  const {state} = React.useContext(StoreContext)
   const toggleActive = useCallback(() => {
     setActive((active) => !active)
   }, [])
@@ -29,16 +32,20 @@ export default function Quotes (): ReactElement | null {
       )
     : null
 
-  const fetchData = useCallback(async (skip: number, text?: string) => {
+  const fetchData = useCallback(async (skip: number, text?: string):Promise<[Quote[], number]> => {
     try {
       const encodedSearchText = encodeURIComponent(text);
       const response = await fetch(`/api/quote?skip=${skip}&textSearch=${encodedSearchText}`, { method: 'GET' })
-      const temp = await response.json()
-      setQuote(temp.quotes)
-      setCount((temp.count !== undefined) ? temp.count : 0)
-      setIsLoading(false)
+      const temp:QuoteData = await response.json()
+      const quotes:Quote[] = temp.quotes.map(item => ({
+        ...item,
+        created_at: formatInTimeZone(item.created_at, state.store?.ianaTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone, 'yyyy-MM-dd HH:mm:ss zzz')
+      }))
+      const count = (temp.count !== undefined) ? temp.count : 0
+      return [quotes, count];
     } catch (error) {
       console.error('Error fetching data:', error)
+      return [[], 0];
     }
   }, [])
 
@@ -48,7 +55,12 @@ export default function Quotes (): ReactElement | null {
   }, []);
 
   React.useEffect(() => {
-    void fetchData(skip, debouncedSearchTerm).then(r => {})
+    const fetchQuote = async ():Promise<void> => {
+      const [quotes, count] = await fetchData(skip, debouncedSearchTerm)
+      setQuote(quotes)
+      setCount(count)
+    }
+    fetchQuote()
   }, [skip, debouncedSearchTerm])
   const removeQuote = async (id: number): Promise<boolean> => {
     try {

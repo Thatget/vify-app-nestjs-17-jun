@@ -1,31 +1,15 @@
 
-import HomeIcon from '@mui/icons-material/Home'
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
-import TableViewIcon from '@mui/icons-material/TableView'
-import { Typography } from '@mui/material'
-import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import { blue, grey } from '@mui/material/colors'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import {
   AppProvider,
-  FormLayout,
   Frame,
-  Modal,
-  Navigation,
-  TextField,
   Toast,
-  TopBar
 } from '@shopify/polaris'
-import {
-  AnalyticsTableMinor,
-  ArrowLeftMinor,
-  ConversationMinor,
-  HomeMajor,
-  SettingsMajor
-} from '@shopify/polaris-icons'
+
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import {
   AppBridgeProvider,
   PolarisProvider,
@@ -41,6 +25,7 @@ import './css/app.css'
 import vifyLogoImg from './assets/vifylog.png'
 import Analysis from './pages/Analysis'
 export interface IApplicationProps {}
+import { TopBarMarkup } from './components/App/TopBarMarkup'
 
 const App: React.FC<IApplicationProps> = (props) => {
   const theme = createTheme({
@@ -98,106 +83,12 @@ const App: React.FC<IApplicationProps> = (props) => {
       }
     }
   })
-  const pages = [
-    {
-      title: 'Getting Started',
-      href: '/GettingStarted'
-    },
-    {
-      title: 'Quotes',
-      href: '/Quotes'
-    },
-    {
-      title: 'Setting',
-      href: '/Setting'
-    },
-    {
-      title: 'Analysis',
-      href: '/analysis'
-    }
-  ]
-  const history = useNavigate()
+
   const skipToContentRef = useRef<HTMLAnchorElement>(null)
   const [toastActive, setToastActive] = useState(false)
-  const [mobileNavigationActive, setMobileNavigationActive] = useState(false)
-  const [modalActive, setModalActive] = useState(false)
-  const [show, setShow] = useState(true)
-  const [isSecondaryMenuOpen, setIsSecondaryMenuOpen] = useState(false)
-
-  const handleCloseNavMenu = (href: string): void => {
-    history(href)
-  }
-
-  const [supportSubject, setSupportSubject] = useState('')
-  const [supportMessage, setSupportMessage] = useState('')
-  const handleSubjectChange = useCallback((value: string) => {
-    setSupportSubject(value)
-  }, [])
-  const handleMessageChange = useCallback((value: string) => {
-    setSupportMessage(value)
-  }, [])
 
   const toggleToastActive = useCallback(() => {
     setToastActive((toastActive) => !toastActive)
-  }, [])
-
-  const toggleMobileNavigationActive = useCallback(() => {
-    setMobileNavigationActive(
-      (mobileNavigationActive) => !mobileNavigationActive
-    )
-  }, [])
-  const toggleIsLoading = useCallback((page: number) => {
-    switch (page) {
-      case 0:
-        handleCloseNavMenu(pages[0].href)
-        setShow(true)
-        break
-      case 1:
-        handleCloseNavMenu(pages[1].href)
-        setShow(false)
-        break
-      case 2:
-        handleCloseNavMenu(pages[2].href)
-        setShow(false)
-        break
-      case 3:
-        handleCloseNavMenu(pages[3].href)
-        setShow(false)
-        break
-      default:
-        break
-    }
-  }, [])
-  const toggleModalActive = useCallback(() => {
-    setModalActive((modalActive) => !modalActive)
-  }, [])
-
-  const setShowModal = useCallback((childData: boolean) => {
-    setModalActive(childData)
-  }, [])
-
-  const toggleIsSecondaryMenuOpen = useCallback((page: number) => {
-    switch (page) {
-      case 0:
-        console.log('Case 0')
-        setShow(true)
-        handleCloseNavMenu(pages[0].href)
-        break
-      case 1:
-        setShow(false)
-        handleCloseNavMenu(pages[1].href)
-        break
-      case 2:
-        setShow(false)
-        handleCloseNavMenu(pages[2].href)
-        break
-      case 3:
-        setShow(false)
-        handleCloseNavMenu(pages[3].href)
-        break
-      default:
-        break
-    }
   }, [])
 
   const toastMarkup = toastActive
@@ -205,173 +96,6 @@ const App: React.FC<IApplicationProps> = (props) => {
     <Toast onDismiss={toggleToastActive} content="Changes saved" />
       )
     : null
-
-  const MenuMarkup = (
-    <div style={{ display: 'flex' }}>
-      <TopBar.Menu
-        activatorContent={
-          <Button variant="text" startIcon={<HomeIcon />}>
-              Dashboard
-          </Button>
-        }
-        open={isSecondaryMenuOpen}
-        onOpen={() => {
-          toggleIsSecondaryMenuOpen(0)
-        }}
-        onClose={() => {
-          toggleIsSecondaryMenuOpen(0)
-        }}
-        actions={[
-          {
-            items: [{ content: 'Community forums' }]
-          }
-        ]}
-      />
-      <TopBar.Menu
-        activatorContent={
-          <Button variant="text" startIcon={<TableViewIcon />}>
-            Quotes
-          </Button>
-        }
-        open={isSecondaryMenuOpen}
-        onOpen={() => {
-          toggleIsSecondaryMenuOpen(1)
-        }}
-        onClose={() => {
-          toggleIsSecondaryMenuOpen(1)
-        }}
-        actions={[
-          {
-            items: [{ content: 'Community forums' }]
-          }
-        ]}
-      />
-      <TopBar.Menu
-        activatorContent={
-          <Button variant="text" startIcon={<SettingsSuggestIcon />}>
-            Setting
-          </Button>
-        }
-        open={isSecondaryMenuOpen}
-        onOpen={() => {
-          toggleIsSecondaryMenuOpen(2)
-        }}
-        onClose={() => {
-          toggleIsSecondaryMenuOpen(2)
-        }}
-        actions={[
-          {
-            items: [{ content: 'Community forums' }]
-          }
-        ]}
-      />
-      <TopBar.Menu
-        activatorContent={
-          <Button variant="text" startIcon={<SettingsSuggestIcon />}>
-            Analysis
-          </Button>
-        }
-        open={isSecondaryMenuOpen}
-        onOpen={() => {
-          toggleIsSecondaryMenuOpen(3)
-        }}
-        onClose={() => {
-          toggleIsSecondaryMenuOpen(3)
-        }}
-        actions={[
-          {
-            items: [{ content: 'Community forums' }]
-          }
-        ]}
-      />
-    </div>
-  )
-
-  const topBarMarkup = (
-    <TopBar
-      showNavigationToggle
-      secondaryMenu={MenuMarkup}
-      onNavigationToggle={toggleMobileNavigationActive}
-    />
-  )
-
-  const navigationMarkup = false && (
-    <Navigation location="/">
-      <Navigation.Section
-        items={[
-          {
-            label: 'Hide Navigation',
-            icon: ArrowLeftMinor,
-            onClick: () => {
-              setShow(false)
-            }
-          }
-        ]}
-      />
-      <Navigation.Section
-        separator
-        // title="Vify Quotes App"
-        items={[
-          {
-            label: 'Getting Started',
-            icon: HomeMajor,
-            onClick: () => {
-              toggleIsLoading(0)
-            }
-          },
-          {
-            label: 'Setting',
-            icon: SettingsMajor,
-            onClick: () => {
-              toggleIsLoading(2)
-            }
-          },
-          {
-            label: 'Quotes',
-            icon: AnalyticsTableMinor,
-            onClick: () => {
-              toggleIsLoading(1)
-            }
-          }
-        ]}
-        action={{
-          icon: ConversationMinor,
-          accessibilityLabel: 'Contact support',
-          onClick: toggleModalActive
-        }}
-      />
-    </Navigation>
-  )
-
-  const modalMarkup = (
-    <Modal
-      open={modalActive}
-      onClose={toggleModalActive}
-      title="Contact support"
-      primaryAction={{
-        content: 'Send',
-        onAction: toggleModalActive
-      }}
-    >
-      <Modal.Section>
-        <FormLayout>
-          <TextField
-            label="Subject"
-            value={supportSubject}
-            onChange={handleSubjectChange}
-            autoComplete="off"
-          />
-          <TextField
-            label="Message"
-            value={supportMessage}
-            onChange={handleMessageChange}
-            autoComplete="off"
-            multiline
-          />
-        </FormLayout>
-      </Modal.Section>
-    </Modal>
-  )
 
   const logo = {
     width: 40,
@@ -425,7 +149,7 @@ const App: React.FC<IApplicationProps> = (props) => {
               >
                 <Frame
                   logo={logo}
-                  topBar={topBarMarkup}
+                  topBar={<TopBarMarkup />}
                   skipToContentTarget={skipToContentRef}
                 >
                   {toastMarkup}
@@ -433,19 +157,13 @@ const App: React.FC<IApplicationProps> = (props) => {
                   <Route
                       path="/"
                       element={
-                        <GettingStarted
-                          showModalSupport={(modalActive) => { setShowModal(modalActive) }
-                          }
-                        />
+                        <GettingStarted />
                       }
                     />
                     <Route
                       path="GettingStarted"
                       element={
-                        <GettingStarted
-                          showModalSupport={(modalActive) => { setShowModal(modalActive) }
-                          }
-                        />
+                        <GettingStarted />
                       }
                     />
                     <Route path="Quotes" element={<Quotes />} />

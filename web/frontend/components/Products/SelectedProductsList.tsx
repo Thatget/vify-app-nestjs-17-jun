@@ -35,8 +35,6 @@ export default function SelectedProductsList (): React.ReactElement | null {
     try {
       const response = await fetch(`/api/products?page=${page}`, { method: 'GET' })
       const data: responseProduct = await response.json()
-      console.log('data', data)
-
       // (data.products !== undefined)
       //   ? setVisibleProduct(data.products)
       //   : setVisibleProduct([])
@@ -50,9 +48,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
 
   React.useEffect(() => {
     setIsLoading(true)
-    (async () => {
-      await fetchData(page)
-    })
+    fetchData(page)
   }, [page])
   React.useEffect(() => {
     const subSet = new Set(deleteList)
