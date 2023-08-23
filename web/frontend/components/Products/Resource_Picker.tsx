@@ -109,9 +109,7 @@ export default function Resource_Picker ({ handleUpdateProduct }: ResourcePicker
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-                <Button onClick={() => {
-                  console.log("Why ?");
-                  
+                <Button onClick={() => {                  
                   setOpen(true)
                 }}
                 >Add Products</Button>

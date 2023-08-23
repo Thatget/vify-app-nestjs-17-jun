@@ -22,3 +22,8 @@ export const setSettingTab = (tab: payloadObject) => ({
   type: actionType.SET_SETTING_TAB,
   tab
 })
+
+export const setStoreInfo = (payload: object) =>({
+  type: actionType.SET_STORE_INFO,
+  payload,
+})

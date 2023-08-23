@@ -55,9 +55,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
 
   const toggleModal = useCallback(async (quote: ParsedQuote, status: number) => {
     setActive((active) => !active)
-    console.log('active', active)
     setPropModal(quote)
-    console.log('propsModal', quote)
     await updateStatus(quote.id, 1)
     setStatus(status)
   }, [])
@@ -155,7 +153,6 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       activator = tempColumn[7] = (
         <Button
           onClick={() => {
-            console.log(quote)
             toggleModal(quote,1)
           }}
           size="slim"
@@ -189,8 +186,8 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   const label = <>{props.skip/5 + 1}/{Math.ceil(props.count/5)}</>
   return (
     <>
-      <AlphaCard>
-        <div style={{ padding: '10px', zIndex: '-1' }}>
+      {/* <AlphaCard> */}
+        {/* <div style={{ padding: '10px', zIndex: '-1' }}> */}
           <DataTable
             columnContentTypes={[
               'text',
@@ -238,8 +235,8 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
               />
             </div>
           </Box>
-        </div>
-      </AlphaCard>
+        {/* </div> */}
+      {/* </AlphaCard> */}
       {toastMarkup}
       {Boolean(propModal !== undefined) && (
         <div style={{ height: '500px' }}>

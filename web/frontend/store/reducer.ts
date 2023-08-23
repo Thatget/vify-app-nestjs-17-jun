@@ -2,6 +2,7 @@ import {StoreAction, StoreState} from "./type";
 
 const ActionTypes = {
     SET_INIT_SETTING: "SET_INIT_SETTING",
+    SET_STORE_INFO: "SET_STORE_INFO",
     SET_NEW_SETTING: "SET_NEW_SETTING",
     RESET_NEW_SETTING: "RESET_NEW_SETTING",
     SET_SETTING_TAB: 'SET_SETTING_TAB',
@@ -9,14 +10,21 @@ const ActionTypes = {
 
 // initial state
 const initialState = {
-    setting: null,
-    currentSetting: null,
-    settingTab: ['configSetting'],
+  store: {
+    ianaTimezone: '',
+  },
+  setting: null,
+  currentSetting: null,
+  settingTab: ['configSetting'],
 };
 
 // Reducer
 const reducer = (state: StoreState, action: StoreAction): StoreState => {
     switch (action.type) {
+      // SET STORE INFO
+      case ActionTypes.SET_STORE_INFO:
+        const store = {...action.payload}
+        return {...state, ...store}
         // SET INIT SETTING
         case ActionTypes.SET_INIT_SETTING:
             const setting = {...action.payload}

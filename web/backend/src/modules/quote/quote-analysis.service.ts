@@ -23,7 +23,6 @@ export class QuoteAnalysisService {
       .groupBy('variantId')
       .orderBy('count', 'DESC')
       .getRawMany()
-    console.log(a)
     return a;
   }
 }

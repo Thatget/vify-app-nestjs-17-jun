@@ -18,7 +18,6 @@ export class AppController {
       node_env === 'production'
         ? `${process.cwd()}/../frontend/dist/`
         : `${process.cwd()}/../frontend/`;
-        console.log("join(STATIC_PATH, 'index.html')", join(STATIC_PATH, 'index.html'))
     return res.sendFile(join(STATIC_PATH, 'index.html'))
   }
 }

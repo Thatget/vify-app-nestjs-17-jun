@@ -17,7 +17,7 @@ interface Quote {
   email: string
   message: string
   status: number
-  created_at: Date
+  created_at: string
 }
 
 export default Quote

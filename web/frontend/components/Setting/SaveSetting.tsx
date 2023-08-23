@@ -2,7 +2,6 @@ import { type ReactElement, useContext, useState, useCallback } from 'react'
 import { StoreContext, actions } from '../../store'
 import { useAuthenticatedFetch } from '../../hooks'
 import { Frame, ContextualSaveBar, Toast, Loading } from '@shopify/polaris'
-import React from 'react'
 
 interface SaveSettingProps {
   fetchQuoteEntity: () => Promise<void>
@@ -245,13 +244,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
   return (
     <>
       { Boolean(state.currentSetting !== null) &&
-      <Frame
-        logo={{
-          width: 124,
-          contextualSaveBarSource:
-            'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999'
-        }}
-      >
+
         <ContextualSaveBar
           alignContentFlush
           message="Unsaved changes"
@@ -269,8 +262,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
               unchangeSetting()
             }
           }}
-        />
-      </Frame>}
+        />}
       {toastMarkup}
         {loadingMarkup}
     </>

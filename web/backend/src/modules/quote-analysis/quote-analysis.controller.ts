@@ -16,7 +16,6 @@ export class QuoteAnalysisController {
   @Get('/products')
   async productsQuote(@Res() res: Response) {
     try {
-      console.log(new Date().getTimezoneOffset())
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;

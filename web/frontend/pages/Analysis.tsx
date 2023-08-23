@@ -65,8 +65,8 @@ export default function Analysis (): ReactElement | null {
   return (
     <Page>
       <Layout sectioned>
-        <LegacyCard>{selectProducts}</LegacyCard>
-        <br/>
+        {/* <LegacyCard>{selectProducts}</LegacyCard> */}
+        {/* <br/> */}
         <LegacyCard>
           <IndexTable
             // onSelectionChange={handleSelectionChange}

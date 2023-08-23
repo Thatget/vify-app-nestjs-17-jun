@@ -155,7 +155,6 @@ export class ProductController {
   @Post('/delete')
   async delete(@Body() ids: number[], @Res() res: Response) {
     try {
-      console.log(typeof ids[0]);
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       if (foundStore) {
