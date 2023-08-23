@@ -1,18 +1,12 @@
 <script>
-  var variant_selected = '';
   {% assign current_variant = product.selected_or_first_available_variant %}
+  var variant_selected = {};
+  variant_selected = {{ current_variant | json }}
   var vifyRequestFQ = {};
   vifyRequestFQ.lineItem = {{ product | json }};
-  document.getElementsByClassName('product-form__input')[0].addEventListener('click', function(event) {
-    if (event.target && event.target.matches('input[type=radio]')) {
-      const foundVariant = vifyRequestFQ.lineItem.variants.find(variant => variant.title === event.target.value)
-      variant_selected = foundVariant
-      console.log("variant_selected", variant_selected)
-    }
-  })
+  var variant_selected_id
   variant_selected_id = {{ current_variant.id }}
 </script>
-
 <style>
   .price--show-badge {
     display: none;
@@ -24,7 +18,6 @@
     display: none;
   }
 </style>
-
 <div id="vify_rfq-f"></div>
 {% schema %}
   {
