@@ -51,7 +51,7 @@ const QuoteDetail = ({view, deleteInView}: QuoteDetailProp) => {
               objectFit: 'cover',
               objectPosition: 'center',
             }}
-            src={view.quote?.product?.selected_product.image || 'Product Name'}
+            src={(view.quote?.product?.selected_product !== undefined ) ? view.quote?.product?.selected_product.image : 'Product Name'}
           />
         </MediaCard>
           <TextContainer>
