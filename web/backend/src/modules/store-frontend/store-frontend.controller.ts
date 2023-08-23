@@ -40,10 +40,11 @@ export class StoreFrontendController {
 
       const selected_product = data.selected_product;
       const product = { selected_product, selected_variant };
+      const product_string = JSON.stringify(product);
       if (store) {
         const quote: CreateQuoteDto = {
           ...formValue,
-          product: product,
+          product: product_string,
           store_id: store.id,
         };
         await this.quoteService.create(quote);
@@ -86,31 +87,33 @@ export class StoreFrontendController {
       const store = await this.storeService.findByShopDomain(shop);
       if (!store || !this.storeFrontendService.verifySignature(query)) {
         return res.status(401).json({ message: 'Failed to authenticate' });
-      }
-      const store_id = store.id;
-      const quoteEntities = await this.quoteEntityService.findByStore_Id(
-        store_id,
-      );
-      this.defaultQuoteEntity.forEach((entity) => {
-        let entityValue = null;
-        const quoteEntity = quoteEntities.find(
-          (quoteEntity) => quoteEntity.name === entity,
+      } else {
+        const store_id = store.id;
+        console.log('store_id', store_id);
+        const quoteEntities = await this.quoteEntityService.findByStore_Id(
+          store_id,
         );
-        if (quoteEntity) {
-          entityValue = quoteEntity.value;
-        }
-        switch (entity) {
-          case 'all_product':
-            if (entityValue && entityValue === '0') {
-              show = false;
-            } else show = true;
-            break;
-          default:
-            settings.push({ name: entity, value: entityValue });
-            break;
-        }
-      });
-      return res.status(200).send({ show, settings });
+        this.defaultQuoteEntity.forEach((entity) => {
+          let entityValue = null;
+          const quoteEntity = quoteEntities.find(
+            (quoteEntity) => quoteEntity.name === entity,
+          );
+          if (quoteEntity) {
+            entityValue = quoteEntity.value;
+          }
+          switch (entity) {
+            case 'all_product':
+              if (entityValue && entityValue === '0') {
+                show = false;
+              } else show = true;
+              break;
+            default:
+              settings.push({ name: entity, value: entityValue });
+              break;
+          }
+        });
+        return res.status(200).send({ show, settings });
+      }
     } catch (e) {
       return res.status(500).send({ message: 'Fail to get setting' });
     }
