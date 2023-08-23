@@ -3,29 +3,22 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { blue, grey } from '@mui/material/colors'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import {
-  AppProvider,
-  Frame,
   Toast,
 } from '@shopify/polaris'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import {
-  AppBridgeProvider,
   PolarisProvider,
-  QueryProvider
 } from './components'
 import GettingStarted from './pages/GettingStarted'
 import NotFound from './pages/NotFound'
 import Products from './pages/Products'
 import Quotes from './pages/Quotes'
 import Setting from './pages/Setting'
-import ContextProvider from './store/ContextProvider'
 import './css/app.css'
-import vifyLogoImg from './assets/vifylog.png'
 import Analysis from './pages/Analysis'
 export interface IApplicationProps {}
-import { TopBarMarkup } from './components/App/TopBarMarkup'
 
 const App: React.FC<IApplicationProps> = (props) => {
   const theme = createTheme({
@@ -84,7 +77,6 @@ const App: React.FC<IApplicationProps> = (props) => {
     }
   })
 
-  const skipToContentRef = useRef<HTMLAnchorElement>(null)
   const [toastActive, setToastActive] = useState(false)
 
   const toggleToastActive = useCallback(() => {
@@ -97,87 +89,31 @@ const App: React.FC<IApplicationProps> = (props) => {
       )
     : null
 
-  const logo = {
-    width: 40,
-    topBarSource: vifyLogoImg,
-    contextualSaveBarSource: vifyLogoImg ,
-    url: '#',
-    accessibilityLabel: 'Vify Quotes'
-  }
   return (
     <PolarisProvider>
-      <AppBridgeProvider>
-        <QueryProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <ContextProvider>
-              {/* <LegacyCard> */}
-              <AppProvider
-                i18n={{
-                  Polaris: {
-                    Avatar: {
-                      label: 'Avatar',
-                      labelWithInitials: 'Avatar with initials {initials}'
-                    },
-                    ContextualSaveBar: {
-                      save: 'Save',
-                      discard: 'Discard'
-                    },
-                    TextField: {
-                      characterCount: '{count} characters'
-                    },
-                    TopBar: {
-                      toggleMenuLabel: 'Toggle menu',
-
-                      SearchField: {
-                        clearButtonLabel: 'Clear',
-                        search: 'Search'
-                      }
-                    },
-                    Modal: {
-                      iFrameTitle: 'body markup'
-                    },
-                    Frame: {
-                      skipToContent: 'Skip to content',
-                      navigationLabel: 'Navigation',
-                      Navigation: {
-                        closeMobileNavigationLabel: 'Close navigation'
-                      }
-                    }
-                  }
-                }}
-              >
-                <Frame
-                  logo={logo}
-                  topBar={<TopBarMarkup />}
-                  skipToContentTarget={skipToContentRef}
-                >
-                  {toastMarkup}
-                  <Routes>
-                  <Route
-                      path="/"
-                      element={
-                        <GettingStarted />
-                      }
-                    />
-                    <Route
-                      path="GettingStarted"
-                      element={
-                        <GettingStarted />
-                      }
-                    />
-                    <Route path="Quotes" element={<Quotes />} />
-                    <Route path="Products" element={<Products />} />
-                    <Route path="Setting" element={<Setting />} />
-                    <Route path="analysis" element={<Analysis />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Frame>
-              </AppProvider>
-            </ContextProvider>
-          </ThemeProvider>
-        </QueryProvider>
-      </AppBridgeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+          {toastMarkup}
+          <Routes>
+          <Route
+              path="/"
+              element={
+                <GettingStarted />
+              }
+            />
+            <Route
+              path="GettingStarted"
+              element={
+                <GettingStarted />
+              }
+            />
+            <Route path="Quotes" element={<Quotes />} />
+            <Route path="Products" element={<Products />} />
+            <Route path="Setting" element={<Setting />} />
+            <Route path="analysis" element={<Analysis />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+      </ThemeProvider>
     </PolarisProvider>
   )
 }

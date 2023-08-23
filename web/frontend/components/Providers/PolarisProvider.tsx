@@ -1,8 +1,13 @@
-import {useCallback} from "react";
+import {useCallback, useRef} from "react";
 import {AppProvider, Frame} from "@shopify/polaris";
 import {useNavigate} from "@shopify/app-bridge-react";
 import "@shopify/polaris/build/esm/styles.css";
 import {getPolarisTranslations} from "../../utils/i18nUtils";
+import { TopBarMarkup } from "../../components/App/TopBarMarkup";
+import vifyLogoImg from '../../assets/vifylog.png';
+import { AppBridgeProvider } from "./AppBridgeProvider";
+import ContextProvider from "../../store/ContextProvider";
+import { QueryProvider } from "./QueryProvider";
 
 function AppBridgeLink({url, children, external, ...rest}: any) {
     const navigate = useNavigate();
@@ -27,34 +32,67 @@ function AppBridgeLink({url, children, external, ...rest}: any) {
     );
 }
 
-/**
- * Sets up the AppProvider from Polaris.
- * @desc PolarisProvider passes a custom link component to Polaris.
- * The Link component handles navigation within an embedded app.
- * Prefer using this vs any other method such as an anchor.
- * Use it by importing Link from Polaris, e.g:
- *
- * ```
- * import {Link} from '@shopify/polaris'
- *
- * function MyComponent() {
- *  return (
- *    <div><Link url="/tab2">Tab 2</Link></div>
- *  )
- * }
- * ```
- *
- * PolarisProvider also passes translations to Polaris.
- *
- */
 export function PolarisProvider({children}: any) {
-    const translations = getPolarisTranslations();
+  const skipToContentRef = useRef<HTMLAnchorElement>(null)
+  const logo = {
+    width: 40,
+    topBarSource: vifyLogoImg,
+    contextualSaveBarSource: vifyLogoImg ,
+    url: '#',
+    accessibilityLabel: 'Vify Quotes'
+  }
+  const translations = getPolarisTranslations();
 
-    return (
-      <AppProvider i18n={translations} linkComponent={AppBridgeLink}>
-        <Frame>
-          {children}
-        </Frame>
-      </AppProvider>
-    );
+  return (
+    <AppProvider
+      // i18n={translations}
+      i18n={{
+        Polaris: {
+          Avatar: {
+            label: 'Avatar',
+            labelWithInitials: 'Avatar with initials {initials}'
+          },
+          ContextualSaveBar: {
+            save: 'Save',
+            discard: 'Discard'
+          },
+          TextField: {
+            characterCount: '{count} characters'
+          },
+          TopBar: {
+            toggleMenuLabel: 'Toggle menu',
+
+            SearchField: {
+              clearButtonLabel: 'Clear',
+              search: 'Search'
+            }
+          },
+          Modal: {
+            iFrameTitle: 'body markup'
+          },
+          Frame: {
+            skipToContent: 'Skip to content',
+            navigationLabel: 'Navigation',
+            Navigation: {
+              closeMobileNavigationLabel: 'Close navigation'
+            }
+          }
+        }
+      }}
+     linkComponent={AppBridgeLink}>
+      <AppBridgeProvider>
+        <QueryProvider>
+          <ContextProvider>
+            <Frame
+              logo={logo}
+              topBar={<TopBarMarkup />}
+              skipToContentTarget={skipToContentRef}
+            >
+              {children}
+            </Frame>
+          </ContextProvider>
+        </QueryProvider>
+      </AppBridgeProvider>
+    </AppProvider>
+  );
 }
