@@ -16,13 +16,13 @@ import {
   Badge,
   VerticalStack
 } from '@shopify/polaris'
-import type ParsedQuote from '../../types/ParsedQuote'
 import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
 import defaultImg from '../../assets/default.jpg'
+import Quote from 'types/Quote'
 
 interface IPropQuoteTable {
-  quotes: ParsedQuote[]
+  quotes: Quote[]
   removeQuote: (id: number) => Promise<boolean>
   setSkip: any
   count: number
@@ -44,8 +44,8 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   const [toastActive, setToastActive] = useState<boolean>(false)
   const [status, setStatus] = useState<number>(1)
   const [index, setIndex] = useState<number>(1)
-  const [propModal, setPropModal] = useState<ParsedQuote>(props.quotes[0])
-  const [quotesTables, setQuoteTables] = useState<ParsedQuote[]>(props.quotes)
+  const [propModal, setPropModal] = useState<Quote>(props.quotes[0])
+  const [quotesTables, setQuoteTables] = useState<Quote[]>(props.quotes)
   const [rows, setRows] = React.useState<TableData[][]>([])
   let activator: JSX.Element
   let countIndex: number
@@ -53,13 +53,13 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
     setQuoteTables(props.quotes)
   }, [props.quotes])
 
-  const toggleModal = useCallback(async (quote: ParsedQuote, status: number) => {
+  const toggleModal = useCallback(async (quote: Quote, status: number) => {
     setActive((active) => !active)
     setPropModal(quote)
     await updateStatus(quote.id, 1)
     setStatus(status)
   }, [])
-  const deleteQuoteModal = useCallback((quote: ParsedQuote, status: number) => {
+  const deleteQuoteModal = useCallback((quote: Quote, status: number) => {
     setActive((active) => !active)
     console.log('active', active)
     setPropModal(quote)
@@ -117,7 +117,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   useEffect(() => {
     const temp: string[][] = []
     countIndex = index
-    quotesTables.map((quote: ParsedQuote) => {
+    quotesTables.map((quote: Quote) => {
       const tempColumn: string[] = []
       tempColumn[0] = countIndex.toString()
       tempColumn[1] = truncateRowValue(quote.name)
@@ -126,13 +126,13 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       tempColumn[4] = (
         <div style={{}}>
           <img
-            src={(quote.product.selected_product.image !== undefined) ? quote.product.selected_product.image : defaultImg}
+            src={(quote.product.selected_product !== undefined) ? quote.product.selected_product.image  : defaultImg}
             alt=""
             width="40%"
             height="40%"
             style={{ borderRadius: '50%' }}
           />
-          <p> {truncateRowValue(quote.product.selected_product.title)} </p>
+          <p> {truncateRowValue(quote.product.selected_product ? quote.product.selected_product.title : '')} </p>
         </div>
       )
       tempColumn[5] = truncateRowValue(quote.message)
