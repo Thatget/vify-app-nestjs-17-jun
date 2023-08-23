@@ -23,7 +23,6 @@ function MainTabs (): ReactElement | null {
   const history = useNavigate()
   const handleCloseNavMenu = (href: string): void => {
     history(href)
-    console.log('close')
   }
 
   const handleTabChange = useCallback(

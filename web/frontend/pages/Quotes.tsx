@@ -3,7 +3,7 @@ import { type ReactElement, useCallback, useEffect, useState } from 'react'
 import QuoteTable from '../components/Quote/QuoteTable'
 import { useAuthenticatedFetch } from '../hooks'
 import type Quote from '../types/Quote'
-import { Page, Toast, Layout, TextField } from '@shopify/polaris'
+import { Page, Toast, Layout, TextField, AlphaCard } from '@shopify/polaris'
 import useDebounce from '../hooks/useDebounce'
 import { StoreContext } from '../store'
 import { formatInTimeZone } from 'date-fns-tz'
@@ -83,16 +83,19 @@ export default function Quotes (): ReactElement | null {
   return (
     <Page>
       <Layout sectioned>
-        <>
-          <TextField
-            label="Search"
-            value={textSearch}
-            onChange={handleSearch}
-            autoComplete="off"
-          />
-        </>
-        <QuoteTable quotes={quotes} removeQuote={removeQuote} setSkip={setSkip} skip={skip} count={count}
-                    isLoading={isLoading}/>
+        <AlphaCard>
+          <div style={{ padding: '10px', zIndex: '-1' }}>
+            <TextField
+              label="Search"
+              value={textSearch}
+              onChange={handleSearch}
+              autoComplete="off"
+            />
+          
+            <QuoteTable quotes={quotes} removeQuote={removeQuote} setSkip={setSkip} skip={skip} count={count}
+              isLoading={isLoading}/>
+          </div>
+        </AlphaCard>
         {toastMarkup}
       </Layout>
     </Page>

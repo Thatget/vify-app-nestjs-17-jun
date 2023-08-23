@@ -21,6 +21,7 @@ interface responseProduct {
 export default function SelectedProductsList (): React.ReactElement | null {
   const fetch = useAuthenticatedFetch()
   const [isLoading, setIsLoading] = React.useState(true)
+  const [currentProducts, setCurrentProduct] = React.useState<Product[]>([])
   const [deleteList, setDeleteList] = React.useState<number[]>([])
   const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([])
   const [page, setPage] = React.useState<number>(0)
@@ -35,9 +36,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
     try {
       const response = await fetch(`/api/products?page=${page}`, { method: 'GET' })
       const data: responseProduct = await response.json()
-      // (data.products !== undefined)
-      //   ? setVisibleProduct(data.products)
-      //   : setVisibleProduct([])
+      setCurrentProduct(data.products || [])
       setVisibleProduct(data.products || [])
       setCount(data.count || 0)
       setIsLoading(false)
@@ -53,8 +52,8 @@ export default function SelectedProductsList (): React.ReactElement | null {
   React.useEffect(() => {
     const subSet = new Set(deleteList)
     let resultArray = []
-    if (visibleProduct !== undefined) {
-      resultArray = visibleProduct.filter((item) => !subSet.has(item.id))
+    if (currentProducts !== undefined) {
+      resultArray = currentProducts.filter((item) => !subSet.has(item.id))
     }
     setVisibleProduct(resultArray)
   }, [deleteList])

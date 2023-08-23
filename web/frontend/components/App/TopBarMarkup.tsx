@@ -132,7 +132,7 @@ export const TopBarMarkup = () => {
           }
         ]}
       />
-      <TopBar.Menu
+      {/* <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<SettingsSuggestIcon />}>
             Analysis
@@ -150,7 +150,7 @@ export const TopBarMarkup = () => {
             items: [{ content: 'Community forums' }]
           }
         ]}
-      />
+      /> */}
     </div>
   )
   return (

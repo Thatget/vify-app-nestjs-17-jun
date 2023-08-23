@@ -59,10 +59,11 @@ export class QuoteService {
 
   async searchQuote(textSearch: string, store_id: number,  skip: number, take: number) {
     return await this.quoteRepository
-      .createQueryBuilder("quote")
-      .where('quote.name LIKE :textSearch', { textSearch })
-      .orWhere("quote.email LIKE :textSearch", { textSearch: `%${textSearch}%` })
-      .orWhere('MATCH(product)  AGAINST(:textSearch IN NATURAL LANGUAGE MODE)', { textSearch })
+      .createQueryBuilder()
+      .where(
+        'name LIKE :textSearch OR email LIKE :textSearch OR MATCH(product) AGAINST(:textSearchProduct IN NATURAL LANGUAGE MODE)',
+        { textSearch: `%${textSearch}%`,textSearchProduct: textSearch }
+        )
       .andWhere({store_id})
       .offset(skip)
       .limit(take)

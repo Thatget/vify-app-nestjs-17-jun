@@ -12,7 +12,7 @@ export default function GettingStarted (): ReactElement | null {
     <>
       <CardContent>
         <Typography variant="body1" component="div">
-          <b> Step 1: Select products</b>
+          <b> Step 2: Select products</b>
         </Typography>
         <br/>
         <Typography variant="body1">
@@ -27,24 +27,24 @@ export default function GettingStarted (): ReactElement | null {
     </>
   )
 
-  const themes = (
-    <>
-      <CardContent>
-        <Typography variant="body1" component="div">
-          <b>Step 2: For Online Store 2.0 themes </b>
-        </Typography>
-        <br/>
-        <Typography variant="body1">
-          Customize your Current theme and add a block to your target page <br/>
-          Select <b>Simple Quote</b> when you find it available <br/>
-          {/* <Link onClick={() => {
-            props.showModalSupport(true)
-            console.log('clicked')
-          }}>Contact us </Link> if the button does not show <br/> */}
-        </Typography>
-      </CardContent>
-    </>
-  )
+  // const themes = (
+  //   <>
+  //     <CardContent>
+  //       <Typography variant="body1" component="div">
+  //         <b>Step 2: For Online Store 2.0 themes </b>
+  //       </Typography>
+  //       <br/>
+  //       <Typography variant="body1">
+  //         Customize your Current theme and add a block to your target page <br/>
+  //         Select <b>Simple Quote</b> when you find it available <br/>
+  //         <Link url='https://${userStore.user?.shopDomain}/admin/themes/current/editor'
+  //         onClick={() => {
+  //           window.location('/admin/themes/current/editor')
+  //         }}>Edit</Link>
+  //       </Typography>
+  //     </CardContent>
+  //   </>
+  // )
   const otherSetting = (
     <>
       <CardContent>
@@ -75,8 +75,8 @@ export default function GettingStarted (): ReactElement | null {
       <Layout sectioned>
         <LegacyCard>{selectProducts}</LegacyCard>
         <br/>
-        {/* <LegacyCard>{themes}</LegacyCard>
-        <br/> */}
+        {/* <LegacyCard>{themes}</LegacyCard> */}
+        {/* <br/> */}
         <LegacyCard>{otherSetting}</LegacyCard>
       </Layout>
     </Page>

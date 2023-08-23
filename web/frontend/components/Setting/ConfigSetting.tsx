@@ -15,8 +15,6 @@ export const defaultConfigSetting = {
 const ConfigSetting = (): JSX.Element => {
   const { state, dispatch } = useContext(StoreContext)
   const localConfigSetting = ({ ...defaultConfigSetting, ...state.setting, ...state.currentSetting })
-  console.log('state.setting', state.setting)
-  console.log('state.currentSetting', state.currentSetting)
 
   const handleChangeConfig = (configKey: string) => {
     switch (configKey) {
