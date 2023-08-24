@@ -8,7 +8,8 @@ import { StoreModule } from '../store/store.module';
 const allowedAttribute = [
   'name',
   'email',
-  'message',
+  'email_title',
+  'message_title',
   'hide_price',
   'all_product',
   'hide_buy_now',
@@ -20,6 +21,8 @@ const allowedAttribute = [
   'thank_content',
   'shopping_button',
   'name_placeholder',
+  'form_title',
+  'submit_button_text',
 ];
 
 @Module({
