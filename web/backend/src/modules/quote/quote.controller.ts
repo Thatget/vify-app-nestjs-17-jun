@@ -26,10 +26,14 @@ export class QuoteController {
   async findAndPaging(
     @Query('textSearch') textSearch: string,
     @Query('skip') skip: number,
+    @Query('since') since: string,
+    @Query('until') until: string,
     @Req() req: Request,
     @Res() res: Response,
   ) {
     try {
+      console.log("since: ", since)
+      console.log("since: ", until)
       var [quotes, count] = [[], 0]
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);

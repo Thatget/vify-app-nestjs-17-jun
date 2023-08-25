@@ -121,8 +121,8 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       const tempColumn: string[] = []
       tempColumn[0] = countIndex.toString()
       tempColumn[1] = truncateRowValue(quote.name)
-      tempColumn[2] = truncateRowValue(quote.email)
-      tempColumn[3] = truncateRowValue(quote.created_at.toString())
+      tempColumn[2] = quote.email
+      tempColumn[3] = quote.created_at
       tempColumn[4] = (
         <div style={{}}>
           <img
@@ -398,9 +398,9 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
 }
 export default QuoteTable
 
-function truncateRowValue (quoteColumn: string): string {
+function truncateRowValue (quoteColumn: string, count = 8): string {
   let temp: string
   temp = quoteColumn.slice(0, 11)
-  temp = temp.length > 8 ? temp.concat('...') : temp
+  temp = temp.length > count ? temp.concat('...') : temp
   return temp
 }

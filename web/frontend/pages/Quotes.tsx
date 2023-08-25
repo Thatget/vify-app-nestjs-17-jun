@@ -3,10 +3,15 @@ import { type ReactElement, useCallback, useEffect, useState } from 'react'
 import QuoteTable from '../components/Quote/QuoteTable'
 import { useAuthenticatedFetch } from '../hooks'
 import type Quote from '../types/Quote'
-import { Page, Toast, Layout, TextField, AlphaCard } from '@shopify/polaris'
+import { Page, Toast, Layout, TextField, AlphaCard, Grid, Icon } from '@shopify/polaris'
 import useDebounce from '../hooks/useDebounce'
 import { StoreContext } from '../store'
 import { formatInTimeZone } from 'date-fns-tz'
+import moment from 'moment-timezone';
+import {
+  SearchMinor
+} from '@shopify/polaris-icons';
+import DateRangePicker from '../components/widget/DateRangePicker'
 
 interface QuoteData {
   quotes: Quote[]
@@ -21,6 +26,7 @@ export default function Quotes (): ReactElement | null {
   const [count, setCount] = React.useState<number>(0)
   const [active, setActive] = useState(false)
   const [textSearch, setTextSearch] = useState<string>('');
+  const [period, setPeriod] = useState<{since: string, until: string}>(null)
   const debouncedSearchTerm = useDebounce(textSearch, 500)
   const {state} = React.useContext(StoreContext)
   const toggleActive = useCallback(() => {
@@ -34,12 +40,17 @@ export default function Quotes (): ReactElement | null {
 
   const fetchData = useCallback(async (skip: number, text?: string):Promise<[Quote[], number]> => {
     try {
-      const encodedSearchText = encodeURIComponent(text);
-      const response = await fetch(`/api/quote?skip=${skip}&textSearch=${encodedSearchText}`, { method: 'GET' })
+      var url = `/api/quote?skip=${skip}`
+      if (text) url += `&textSearch=${encodeURIComponent(text)}`
+      if (period) {
+        if (period.since) url += `&since=${encodeURIComponent(period.since)}`
+        if (period.until) url += `&until=${encodeURIComponent(period.until)}`
+      }
+      const response = await fetch(url, { method: 'GET' })
       const temp:QuoteData = await response.json()
       const quotes:Quote[] = temp.quotes.map(item => ({
         ...item,
-        created_at: formatInTimeZone(item.created_at, state.store?.ianaTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone, 'yyyy-MM-dd HH:mm:ss zzz')
+        created_at: moment(item.created_at).tz(state.store?.ianaTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone).format('ddd MMM DD YYYY').toString()
       }))
       const count = (temp.count !== undefined) ? temp.count : 0
       return [quotes, count];
@@ -54,6 +65,12 @@ export default function Quotes (): ReactElement | null {
     setTextSearch(newValue)
   }, []);
 
+  const handleChangeDateRange = useCallback((dateRange: object) => {
+    const since = moment.tz(dateRange.period.since, 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)', state.store?.ianaTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone).toISOString();
+    console.log(since)
+    setPeriod({since: dateRange.period.since, until: dateRange.period.until})
+  }, [])
+
   React.useEffect(() => {
     const fetchQuote = async ():Promise<void> => {
       const [quotes, count] = await fetchData(skip, debouncedSearchTerm)
@@ -61,7 +78,7 @@ export default function Quotes (): ReactElement | null {
       setCount(count)
     }
     fetchQuote()
-  }, [skip, debouncedSearchTerm])
+  }, [skip, debouncedSearchTerm, period])
   const removeQuote = async (id: number): Promise<boolean> => {
     try {
       await fetch('/api/quote/deleteEach', {
@@ -85,13 +102,21 @@ export default function Quotes (): ReactElement | null {
       <Layout sectioned>
         <AlphaCard>
           <div style={{ padding: '10px', zIndex: '-1' }}>
-            <TextField
-              label="Search"
-              value={textSearch}
-              onChange={handleSearch}
-              autoComplete="off"
-            />
-          
+            <Grid>
+              <Grid.Cell columnSpan={{xs: 5, sm: 3, md: 3, lg: 6, xl: 6}}>
+                <DateRangePicker onChangeDate={handleChangeDateRange} />
+              </Grid.Cell>
+              <Grid.Cell columnSpan={{xs: 5, sm: 3, md: 3, lg: 6, xl: 6}}>
+                <TextField
+                  prefix={<Icon source={SearchMinor} />}
+                  labelHidden
+                  label="Search"
+                  value={textSearch}
+                  onChange={handleSearch}
+                  autoComplete="off"
+                />
+              </Grid.Cell>
+            </Grid>
             <QuoteTable quotes={quotes} removeQuote={removeQuote} setSkip={setSkip} skip={skip} count={count}
               isLoading={isLoading}/>
           </div>
