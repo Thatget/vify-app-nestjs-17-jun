@@ -32,20 +32,20 @@ export class QuoteController {
     @Res() res: Response,
   ) {
     try {
-      console.log("since: ", since)
-      console.log("since: ", until)
       var [quotes, count] = [[], 0]
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
+      const startDate = new Date(since);
+      const endDate = new Date(until);
+      endDate.setHours(endDate.getHours() + 24)
       if (!textSearch) {
         [quotes, count] = await this.quoteService.findAll(
-          store_id,
-          skip,
-          5,
+          store_id, skip, 5, startDate, endDate
         );
       } else {
-        [quotes, count] = await this.quoteService.searchQuote(textSearch, store_id, skip, 5)
+        [quotes, count] = await this.quoteService
+          .searchQuote(textSearch, store_id, skip, 5, startDate, endDate )
       }
       return res.status(200).send({ quotes, count });
     } catch (error) {

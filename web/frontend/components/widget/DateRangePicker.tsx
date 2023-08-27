@@ -8,7 +8,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 // This example is for guidance purposes. Copying it will come with caveats.
-export default function DateRangePicker({ onChangeDate }) {
+const DateRangePicker = ({ initDateRange, onChangeDate }) => {
   const { mdDown, lgUp } = useBreakpoints();
   const shouldShowMultiMonth = lgUp;
   const today = new Date(new Date().setHours(0, 0, 0, 0));
@@ -44,7 +44,7 @@ export default function DateRangePicker({ onChangeDate }) {
     },
   ];
   const [popoverActive, setPopoverActive] = useState(false);
-  const [activeDateRange, setActiveDateRange] = useState(ranges[0]);
+  const [activeDateRange, setActiveDateRange] = useState(initDateRange);
   const [inputValues, setInputValues] = useState({});
   const [{ month, year }, setDate] = useState({
     month: activeDateRange.period.since.getMonth(),
@@ -328,3 +328,5 @@ export default function DateRangePicker({ onChangeDate }) {
     </Popover>
   )
 }
+
+export default DateRangePicker

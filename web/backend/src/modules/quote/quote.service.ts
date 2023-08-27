@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuoteDto } from './dto/create-quote.dto';
-import { Repository } from 'typeorm';
+import { Between, LessThan, MoreThan, Repository } from 'typeorm';
 import { Quote } from './entities/quote.entity';
 
 @Injectable()
@@ -18,9 +18,15 @@ export class QuoteService {
     return await this.quoteRepository.findBy({ store_id });
   }
 
-  async findAll(store_id: number, skip: number, take: number) {
+  async findAll(store_id: number, skip: number, take: number, since?: Date, until?: Date) {
+    const whereCondition:any = {
+      store_id,
+    }
+    if (since && until)  whereCondition.created_at = Between(since, until)
+    else if (since) whereCondition.created_at = MoreThan(since)
+    else if (until) whereCondition.created_at = LessThan(until)
     return await this.quoteRepository.findAndCount({
-      where: { store_id },
+      where: whereCondition,
       skip,
       take,
       order: { created_at: "DESC" }
@@ -57,14 +63,20 @@ export class QuoteService {
       .execute();
   }
 
-  async searchQuote(textSearch: string, store_id: number,  skip: number, take: number) {
+  async searchQuote(textSearch: string, store_id: number,  skip: number, take: number, since?: Date, until?: Date) {
+    const whereCondition:any = {
+      store_id,
+    }
+    if (since && until)  whereCondition.created_at = Between(since, until)
+    else if (since) whereCondition.created_at = MoreThan(since)
+    else if (until) whereCondition.created_at = LessThan(until)
     return await this.quoteRepository
       .createQueryBuilder()
       .where(
         'name LIKE :textSearch OR email LIKE :textSearch OR MATCH(product) AGAINST(:textSearchProduct IN NATURAL LANGUAGE MODE)',
         { textSearch: `%${textSearch}%`,textSearchProduct: textSearch }
         )
-      .andWhere({store_id})
+      .andWhere( whereCondition )
       .offset(skip)
       .limit(take)
       .orderBy("created_at", "DESC")

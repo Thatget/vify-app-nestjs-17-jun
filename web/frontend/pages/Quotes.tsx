@@ -6,7 +6,6 @@ import type Quote from '../types/Quote'
 import { Page, Toast, Layout, TextField, AlphaCard, Grid, Icon } from '@shopify/polaris'
 import useDebounce from '../hooks/useDebounce'
 import { StoreContext } from '../store'
-import { formatInTimeZone } from 'date-fns-tz'
 import moment from 'moment-timezone';
 import {
   SearchMinor
@@ -18,7 +17,17 @@ interface QuoteData {
   count: number
 }
 
+interface DateRange {
+  title: string;
+  alias: string;
+  period: {
+    since: Date;
+    until: Date;
+  };
+}
+
 export default function Quotes (): ReactElement | null {
+  const today = new Date(new Date().setHours(0, 0, 0, 0));
   const fetch = useAuthenticatedFetch()
   const [isLoading, setIsLoading] = React.useState(true)
   const [quotes, setQuote] = React.useState<Quote[]>([])
@@ -26,7 +35,14 @@ export default function Quotes (): ReactElement | null {
   const [count, setCount] = React.useState<number>(0)
   const [active, setActive] = useState(false)
   const [textSearch, setTextSearch] = useState<string>('');
-  const [period, setPeriod] = useState<{since: string, until: string}>(null)
+  const [range, setRange] = useState<DateRange>({
+    title: "Today",
+    alias: "today",
+    period: {
+      since: today,
+      until: today,
+    },
+  },)
   const debouncedSearchTerm = useDebounce(textSearch, 500)
   const {state} = React.useContext(StoreContext)
   const toggleActive = useCallback(() => {
@@ -38,14 +54,12 @@ export default function Quotes (): ReactElement | null {
       )
     : null
 
-  const fetchData = useCallback(async (skip: number, text?: string):Promise<[Quote[], number]> => {
+  const fetchData = useCallback(async (skip: number, text?: string, since?: Date, until?: Date):Promise<[Quote[], number]> => {
     try {
       var url = `/api/quote?skip=${skip}`
       if (text) url += `&textSearch=${encodeURIComponent(text)}`
-      if (period) {
-        if (period.since) url += `&since=${encodeURIComponent(period.since)}`
-        if (period.until) url += `&until=${encodeURIComponent(period.until)}`
-      }
+      if (since) url += `&since=${encodeURIComponent(since.toISOString())}`
+      if (until) url += `&until=${encodeURIComponent(until.toISOString())}`
       const response = await fetch(url, { method: 'GET' })
       const temp:QuoteData = await response.json()
       const quotes:Quote[] = temp.quotes.map(item => ({
@@ -65,20 +79,18 @@ export default function Quotes (): ReactElement | null {
     setTextSearch(newValue)
   }, []);
 
-  const handleChangeDateRange = useCallback((dateRange: object) => {
-    const since = moment.tz(dateRange.period.since, 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)', state.store?.ianaTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone).toISOString();
-    console.log(since)
-    setPeriod({since: dateRange.period.since, until: dateRange.period.until})
+  const handleChangeDateRange = useCallback((dateRange: DateRange) => {
+    setRange({...dateRange})
   }, [])
 
   React.useEffect(() => {
     const fetchQuote = async ():Promise<void> => {
-      const [quotes, count] = await fetchData(skip, debouncedSearchTerm)
+      const [quotes, count] = await fetchData(skip, debouncedSearchTerm, range.period.since, range.period.until)
       setQuote(quotes)
       setCount(count)
     }
     fetchQuote()
-  }, [skip, debouncedSearchTerm, period])
+  }, [skip, debouncedSearchTerm, range])
   const removeQuote = async (id: number): Promise<boolean> => {
     try {
       await fetch('/api/quote/deleteEach', {
@@ -104,7 +116,7 @@ export default function Quotes (): ReactElement | null {
           <div style={{ padding: '10px', zIndex: '-1' }}>
             <Grid>
               <Grid.Cell columnSpan={{xs: 5, sm: 3, md: 3, lg: 6, xl: 6}}>
-                <DateRangePicker onChangeDate={handleChangeDateRange} />
+                <DateRangePicker initDateRange={range} onChangeDate={handleChangeDateRange} />
               </Grid.Cell>
               <Grid.Cell columnSpan={{xs: 5, sm: 3, md: 3, lg: 6, xl: 6}}>
                 <TextField
