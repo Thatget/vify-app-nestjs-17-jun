@@ -20,6 +20,12 @@ interface Sort {
   sortType: 'DESC'|'ASC'
 }
 
+interface searchOption {
+  textSearch?: string;
+  since?: Date;
+  until?: Date;
+}
+
 @Controller('api/quote')
 export class QuoteController {
   constructor(
@@ -44,17 +50,17 @@ export class QuoteController {
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
       const sort: Sort = {sortBy, sortType}
-      const startDate = new Date(since);
-      const endDate = new Date(until);
-      endDate.setHours(endDate.getHours() + 24)
-      if (!textSearch) {
-        [quotes, count] = await this.quoteService.findAll(
-          store_id, skip, 5, sort, startDate, endDate
-        );
-      } else {
-        [quotes, count] = await this.quoteService
-          .searchQuote(textSearch, store_id, skip, 5, sort, startDate, endDate )
+      const options:searchOption = {}
+      if (since) options.since = new Date(since);
+      if (until) {
+        const endDate = new Date(until);
+        endDate.setHours(endDate.getHours() + 24)
+        options.until = endDate
       }
+      if (textSearch) options.textSearch = textSearch;
+      [quotes, count] = await this.quoteService
+          .searchQuote(store_id, skip, 5, sort, options )
+  
       return res.status(200).send({ quotes, count });
     } catch (error) {
       logger.error(error.message)
