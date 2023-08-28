@@ -15,6 +15,11 @@ import { QuoteService } from './quote.service';
 import { StoreService } from '../store/store.service';
 import { logger } from '../helpers/logger.helper';
 
+interface Sort {
+  sortBy: string;
+  sortType: 'DESC'|'ASC'
+}
+
 @Controller('api/quote')
 export class QuoteController {
   constructor(
@@ -28,6 +33,8 @@ export class QuoteController {
     @Query('skip') skip: number,
     @Query('since') since: string,
     @Query('until') until: string,
+    @Query('sortBy') sortBy: string,
+    @Query('sortType') sortType: 'DESC'| 'ASC',
     @Req() req: Request,
     @Res() res: Response,
   ) {
@@ -36,16 +43,17 @@ export class QuoteController {
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
+      const sort: Sort = {sortBy, sortType}
       const startDate = new Date(since);
       const endDate = new Date(until);
       endDate.setHours(endDate.getHours() + 24)
       if (!textSearch) {
         [quotes, count] = await this.quoteService.findAll(
-          store_id, skip, 5, startDate, endDate
+          store_id, skip, 5, sort, startDate, endDate
         );
       } else {
         [quotes, count] = await this.quoteService
-          .searchQuote(textSearch, store_id, skip, 5, startDate, endDate )
+          .searchQuote(textSearch, store_id, skip, 5, sort, startDate, endDate )
       }
       return res.status(200).send({ quotes, count });
     } catch (error) {

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { type ReactElement, useCallback, useEffect, useState } from 'react'
+import { type ReactElement, useCallback, useState } from 'react'
 import QuoteTable from '../components/Quote/QuoteTable'
 import { useAuthenticatedFetch } from '../hooks'
 import type Quote from '../types/Quote'
@@ -26,6 +26,11 @@ interface DateRange {
   };
 }
 
+export interface Sort {
+  sortBy: string;
+  type: 'DESC'|'ASC';
+}
+
 export default function Quotes (): ReactElement | null {
   const today = new Date(new Date().setHours(0, 0, 0, 0));
   const fetch = useAuthenticatedFetch()
@@ -43,6 +48,7 @@ export default function Quotes (): ReactElement | null {
       until: today,
     },
   },)
+  const [sort, setSort] = useState<Sort>({sortBy: 'created_by',type: 'DESC'})
   const debouncedSearchTerm = useDebounce(textSearch, 500)
   const {state} = React.useContext(StoreContext)
   const toggleActive = useCallback(() => {
@@ -54,10 +60,11 @@ export default function Quotes (): ReactElement | null {
       )
     : null
 
-  const fetchData = useCallback(async (skip: number, text?: string, since?: Date, until?: Date):Promise<[Quote[], number]> => {
+  const fetchData = useCallback(async (skip: number, text?: string, since?: Date, until?: Date, sort?: Sort):Promise<[Quote[], number]> => {
     try {
       var url = `/api/quote?skip=${skip}`
       if (text) url += `&textSearch=${encodeURIComponent(text)}`
+      if (sort) url += `&sortBy=${encodeURIComponent(sort.sortBy)}&sortType=${encodeURIComponent(sort.type)}`
       if (since) url += `&since=${encodeURIComponent(since.toISOString())}`
       if (until) url += `&until=${encodeURIComponent(until.toISOString())}`
       const response = await fetch(url, { method: 'GET' })
@@ -74,6 +81,8 @@ export default function Quotes (): ReactElement | null {
     }
   }, [])
 
+  const handleSort = useCallback((sort: Sort) => setSort(sort), [])
+
   const handleSearch = useCallback((newValue: string) => {
     setSkip(0)
     setTextSearch(newValue)
@@ -85,12 +94,12 @@ export default function Quotes (): ReactElement | null {
 
   React.useEffect(() => {
     const fetchQuote = async ():Promise<void> => {
-      const [quotes, count] = await fetchData(skip, debouncedSearchTerm, range.period.since, range.period.until)
+      const [quotes, count] = await fetchData(skip, debouncedSearchTerm, range.period.since, range.period.until, sort)
       setQuote(quotes)
       setCount(count)
     }
     fetchQuote()
-  }, [skip, debouncedSearchTerm, range])
+  }, [skip, debouncedSearchTerm, range, sort])
   const removeQuote = async (id: number): Promise<boolean> => {
     try {
       await fetch('/api/quote/deleteEach', {
@@ -110,7 +119,7 @@ export default function Quotes (): ReactElement | null {
   }
 
   return (
-    <Page>
+    <Page fullWidth title='Quote'>
       <Layout sectioned>
         <AlphaCard>
           <div style={{ padding: '10px', zIndex: '-1' }}>
@@ -129,8 +138,9 @@ export default function Quotes (): ReactElement | null {
                 />
               </Grid.Cell>
             </Grid>
-            <QuoteTable quotes={quotes} removeQuote={removeQuote} setSkip={setSkip} skip={skip} count={count}
-              isLoading={isLoading}/>
+            <QuoteTable quotes={quotes} removeQuote={removeQuote}
+              setSkip={setSkip} skip={skip} count={count}
+              isLoading={isLoading} handleSortBy={handleSort}/>
           </div>
         </AlphaCard>
         {toastMarkup}

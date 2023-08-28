@@ -3,6 +3,13 @@ import { CreateQuoteDto } from './dto/create-quote.dto';
 import { Between, LessThan, MoreThan, Repository } from 'typeorm';
 import { Quote } from './entities/quote.entity';
 
+interface Sort {
+  sortBy: string;
+  sortType: 'DESC'|'ASC'
+}
+
+const sortAbleList = ['id', 'name', 'email', 'created_at', 'product', 'updated_at', 'status']
+
 @Injectable()
 export class QuoteService {
   constructor(
@@ -18,18 +25,31 @@ export class QuoteService {
     return await this.quoteRepository.findBy({ store_id });
   }
 
-  async findAll(store_id: number, skip: number, take: number, since?: Date, until?: Date) {
+  async findAll(store_id: number, skip: number, take: number, sort: Sort, since?: Date, until?: Date) {
+    const order: object = {}
+    var orderBy = sortAbleList.includes(sort.sortBy) ? sort.sortBy : 'created_at'
+    var orderType: 'DESC'|'ASC' = sort.sortType === 'DESC' ? 'DESC' : 'ASC'
+    // in case not in sortable list
+    if (!sortAbleList.includes(sort.sortBy)) {
+      orderType = 'DESC'
+    }
+    // in case in order by product title
+    if (orderBy === 'product') orderBy = `JSON_UNQUOTE(JSON_EXTRACT(product, '$.selected_product.title'))`
+    order[orderBy] = orderType
     const whereCondition:any = {
       store_id,
     }
-    if (since && until)  whereCondition.created_at = Between(since, until)
+    if (since && until) whereCondition.created_at = Between(since, until)
     else if (since) whereCondition.created_at = MoreThan(since)
     else if (until) whereCondition.created_at = LessThan(until)
+  console.log(order)
     return await this.quoteRepository.findAndCount({
       where: whereCondition,
       skip,
       take,
-      order: { created_at: "DESC" }
+      order : {
+        'product->>"$.selected_product.title"': 'DESC'
+      }
     });
   }
 
@@ -63,7 +83,15 @@ export class QuoteService {
       .execute();
   }
 
-  async searchQuote(textSearch: string, store_id: number,  skip: number, take: number, since?: Date, until?: Date) {
+  async searchQuote(textSearch: string, store_id: number,  skip: number, take: number, sort: Sort, since?: Date, until?: Date) {
+    var orderBy = sortAbleList.includes(sort.sortBy) ? sort.sortBy : 'created_at'
+    var orderType: 'DESC'|'ASC' = sort.sortType === 'DESC' ? 'DESC' : 'ASC'
+    // in case not in sortable list
+    if (!sortAbleList.includes(sort.sortBy)) {
+      orderType = 'DESC'
+    }
+    // in case in order by product title
+    if (orderBy === 'product') orderBy = `JSON_UNQUOTE(JSON_EXTRACT(product, '$.selected_product.title'))`
     const whereCondition:any = {
       store_id,
     }
@@ -79,7 +107,7 @@ export class QuoteService {
       .andWhere( whereCondition )
       .offset(skip)
       .limit(take)
-      .orderBy("created_at", "DESC")
+      .orderBy(orderBy, orderType)
       .getManyAndCount()
   }
 }
