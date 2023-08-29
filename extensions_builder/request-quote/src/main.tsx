@@ -1,26 +1,28 @@
-import {ThemeProvider} from "@material-tailwind/react";
+import { AppProvider } from "@shopify/polaris";
 import App from "./App";
 import React from "react";
-// import ReactDOM from "react-dom"
 import ReactDOM from "react-dom";
-// import {CssBaseline} from "@mui/material";
-import "./css/style.css";
+import translations from '@shopify/polaris/locales/en.json'
+// import { useI18n} from '@shopify/react-i18n'
+// import "./css/style.css";
+import '@shopify/polaris/build/esm/styles.css'
 
 const rootElement = document.getElementById("vify_rfq-f")
+// const [i18n] = useI18n({
+//   id:'Polaris',
+//   fallback: translations,
+//   translations(locate) {
+//     return import (
+//       `@shopify/polaris/locates/${locate}.json`
+//     ).then((dictionary) => dictionary && dictionary.default)
+//   },
+// })
+
 ReactDOM.render(
     <>
-        {/*<CssBaseline />*/}
-        <ThemeProvider>
+    <AppProvider i18n={translations}>
             <App/>
-        </ThemeProvider>
+            </AppProvider>
     </>,
     rootElement
 )
-// const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-// root.render(
-//     <React.StrictMode>
-//         <ThemeProvider>
-//             <App/>
-//         </ThemeProvider>
-//     </React.StrictMode>,
-// );

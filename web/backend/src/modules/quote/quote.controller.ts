@@ -45,10 +45,11 @@ export class QuoteController {
     @Res() res: Response,
   ) {
     try {
-      var [quotes, count] = [[], 0]
+      let [quotes, count] = [[], 0];
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
+
       const sort: Sort = {sortBy, sortType}
       const options:searchOption = {}
       if (since) options.since = new Date(since);
@@ -56,6 +57,7 @@ export class QuoteController {
         const endDate = new Date(until);
         endDate.setHours(endDate.getHours() + 24)
         options.until = endDate
+
       }
       if (textSearch) options.textSearch = textSearch;
       [quotes, count] = await this.quoteService
@@ -63,7 +65,7 @@ export class QuoteController {
   
       return res.status(200).send({ quotes, count });
     } catch (error) {
-      logger.error(error.message)
+      logger.error(error.message);
       return res.status(500).json({ message: error.message });
     }
   }

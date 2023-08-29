@@ -3,13 +3,13 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { blue, grey } from '@mui/material/colors'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import {
-  Toast,
+  Toast
 } from '@shopify/polaris'
 
 import React, { useCallback, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import {
-  PolarisProvider,
+  PolarisProvider
 } from './components'
 import GettingStarted from './pages/GettingStarted'
 import NotFound from './pages/NotFound'

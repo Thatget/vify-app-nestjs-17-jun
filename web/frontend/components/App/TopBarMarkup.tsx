@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import HomeIcon from '@mui/icons-material/Home'
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
 import TableViewIcon from '@mui/icons-material/TableView'
@@ -6,14 +7,19 @@ import {
   TopBar
 } from '@shopify/polaris'
 import { useAuthenticatedFetch } from '../../hooks'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext, actions } from '../../store'
+import Typography from '@mui/material/Typography'
 
 const pages = [
   {
     title: 'Getting Started',
     href: '/gettingStarted'
+  },
+  {
+    title: 'Products',
+    href: '/products'
   },
   {
     title: 'Quotes',
@@ -55,7 +61,7 @@ export const TopBarMarkup = () => {
         break
     }
   }, [])
-  const fetchStoreInfo = useCallback(async() =>{
+  const fetchStoreInfo = useCallback(async () => {
     try {
       const response = await fetch('/api/store', { method: 'Get' })
       const { data } = await response.json()
@@ -65,11 +71,11 @@ export const TopBarMarkup = () => {
     }
   }, [])
 
-  useEffect(()=> {
-    const fetchData = async () => {
-      const newData = await fetchStoreInfo();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      const newData = await fetchStoreInfo()
       dispatch(actions.setStoreInfo(newData))
-    };
+    }
     fetchData()
   }, [])
 
@@ -77,8 +83,8 @@ export const TopBarMarkup = () => {
     <div style={{ display: 'flex' }}>
       <TopBar.Menu
         activatorContent={
-          <Button variant="text" startIcon={<HomeIcon />}>
-              Dashboard
+          <Button variant ="text" startIcon={<HomeIcon />}>
+              <Typography variant='body2'>Dashboard</Typography>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -87,6 +93,25 @@ export const TopBarMarkup = () => {
         }}
         onClose={() => {
           toggleIsSecondaryMenuOpen(0)
+        }}
+        actions={[
+          {
+            items: [{ content: 'Community forums' }]
+          }
+        ]}
+      />
+                  <TopBar.Menu
+        activatorContent={
+          <Button variant="text" startIcon={<SettingsSuggestIcon />}>
+            Products
+          </Button>
+        }
+        open={isSecondaryMenuOpen}
+        onOpen={() => {
+          toggleIsSecondaryMenuOpen(1)
+        }}
+        onClose={() => {
+          toggleIsSecondaryMenuOpen(1)
         }}
         actions={[
           {
@@ -102,10 +127,10 @@ export const TopBarMarkup = () => {
         }
         open={isSecondaryMenuOpen}
         onOpen={() => {
-          toggleIsSecondaryMenuOpen(1)
+          toggleIsSecondaryMenuOpen(2)
         }}
         onClose={() => {
-          toggleIsSecondaryMenuOpen(1)
+          toggleIsSecondaryMenuOpen(2)
         }}
         actions={[
           {
@@ -121,10 +146,10 @@ export const TopBarMarkup = () => {
         }
         open={isSecondaryMenuOpen}
         onOpen={() => {
-          toggleIsSecondaryMenuOpen(2)
+          toggleIsSecondaryMenuOpen(3)
         }}
         onClose={() => {
-          toggleIsSecondaryMenuOpen(2)
+          toggleIsSecondaryMenuOpen(3)
         }}
         actions={[
           {
@@ -132,6 +157,7 @@ export const TopBarMarkup = () => {
           }
         ]}
       />
+
       {/* <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<SettingsSuggestIcon />}>
@@ -143,7 +169,7 @@ export const TopBarMarkup = () => {
           toggleIsSecondaryMenuOpen(3)
         }}
         onClose={() => {
-          toggleIsSecondaryMenuOpen(3)
+          toggleIsSecondaryMenuOpen(3)  
         }}
         actions={[
           {

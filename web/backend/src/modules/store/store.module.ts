@@ -8,7 +8,7 @@ import { ShopifyModule } from '../shopify/shopify.module';
 @Module({
   imports: [DatabaseModule, ShopifyModule],
   controllers: [StoreController],
-  providers: [ ...storeProviders,StoreService],
-  exports: [StoreService]
+  providers: [...storeProviders, StoreService],
+  exports: [StoreService],
 })
 export class StoreModule {}

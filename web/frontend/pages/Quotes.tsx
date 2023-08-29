@@ -50,7 +50,7 @@ export default function Quotes (): ReactElement | null {
   },)
   const [sort, setSort] = useState<Sort>({sortBy: 'created_by',type: 'DESC'})
   const debouncedSearchTerm = useDebounce(textSearch, 500)
-  const {state} = React.useContext(StoreContext)
+  const { state } = React.useContext(StoreContext)
   const toggleActive = useCallback(() => {
     setActive((active) => !active)
   }, [])
@@ -59,6 +59,7 @@ export default function Quotes (): ReactElement | null {
       <Toast content="Deleted Successfully" onDismiss={toggleActive}/>
       )
     : null
+
 
   const fetchData = useCallback(async (skip: number, text?: string, since?: Date, until?: Date, sort?: Sort):Promise<[Quote[], number]> => {
     try {
@@ -74,10 +75,10 @@ export default function Quotes (): ReactElement | null {
         created_at: moment(item.created_at).tz(state.store?.ianaTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone).format('ddd MMM DD YYYY').toString()
       }))
       const count = (temp.count !== undefined) ? temp.count : 0
-      return [quotes, count];
+      return [quotes, count]
     } catch (error) {
       console.error('Error fetching data:', error)
-      return [[], 0];
+      return [[], 0]
     }
   }, [])
 
@@ -86,7 +87,7 @@ export default function Quotes (): ReactElement | null {
   const handleSearch = useCallback((newValue: string) => {
     setSkip(0)
     setTextSearch(newValue)
-  }, []);
+  }, [])
 
   const handleChangeDateRange = useCallback((dateRange: DateRange) => {
     setRange({...dateRange})

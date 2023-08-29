@@ -10,13 +10,11 @@ export class ShopifyService {
   shopify: ShopifyApp;
 
   constructor(private readonly configService: ConfigService) {
-    // console.log("test", process.env);
     this.shopify = shopifyApp({
       api: {
         apiKey: this.configService.get('shopify.api_key'),
         apiSecretKey: this.configService.get('shopify.api_secret'),
         scopes: this.configService.get('shopify.scopes'),
-        // hostName: this.configService.get('app.host'),
         hostScheme: 'https',
         apiVersion: LATEST_API_VERSION,
         restResources,
@@ -30,10 +28,10 @@ export class ShopifyService {
       },
       sessionStorage: MySQLSessionStorage.withCredentials(
         'localhost',
-        process.env.DATABASE_NAME,
-        process.env.DATABASE_USER,
-        process.env.DATABASE_PASSWORD,
-        {connectionPoolLimit: 10}, // optional
+        'vify_database',
+        'vify_user',
+        'vify_password',
+        { connectionPoolLimit: 10 }, // optional
       ),
     });
   }

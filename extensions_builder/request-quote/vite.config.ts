@@ -13,15 +13,15 @@ export default defineConfig({
                     chunkFileNames: `[name].js`,
                     assetFileNames: `[name].[ext]`
                 },
-                // onwarn(warning, warn) {
-                //     if (
-                //         warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
-                //         warning.message.includes(`'use client'`)
-                //     ) {
-                //         return;
-                //     }
-                //     warn(warning);
-                // }
+                onwarn(warning, warn) {
+                    if (
+                        warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
+                        warning.message.includes(`'use client'`)
+                    ) {
+                        return;
+                    }
+                    warn(warning);
+                }
 
             },
             emptyOutDir: false
