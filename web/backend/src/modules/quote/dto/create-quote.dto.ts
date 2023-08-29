@@ -1,5 +1,7 @@
+import ProductInQuote from "src/types/ProductInQuote";
+
 export class CreateQuoteDto {
-    product: string;
+    product: ProductInQuote;
     name: string;
     email: string;
     message: string;

@@ -160,13 +160,13 @@ const Setting = (): ReactElement | null => {
     <Page>
       <SaveSetting fetchQuoteEntity={fetchQuoteEntity} />
       <Layout sectioned>
-        <div style={{ position: 'absolute', top: '0', left: '0.2' }}>
+        {/* <div style={{ position: 'absolute', top: '0', left: '0.2' }}> */}
           <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
             {selected === 0 && configSetting}
             {selected === 1 && formSetting}
             {selected === 2 && thanksSetting}
           </Tabs>
-        </div>
+        {/* </div> */}
       </Layout>
     </Page>
   )

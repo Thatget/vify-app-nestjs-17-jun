@@ -1,7 +1,20 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuoteDto } from './dto/create-quote.dto';
-import { Repository } from 'typeorm';
+import { Between, Brackets, LessThan, MoreThan, Repository } from 'typeorm';
 import { Quote } from './entities/quote.entity';
+
+interface Sort {
+  sortBy: string;
+  sortType: 'DESC'|'ASC'
+}
+
+interface searchOption {
+  textSearch?: string;
+  since?: Date;
+  until?: Date;
+}
+
+const sortAbleList = ['id', 'name', 'email', 'created_at', 'product', 'updated_at', 'status']
 
 @Injectable()
 export class QuoteService {
@@ -16,15 +29,6 @@ export class QuoteService {
 
   async findByStore(store_id: number) {
     return await this.quoteRepository.findBy({ store_id });
-  }
-
-  async findAll(store_id: number, skip: number, take: number) {
-    return await this.quoteRepository.findAndCount({
-      where: { store_id },
-      skip,
-      take,
-      order: { created_at: "DESC" }
-    });
   }
 
   findOne(id: number) {
@@ -57,17 +61,35 @@ export class QuoteService {
       .execute();
   }
 
-  async searchQuote(textSearch: string, store_id: number,  skip: number, take: number) {
-    return await this.quoteRepository
-      .createQueryBuilder()
-      .where(
+  async searchQuote(store_id: number,  skip: number, take: number, sort: Sort, options?: searchOption) {
+    const { textSearch, since, until } = options || {}
+    var orderBy = sortAbleList.includes(sort.sortBy) ? sort.sortBy : 'created_at'
+    var orderType: 'DESC'|'ASC' = sort.sortType === 'DESC' ? 'DESC' : 'ASC'
+    // in case not in sortable list
+    if (!sortAbleList.includes(sort.sortBy)) {
+      orderType = 'DESC'
+    }
+    // in case in order by product title
+    if (orderBy === 'product') orderBy = `JSON_UNQUOTE(JSON_EXTRACT(product, '$.selected_product.title'))`
+    const whereCondition:any = {}
+    if (since && until)  whereCondition.created_at = Between(since, until)
+    else if (since) whereCondition.created_at = MoreThan(since)
+    else if (until) whereCondition.created_at = LessThan(until)
+
+    const queryBuilder = this.quoteRepository.createQueryBuilder();
+    queryBuilder.where({ store_id });
+    // search by text search
+    if (textSearch) {
+      queryBuilder.andWhere(
         'name LIKE :textSearch OR email LIKE :textSearch OR MATCH(product) AGAINST(:textSearchProduct IN NATURAL LANGUAGE MODE)',
         { textSearch: `%${textSearch}%`,textSearchProduct: textSearch }
-        )
-      .andWhere({store_id})
+      );
+    }
+    return await queryBuilder
+      .andWhere( whereCondition )
       .offset(skip)
       .limit(take)
-      .orderBy("created_at", "DESC")
+      .orderBy(orderBy, orderType)
       .getManyAndCount()
   }
 }
