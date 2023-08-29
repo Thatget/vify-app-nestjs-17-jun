@@ -4,6 +4,7 @@ import FormRequest from "./components/FormRequest/Index.tsx";
 import Thankyou from "./components/ThankyouPage/Index.tsx";
 import { useEffect } from "react";
 import { useState, useCallback } from "react";
+import { Frame } from "@shopify/polaris";
 
 type quoteEntity = {
   name: string;
@@ -33,7 +34,7 @@ function Index() {
 
   useEffect(() => {
     const checkExist = document.querySelector(".product-form__input")
-    console.log('checkExist 1.1',checkExist);
+    console.log('checkExist 1.9',checkExist);
     
     if(checkExist !== null){
       document
@@ -52,16 +53,21 @@ function Index() {
 
   useEffect(() => {
     async function fetchQuote() {
+      console.log("effect fetchQuote");
+      
       const fetchQuoteSetting = await fetch("/apps/vify_rfq-f/quote_setting")
         .then((response) => response.json())
         .then((data: dataReturn) => {
           setSetting(data);
+          console.log("Data from Setting",data);
+          
           setDataSettings(data.settings);
           if (data.show === true) {
             const show_request_for_quote = showAndHide(data.settings);
             setCheck(true && show_request_for_quote);
           } else {
-            toggleApiProduct();
+            // setActiveApiProduct(true);
+            toggleApiProduct()
           }
         });
     }
@@ -72,29 +78,47 @@ function Index() {
     const selected_product = (window as any).vifyRequestFQ.lineItem;
     return await fetch(
       `/apps/vify_rfq-f/product_setting?product_id=${selected_product.id}`
-    ).then((response) => response.json());
+    ).then((response) => 
+    {
+    if(response !== undefined) {
+       return response.json()
+    }
+  })
   }, []);
 
   useEffect(() => {
+    console.log("effect Product");
+    
     const product = async () => {
       const product = await fetchProduct();
-      setVariantList(JSON.parse(product.variants));
+      if(product !==undefined) {
+        const variantList = JSON.parse(product.variants)
+      console.log("variant List",variantList);
+      setVariantList(variantList);
+      }
+      
     };
     if (activeApiProduct) product();
   }, [activeApiProduct]);
 
   useEffect(() => {
-    checkVariant = variantList.find(
-      (variant) => parseInt(variant.id) === selectedVariant.id
-    );
-    if (checkVariant !== undefined) {
-      const show_request_for_quote = showAndHide(dataSettings);
-      setCheck(true && show_request_for_quote);
-    } else {
-      resetSetting();
-      setCheck(false);
+    console.log("effect variant");
+    if(check === false ) {
+      checkVariant = variantList.find(
+        (variant) => parseInt(variant.id) === selectedVariant.id
+      );
+      console.log("checkVariant",checkVariant);
+      
+      if (checkVariant !== undefined) {
+        const show_request_for_quote = showAndHide(dataSettings);
+        setCheck(true && show_request_for_quote);
+      } else {
+        resetSetting();
+        setCheck(false);
+      }
     }
-  }, [variantList, selectedVariant]);
+    
+  }, [ selectedVariant]);
 
   const handleChangeModal = (modal: string) => {
     setModal(modal);
@@ -102,6 +126,7 @@ function Index() {
 
   return (
     <>
+    <Frame>
       {check && (
         <div>
           <Button
@@ -110,7 +135,7 @@ function Index() {
             sx={{ width: "100%" }}
             onClick={() => handleChangeModal("request")}
           >
-            Request For Quote 1.7 {check}
+            Request For Quote
           </Button>
           {modal === "request" && (
             <FormRequest
@@ -130,6 +155,7 @@ function Index() {
           )}
         </div>
       )}
+      </Frame>
     </>
   );
 }
@@ -137,6 +163,8 @@ function Index() {
 export default Index;
 
 function showAndHide(settings: quoteEntity[]): boolean {
+  console.log("Show and Hide function");
+  
 
   const hidepriceElement: HTMLElement =
     document.querySelector(".price--show-badge");
@@ -178,6 +206,13 @@ function showAndHide(settings: quoteEntity[]): boolean {
   const show_request_for_quote: quoteEntity = settings.find(
     (result) => result.name === "show_request_for_quote"
   );
+  console.log('hide_buy_now',hide_buy_now);
+  console.log('hide_add_to_cart',hide_add_to_cart);
+  console.log('hide_price',hide_price);
+  console.log('hideAddToCardElement',hideAddToCardElement);
+  console.log('hideBuyNowElement',hideBuyNowElement);
+  console.log('hidepriceElement',hidepriceElement);
+  
 
   if (show_request_for_quote !== undefined) {
     if (show_request_for_quote.value !== "1")
@@ -187,6 +222,8 @@ function showAndHide(settings: quoteEntity[]): boolean {
 }
 
 function resetSetting() {
+  console.log("Reset setting");
+  
   const hidepriceElement: HTMLElement =
     document.querySelector(".price--show-badge");
   hidepriceElement.style.display = "block";

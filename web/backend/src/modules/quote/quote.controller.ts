@@ -30,22 +30,23 @@ export class QuoteController {
     @Res() res: Response,
   ) {
     try {
-      var [quotes, count] = [[], 0]
+      let [quotes, count] = [[], 0];
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
       if (!textSearch) {
-        [quotes, count] = await this.quoteService.findAll(
+        [quotes, count] = await this.quoteService.findAll(store_id, skip, 5);
+      } else {
+        [quotes, count] = await this.quoteService.searchQuote(
+          textSearch,
           store_id,
           skip,
           5,
         );
-      } else {
-        [quotes, count] = await this.quoteService.searchQuote(textSearch, store_id, skip, 5)
       }
       return res.status(200).send({ quotes, count });
     } catch (error) {
-      logger.error(error.message)
+      logger.error(error.message);
       return res.status(500).json({ message: error.message });
     }
   }

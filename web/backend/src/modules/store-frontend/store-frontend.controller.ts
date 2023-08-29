@@ -79,7 +79,9 @@ export class StoreFrontendController {
     const settings: { name: string; value: string }[] = [];
     try {
       const shop = query.shop;
+      console.log('shop quote_setting api', shop);
       const store = await this.storeService.findByShopDomain(shop);
+      console.log('store quote_setting api', store);
       if (!store || !this.storeFrontendService.verifySignature(query)) {
         return res.status(401).json({ message: 'Failed to authenticate' });
       } else {
@@ -100,7 +102,11 @@ export class StoreFrontendController {
             case 'all_product':
               if (entityValue && entityValue === '0') {
                 show = false;
-              } else show = true;
+                console.log('show = false : case All product');
+              } else {
+                show = true;
+                console.log('how = true : case All product');
+              }
               break;
             default:
               settings.push({ name: entity, value: entityValue });

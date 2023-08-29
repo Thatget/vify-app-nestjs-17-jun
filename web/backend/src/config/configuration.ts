@@ -7,9 +7,9 @@ export default () => ({
     host: process.env.HOST || '',
   },
   database: {
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    host: process.env.DATABASE_HOST|| 'localhost',
+    user: 'vify_user',
+    password: 'vify_password',
+    host: 'vify_databse' || 'localhost',
     port: parseInt(process.env.DATABASE_PORT, 10) || 3306,
   },
   shopify: {

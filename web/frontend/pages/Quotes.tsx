@@ -20,9 +20,9 @@ export default function Quotes (): ReactElement | null {
   const [skip, setSkip] = React.useState<number>(0)
   const [count, setCount] = React.useState<number>(0)
   const [active, setActive] = useState(false)
-  const [textSearch, setTextSearch] = useState<string>('');
+  const [textSearch, setTextSearch] = useState<string>('')
   const debouncedSearchTerm = useDebounce(textSearch, 500)
-  const {state} = React.useContext(StoreContext)
+  const { state } = React.useContext(StoreContext)
   const toggleActive = useCallback(() => {
     setActive((active) => !active)
   }, [])
@@ -32,30 +32,30 @@ export default function Quotes (): ReactElement | null {
       )
     : null
 
-  const fetchData = useCallback(async (skip: number, text?: string):Promise<[Quote[], number]> => {
+  const fetchData = useCallback(async (skip: number, text?: string): Promise<[Quote[], number]> => {
     try {
-      const encodedSearchText = encodeURIComponent(text);
+      const encodedSearchText = encodeURIComponent(text)
       const response = await fetch(`/api/quote?skip=${skip}&textSearch=${encodedSearchText}`, { method: 'GET' })
-      const temp:QuoteData = await response.json()
-      const quotes:Quote[] = temp.quotes.map(item => ({
+      const temp: QuoteData = await response.json()
+      const quotes: Quote[] = temp.quotes.map(item => ({
         ...item,
-        created_at: formatInTimeZone(item.created_at, state.store?.ianaTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone, 'yyyy-MM-dd HH:mm:ss zzz')
+        created_at: formatInTimeZone(item.created_at, state.store?.ianaTimezone || Intl.DateTimeFormat().resolvedOptions().timeZone, 'yyyy-MM-dd HH:mm:ss zzz')
       }))
       const count = (temp.count !== undefined) ? temp.count : 0
-      return [quotes, count];
+      return [quotes, count]
     } catch (error) {
       console.error('Error fetching data:', error)
-      return [[], 0];
+      return [[], 0]
     }
   }, [])
 
   const handleSearch = useCallback((newValue: string) => {
     setSkip(0)
     setTextSearch(newValue)
-  }, []);
+  }, [])
 
   React.useEffect(() => {
-    const fetchQuote = async ():Promise<void> => {
+    const fetchQuote = async (): Promise<void> => {
       const [quotes, count] = await fetchData(skip, debouncedSearchTerm)
       setQuote(quotes)
       setCount(count)
@@ -91,7 +91,7 @@ export default function Quotes (): ReactElement | null {
               onChange={handleSearch}
               autoComplete="off"
             />
-          
+
             <QuoteTable quotes={quotes} removeQuote={removeQuote} setSkip={setSkip} skip={skip} count={count}
               isLoading={isLoading}/>
           </div>

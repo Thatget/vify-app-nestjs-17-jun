@@ -6,7 +6,6 @@ import { CreateProductDto } from './dto/create-product.dto';
 
 @Injectable()
 export class ProductService {
-
   constructor(
     @Inject('PRODUCT_REPOSITORY')
     private productRepository: Repository<Product>,
@@ -25,51 +24,57 @@ export class ProductService {
   }
 
   async findAll(store_id: number, skip: number, take: number) {
-    return await this.productRepository.findAndCount({ where: { store_id }, skip, take, });
+    return await this.productRepository.findAndCount({
+      where: { store_id },
+      skip,
+      take,
+    });
   }
 
-  async findByProductIds(productIds:string[]) {
+  async findByProductIds(productIds: string[]) {
     return await this.productRepository.findBy({ id: In(productIds) });
   }
 
   async findOne(id: string): Promise<boolean> {
     let found = false;
-    await this.productRepository
-      .findOne({ where: { id } })
-      .then((r) => {
-        if (r !== null) {
-          found = true;
-        }
-      });
+    await this.productRepository.findOne({ where: { id } }).then((r) => {
+      if (r !== null) {
+        found = true;
+      }
+    });
     return found;
   }
 
   async findByProductId(product_id: string) {
     const product = await this.productRepository.findOneBy({ id: product_id });
+    console.log('product',product);
     return product;
   }
   async selectedPiecked(store_id: number): Promise<Product[]> {
-    const products = await this.productRepository.createQueryBuilder('product')
+    const products = await this.productRepository
+      .createQueryBuilder('product')
       .select(['product.id', 'product.variants'])
       .where('product.store_id = :store_id', { store_id })
       .getMany();
-      return products;
+    return products;
   }
-      async findByStoreId(store_id: number) {
-        const products = await this.productRepository.findBy({store_id: store_id});
-        return products;
-    }
+  async findByStoreId(store_id: number) {
+    const products = await this.productRepository.findBy({
+      store_id: store_id,
+    });
+    return products;
+  }
 
-    async delete (id: number, store_id: number) {
-      await this.productRepository
+  async delete(id: number, store_id: number) {
+    await this.productRepository
       .createQueryBuilder()
       .delete()
       .from(Product)
-      .where('id = :id AND store_id = :store_id', { id, store_id }) 
+      .where('id = :id AND store_id = :store_id', { id, store_id })
       .execute();
-    }
+  }
 
-    async deleteMany (ids: number[], store_id: number) {
-      await this.productRepository.delete({id: In(ids), store_id});
-    }
+  async deleteMany(ids: number[], store_id: number) {
+    await this.productRepository.delete({ id: In(ids), store_id });
+  }
 }

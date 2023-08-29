@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
-import { Response } from 'express';
-import { StoreService } from './store.service';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { StoreDto } from './dto/store.dto';
+import { StoreService } from './store.service';
+import express, { Request, Response } from 'express';
 
 @Controller('/api/store')
 export class StoreController {
@@ -9,12 +9,12 @@ export class StoreController {
   @Get()
   async storeInfo(@Res() res: Response) {
     try {
-      const session = res.locals.shopify.session
-      const store = await this.storeService
-      .getShopInfo(session)
-      return res.status(200).send({data: store})
+      const session = res.locals.shopify.session;
+      const store = await this.storeService.getShopInfo(session);
+      console.log(' store', store);
+      return res.status(200).send({ data: store });
     } catch (error) {
-      return res.status(500).json()
+      return res.status(500).json();
     }
   }
   @Post()

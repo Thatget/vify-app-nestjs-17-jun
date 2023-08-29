@@ -1,17 +1,7 @@
-import {Box, Button, Card, CardMedia, Modal, Typography} from '@mui/material';
+import {  Typography} from '@mui/material';
 import {useEffect, useState} from "react";
+import {Modal} from '@shopify/polaris'
 // import React from 'react'
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 650,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 
 type Props = {
     isOpen: boolean;
@@ -32,9 +22,36 @@ const DefaultThankYou = ({isOpen, handleModal, form, dataSettings}: Props) => {
     const [thank_title, setThankTitle] = useState<quoteEntity>(initialValue)
     const [thank_content, setThankContent] = useState<quoteEntity>(initialValue)
     const [shopping_button, setShoppingButton] = useState<quoteEntity>(initialValue)
+
     useEffect(() => {
+      if(isOpen === true) {
+        const backdropElement: HTMLElement = document.querySelector(
+          ".Polaris-Backdrop"
+        );
+        backdropElement.style.display = 'block'
+        const bodyElement: HTMLElement = document.querySelector(
+          ".content-for-layout"
+        )
+        bodyElement.style.overflow = 'hidden'
+      } 
+    },[isOpen])
+  const resetCss =  () => {
+    console.log('Reset css')
+    const backdropElement: HTMLElement = document.querySelector(
+      ".Polaris-Backdrop"
+    );
+    backdropElement.style.display = 'none'
+    const bodyElement: HTMLElement = document.querySelector(
+      ".content-for-layout"
+    )
+    bodyElement.style.overflow = 'unset'
+  }
+  
+    useEffect(() => {
+      console.log("dataSettings",dataSettings);
+      
         dataSettings.map(setting => {
-            let temp: quoteEntity = {
+            const temp: quoteEntity = {
                 name: setting.name,
                 value: setting.value
             }
@@ -42,39 +59,29 @@ const DefaultThankYou = ({isOpen, handleModal, form, dataSettings}: Props) => {
             if (temp.name === "thank_content") setThankContent(temp)
             if (temp.name === "shopping_button") setShoppingButton(temp)
         })
-    }, [])
+    }, [dataSettings])
+
     const closeThankyou = () => {
         handleModal('');
+        resetCss()
     }
     return (
         <>
             <Modal
-                open={isOpen}
-                onClose={closeThankyou}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+          open={isOpen}
+          onClose={closeThankyou} 
+          title={thank_title.value || 'Thank you so much for choosing us'}
+          primaryAction={{
+            content: `${shopping_button.value || 'Continue Shopping'}`,
+            onAction: closeThankyou,
+          }}
             >
-                <Box sx={style}>
-                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.2}}>
-                        <Typography variant="h5" sx={{
-                            m: 1,
-                            fontWeight: 700
-                        }}>{thank_title.value || 'Thank you so much for choosing us'}</Typography>
-                    </Box>
-                    <Card sx={{display: 'flex', mr: 1, width: '100%', mb: 0.5}}>
-                        <CardMedia
-                            component="img"
-                            sx={{width: 200, m: 1}}
-                            image="https://png.pngtree.com/png-vector/20220903/ourmid/pngtree-thank-you-text-decorated-by-floral-ornaments-png-image_6136789.png"
-                            alt=""
-                        />
+              <Modal.Section>
                         <div style={{margin: 0.5}}>
                             <Typography variant="body1"
-                                        sx={{m: 1}}>{thank_content.value || 'Have a good day and continue shopping'}</Typography>
-                            <Button onClick={closeThankyou}>{shopping_button.value || 'Continue Shopping'}</Button>
+                                sx={{m: 1}}>{thank_content.value || 'Have a good day and continue shopping'}</Typography>
                         </div>
-                    </Card>
-                </Box>
+                    </Modal.Section>
             </Modal>
         </>
     )

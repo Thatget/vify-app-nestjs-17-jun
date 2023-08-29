@@ -1,4 +1,4 @@
-import { type ReactElement, useContext, useState, useCallback } from 'react'
+import React, { type ReactElement, useContext, useState, useCallback } from 'react'
 import { StoreContext, actions } from '../../store'
 import { useAuthenticatedFetch } from '../../hooks'
 import { Frame, ContextualSaveBar, Toast, Loading } from '@shopify/polaris'
@@ -244,7 +244,6 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
   return (
     <>
       { Boolean(state.currentSetting !== null) &&
-
         <ContextualSaveBar
           alignContentFlush
           message="Unsaved changes"

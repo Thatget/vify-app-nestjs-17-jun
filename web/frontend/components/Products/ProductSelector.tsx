@@ -6,16 +6,16 @@ import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 import AllProducts from './AllProducts'
 import SelectedProductsList from './SelectedProductsList'
-import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
 import { StoreContext, actions } from '../../store'
 import { defaultConfigSetting } from '../Setting/ConfigSetting'
+import { Divider } from '@shopify/polaris'
 
-export default function ProductSelector () {
+export default function ProductSelector (): React.ReactElement | null {
   const { state, dispatch } = React.useContext(StoreContext)
   const localConfigSetting = ({ ...defaultConfigSetting, ...state.setting, ...state.currentSetting })
 
-  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (event.target.value === 'AllProducts') {
       dispatch(actions.setNewSetting({ all_product: true }))
     } else {
@@ -31,7 +31,7 @@ export default function ProductSelector () {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          value={localConfigSetting.all_product ? 'AllProducts' : 'SelectProducts'}
+          value={localConfigSetting.all_product === true ? 'AllProducts' : 'SelectProducts'}
           onChange={handleRadioChange}
         >
           <FormControlLabel value="AllProducts" control={<Radio/>}
@@ -42,9 +42,8 @@ export default function ProductSelector () {
         </RadioGroup>
         <br/>
       </FormControl>
-      {!localConfigSetting.all_product && <Divider variant="middle" sx={{ bgcolor: '#1a237e', height: 0.2 }}/>}
       <br/>
-      {localConfigSetting.all_product ? <AllProducts/> : <SelectedProductsList/>}
+      {localConfigSetting.all_product === true ? <AllProducts/> : <SelectedProductsList/>}
     </>
   )
 }

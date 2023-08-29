@@ -8,6 +8,8 @@ import { type ReactElement, useEffect } from 'react'
 import ProductSelector from '../components/Products/ProductSelector'
 import { useAppQuery } from '../hooks'
 import type Product from '../types/Product'
+import React from 'react'
+import { AlphaCard, Layout, LegacyCard, Page } from '@shopify/polaris'
 
 export default function Products (): ReactElement | null {
   const {
@@ -39,13 +41,16 @@ export default function Products (): ReactElement | null {
 
   return (
     <>
-      <br />
+    <Page>
+      <Layout sectioned>
+        <AlphaCard>
+          <br/>
       <Container>
-        {/* <Box sx={{minWidth: 275}}> */}
         <Card>{selectProducts}</Card>
-        {/* </Box> */}
-        <br />
       </Container>
+      </AlphaCard>
+      </Layout>
+    </Page>
     </>
   )
 }

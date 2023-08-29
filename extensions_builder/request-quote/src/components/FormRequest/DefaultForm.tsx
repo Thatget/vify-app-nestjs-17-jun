@@ -1,72 +1,14 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {Box, Button, Card, CardMedia, IconButton, Modal, TextareaAutosize, TextField, Typography} from '@mui/material';
+import {Box, Card, CardMedia, TextareaAutosize, TextField, Typography} from '@mui/material';
 import {styled} from "@mui/system";
 import {useForm, useWatch} from "react-hook-form";
 import "../../css/style.css"
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import {CircleCancelMajor} from "@shopify/polaris-icons";
-import {Icon} from '@shopify/polaris'
-import CancelIcon from '@mui/icons-material/Cancel'
+import {Modal} from '@shopify/polaris'
+import ImageNotFound from '../../public/imageNotFound.png'
 
-//CSS
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 650,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-const blue = {
-  100: '#DAECFF',
-  200: '#b6daff',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  900: '#003A75',
-};
 
-const grey = {
-  50: '#f6f8fa',
-  100: '#eaeef2',
-  200: '#d0d7de',
-  300: '#afb8c1',
-  400: '#8c959f',
-  500: '#6e7781',
-  600: '#57606a',
-  700: '#424a53',
-  800: '#32383f',
-  900: '#24292f',
-};
-
-const StyledTextarea = styled(TextareaAutosize)(
-  ({theme}) => `
-    font-family: IBM Plex Sans, sans-serif;
-    font-size: 0.92rem;
-    font-weight: 400;
-    line-height: 1.5;
-    padding: 12px;
-    border-radius: 12px 12px 0 12px;
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
-    background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-    border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-    box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
-    &:hover {
-      border-color: ${blue[400]};
-    }
-    &:focus {
-      border-color: ${blue[400]};
-    }
-    // firefox
-    &:focus-visible {
-      outline: 0;
-    }
-  `,
-);
 type Props = {
   isOpen: boolean;
   handleModal: (modal: string) => void;
@@ -108,7 +50,7 @@ const initialLineItem: LineItem = {
   },
   description: 'Product description',
   title: 'Product Title',
-  images: '',
+  images: ImageNotFound,
 }
 
 type FormValues = {
@@ -145,11 +87,34 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
   const [formFormTitle, setFormTitle] = useState<quoteEntity>(initialValue)
   const [formHidePrice, setHidePrice] = useState<quoteEntity>(initialValue)
  
-  
+
   let variant_selected_id = (window as any).variant_selected_id
   const [variantSelectedId, setVariantSelectedId] = useState(variant_selected_id)
-  console.log('variant_selected_id',variant_selected_id);
   
+  useEffect(() => {
+    if(open === true) {
+      const backdropElement: HTMLElement = document.querySelector(
+        ".Polaris-Backdrop"
+      );
+      backdropElement.style.display = 'block'
+      const bodyElement: HTMLElement = document.querySelector(
+        ".content-for-layout"
+      )
+      bodyElement.style.overflow = 'hidden'
+    } 
+  },[open])
+const resetCss =  () => {
+  const backdropElement: HTMLElement = document.querySelector(
+    ".Polaris-Backdrop"
+  );
+  backdropElement.style.display = 'none'
+  const bodyElement: HTMLElement = document.querySelector(
+    ".content-for-layout"
+  )
+  bodyElement.style.overflow = 'unset'
+}
+
+
   useEffect(() => {
     setVariantSelectedId(variant_selected_id)
     console.log("variantSelectedId",variantSelectedId);
@@ -166,19 +131,15 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
   const email = useWatch({control, name: 'email'})
   const setFormData = (value: string, id: string) => {
     let field = formValue;
-    console.log("field", field)
     switch (id) {
       case 'name':
         field = {...field, name: value}
-        console.log("field", field)
         break;
       case 'email':
         field = {...field, email: value}
-        console.log("field", field)
         break;
       case 'message':
         field = {...field, message: value}
-        console.log("field", field)
         break;
       default:
         break;
@@ -187,7 +148,7 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
   }
   
   useEffect(() => {
-    console.log("version 1.9");
+    console.log("version 1.1");
     const product = (window as any).vifyRequestFQ.lineItem;
     product.variants.map((variant) => {
       if (variantSelectedId === variant.id) {
@@ -259,36 +220,39 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
       });
     
   }
+  
   const onSubmit = () => {
     sendQuote()
-    
   }
   
   return (
     <React.Fragment>
       <Modal
         open={open}
-        onClose={handleSubmit(onSubmit, (errors) => {
-          console.log(errors);
-        })}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <form style={{width: '100%'}}
-                onSubmit={handleSubmit(onSubmit, (errors) => {
-                  console.log(errors);
-                })}
-          >
-            <Box sx={{height: '50%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mb: 1.2}}>
-              <IconButton aria-label="cancel" color="inherit" onClick={() => handleModal('')}>
-                <CancelIcon/>
-              </IconButton>
-              <Icon source={CircleCancelMajor} color="critical"/>
-            </Box>
-            <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.2}}>
-              <Typography variant="h5" sx={{m: 1, fontWeight: 700}}>{formFormTitle.value}</Typography>
-            </Box>
+        onClose= {() => 
+          {
+            handleModal('')
+            resetCss()
+        }
+        }
+        title={(formFormTitle.value !== '')? formFormTitle.value : 'Request For Quotes'}
+        primaryAction={{
+          content: 'Submit',
+          onAction: handleSubmit(onSubmit, (errors) => {
+            console.log(errors);
+          })
+        }}
+        secondaryActions={[
+          {
+            content: 'Close',
+            onAction: () => {
+              handleModal('')
+              resetCss()
+          }
+        }
+        ]}
+        >
+          <Modal.Section>
             <Card sx={{display: 'flex', mr: 1, width: '100%', mb: 0.5}}>
               <CardMedia
                 component="img"
@@ -349,24 +313,17 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
               alignItems: 'center'
             }}>
               <Typography variant="body1">{formMessage.value || "Your Message: "}</Typography>
-              <StyledTextarea
+              {/* <StyledTextarea
                 aria-label="minimum height"
                 minRows={5}
                 placeholder={formMessagePlaceholder.value || 'Write Your Message here'}
                 // value={formValue.message}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setFormData(e.target.value, "message")}
                 sx={{width: '49ch', mr: 0, ml: 'auto'}}
-              />
+              /> */}
             </Box>
-            <Button variant="contained" type="submit"
-                    sx={{mr: 1, mb: 0, mt: 0.5, width: '100%', height: 40}}
-                    onClick={handleSubmit(onSubmit, (errors) => {
-                      console.log(errors);
-                    })}>
-              <Typography variant="body2">Submit</Typography>
-            </Button>
-          </form>
-        </Box>
+
+        </Modal.Section>
       </Modal>
     </React.Fragment>
   )

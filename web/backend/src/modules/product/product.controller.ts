@@ -24,21 +24,25 @@ export class ProductController {
     private readonly storeService: StoreService,
   ) {}
 
-    @Get()
-    async getAllProducts(
-      @Query('page') page: number,
-        @Req() req: Request,
-        @Res() res: Response,
-    ) {
-      try {
-        const { shop } = res.locals.shopify.session;
-        const foundStore = await this.storeService.findByShopDomain(shop);
-          const [products, count] = await this.productService.findAll(foundStore.id, page*10, 10);
-          return res.status(200).send({products, count});
-      } catch (e) {
-        return res.status(500).send({message: 'Failed when get products'});
-      }
+  @Get()
+  async getAllProducts(
+    @Query('page') page: number,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    try {
+      const { shop } = res.locals.shopify.session;
+      const foundStore = await this.storeService.findByShopDomain(shop);
+      const [products, count] = await this.productService.findAll(
+        foundStore.id,
+        page * 10,
+        10,
+      );
+      return res.status(200).send({ products, count });
+    } catch (e) {
+      return res.status(500).send({ message: 'Failed when get products' });
     }
+  }
 
   @Get('/select')
   async storeProduct(@Query() query, @Res() res: Response) {
@@ -51,7 +55,7 @@ export class ProductController {
       // const productPage = await fetchProducts(session, title, reverse);
       const productPage = {
         productList: [],
-        pageInfo: {}
+        pageInfo: {},
       };
       const shopProducts = productPage.productList;
       const pageInfo = productPage.pageInfo;
@@ -155,6 +159,7 @@ export class ProductController {
   @Post('/delete')
   async delete(@Body() ids: number[], @Res() res: Response) {
     try {
+      console.log(typeof ids[0]);
       const shopDomain = res.locals.shopify.session.shop;
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       if (foundStore) {

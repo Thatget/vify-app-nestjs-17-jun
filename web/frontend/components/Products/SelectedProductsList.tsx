@@ -5,14 +5,13 @@ import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
 import { useAuthenticatedFetch } from '../../hooks'
 import Typography from '@mui/material/Typography'
 import type Product from '../../types/Product'
-import Resource_Picker from './Resource_Picker'
-import { Button, ButtonGroup, Pagination, Spinner } from '@shopify/polaris'
+import { Button, ButtonGroup, Pagination, Spinner, Divider } from '@shopify/polaris'
+import ResourcePicker from './ResourcePicker'
 // import { useAuthenticatedFetch } from '@shopify/app-bridge-react'
 interface responseProduct {
   products: object[]
@@ -77,7 +76,8 @@ export default function SelectedProductsList (): React.ReactElement | null {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ width: '100%' }}>
         {/* <ProductPicker /> */}
-        <Resource_Picker handleUpdateProduct={getSelectedProducts}/>
+        {/* <Divider /> */}
+        <ResourcePicker handleUpdateProduct={getSelectedProducts}/>
       </Box>
       <Box sx={{ width: '100%' }}>
         {isLoading
@@ -114,7 +114,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
             })}
           </List>
         }
-        <Divider variant="middle" sx={{ bgcolor: '#1a237e', height: 2 }}/>
+        <Divider />
         <br/>
         <Box
           display="flex"

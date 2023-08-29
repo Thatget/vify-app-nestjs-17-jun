@@ -20,4 +20,4 @@ const FormRequest = ({form, isOpen, handleModal, dataSettings}: Props) => {
     }
 }
 
-export default FormRequest
+export default FormRequest  

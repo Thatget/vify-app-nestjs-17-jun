@@ -4,13 +4,13 @@ export enum WEBHOOK_TOPIC {
 
 export enum WebhookSubscriptionFormat {
   JSON = 'JSON',
-  XML = 'XML'
+  XML = 'XML',
 }
 
 export type WebhookSubscriptionInput = {
-  callbackUrl?: string,
-  format?: WebhookSubscriptionFormat,
-  includeFields?: string[],
-  metafieldNamespaces?: string[],
-  privateMetafieldNamespaces?: string[]
-}
+  callbackUrl?: string;
+  format?: WebhookSubscriptionFormat;
+  includeFields?: string[];
+  metafieldNamespaces?: string[];
+  privateMetafieldNamespaces?: string[];
+};
