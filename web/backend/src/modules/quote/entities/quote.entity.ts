@@ -1,3 +1,4 @@
+import ProductInQuote from 'src/types/ProductInQuote';
 import {Store} from '../../store/entities/store.entity';
 import {
     Entity,
@@ -22,7 +23,7 @@ export class Quote {
   message: string;
   @Index({ fulltext: true })
   @Column('json', {nullable: false})
-  product: string;
+  product: ProductInQuote;
   @Column('tinyint', {default: 0})
   status: number;
   @CreateDateColumn({type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)"})

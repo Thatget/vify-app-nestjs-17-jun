@@ -5,7 +5,6 @@ import {
   Divider,
   Grid,
   HorizontalStack,
-  AlphaCard,
   LegacyStack,
   Modal,
   Pagination,
@@ -14,12 +13,14 @@ import {
   type TableData,
   Toast,
   Badge,
-  VerticalStack
+  VerticalStack,
+  Thumbnail
 } from '@shopify/polaris'
 import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
 import defaultImg from '../../assets/default.jpg'
 import Quote from 'types/Quote'
+import { Sort } from 'pages/Quotes'
 
 interface IPropQuoteTable {
   quotes: Quote[]
@@ -28,6 +29,7 @@ interface IPropQuoteTable {
   count: number
   skip: number
   isLoading: boolean
+  handleSortBy: (sort: Sort)=> void;
 }
 
 interface IButtonHolderProps {
@@ -47,6 +49,14 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   const [propModal, setPropModal] = useState<Quote>(props.quotes[0])
   const [quotesTables, setQuoteTables] = useState<Quote[]>(props.quotes)
   const [rows, setRows] = React.useState<TableData[][]>([])
+  const handleSort = useCallback(
+    (index: number, direction: 'ascending' | 'descending') => {
+      const sortBy = ['id','name','email', 'created_time', 'product','message', 'status'][index];
+      const type = direction === 'ascending' ? 'DESC' : 'ASC';
+      const sort: Sort = { sortBy, type }
+      if (direction)
+      props.handleSortBy(sort)
+    }, []);
   let activator: JSX.Element
   let countIndex: number
   React.useEffect(() => {
@@ -61,13 +71,10 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   }, [])
   const deleteQuoteModal = useCallback((quote: Quote, status: number) => {
     setActive((active) => !active)
-    console.log('active', active)
     setPropModal(quote)
-    console.log('propsModal', quote)
     setStatus(status)
   }, [])
   const toggleActive = useCallback(() => {
-    console.log('toggleActive')
     setToastActive((active) => !active)
   }, [])
   const toastMarkup = toastActive
@@ -76,7 +83,6 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       )
     : null
   const copyToClipboard = (value: string): void => {
-    console.log('CopyToClipBoard')
     void navigator.clipboard.writeText(value)
   }
   const Buttonholder: React.FC<IButtonHolderProps> = (props) => {
@@ -115,27 +121,23 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
     )
   }
   useEffect(() => {
-    const temp: string[][] = []
+    const temp: JSX.Element[][] = []
     countIndex = index
     quotesTables.map((quote: Quote) => {
-      const tempColumn: string[] = []
-      tempColumn[0] = countIndex.toString()
-      tempColumn[1] = truncateRowValue(quote.name)
-      tempColumn[2] = truncateRowValue(quote.email)
-      tempColumn[3] = truncateRowValue(quote.created_at.toString())
+      const tempColumn: JSX.Element[] = []
+      tempColumn[0] = <>{countIndex.toString()}</>
+      tempColumn[1] = <>{truncateRowValue(quote.name)}</>
+      tempColumn[2] = <>{quote.email}</>
+      tempColumn[3] = <>{quote.created_at}</>
       tempColumn[4] = (
         <div style={{}}>
-          <img
-            src={(quote.product.selected_product !== undefined) ? quote.product.selected_product.image  : defaultImg}
-            alt=""
-            width="40%"
-            height="40%"
-            style={{ borderRadius: '50%' }}
-          />
+          <Thumbnail
+            source={(quote.product.selected_product !== undefined) ? quote.product.selected_product.image : defaultImg}
+            alt={quote.product.selected_product ? quote.product.selected_product.title : ''} />
           <p> {truncateRowValue(quote.product.selected_product ? quote.product.selected_product.title : '')} </p>
         </div>
       )
-      tempColumn[5] = truncateRowValue(quote.message)
+      tempColumn[5] = <>{truncateRowValue(quote.message)}</>
       if (propModal !== undefined) {
         if (propModal.id === quote.id) {
           quote.status = 1
@@ -186,57 +188,39 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   const label = <>{props.skip/5 + 1}/{Math.ceil(props.count/5)}</>
   return (
     <>
-      {/* <AlphaCard> */}
-        {/* <div style={{ padding: '10px', zIndex: '-1' }}> */}
-          <DataTable
-            columnContentTypes={[
-              'text',
-              'text',
-              'text',
-              'text',
-              'text',
-              'text',
-              'text',
-              'text'
-            ]}
-            headings={[
-              'No',
-              'Name',
-              'Email',
-              'Time',
-              <div>Product</div>,
-              'Message',
-              'Status',
-              'Action'
-            ]}
-            rows={rows}
-            footerContent={`Showing ${rows.length} of ${rows.length} results`}
+      <DataTable
+        columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']}
+        headings={['No', 'Name', 'Email', 'Time', 'Product', 'Message', 'Status', 'Action']}
+        rows={rows}
+        footerContent={`Showing ${rows.length} of ${rows.length} results`}
+        sortable={[false, true, true, true, true, false, true, false]}
+        defaultSortDirection="descending"
+        initialSortColumnIndex={3}
+        onSort={handleSort}
+      />
+      <Box padding="4">
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: 2
+          }}
+        >
+          <Pagination
+            label={label}
+            hasPrevious={props.skip !== 0}
+            onPrevious={() => {
+              props.setSkip((preSkip) => preSkip - 5)
+              setIndex((prevState) => prevState - 5)
+            }}
+            hasNext={props.skip + 5 < props.count}
+            onNext={() => {
+              props.setSkip((prevState) => prevState + 5)
+              setIndex((prevState) => prevState + 5)
+            }}
           />
-          <Box padding="4">
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: 2
-              }}
-            >
-              <Pagination
-                label={label}
-                hasPrevious={props.skip !== 0}
-                onPrevious={() => {
-                  props.setSkip((preSkip) => preSkip - 5)
-                  setIndex((prevState) => prevState - 5)
-                }}
-                hasNext={props.skip + 5 < props.count}
-                onNext={() => {
-                  props.setSkip((prevState) => prevState + 5)
-                  setIndex((prevState) => prevState + 5)
-                }}
-              />
-            </div>
-          </Box>
-        {/* </div> */}
-      {/* </AlphaCard> */}
+        </div>
+      </Box>
       {toastMarkup}
       {Boolean(propModal !== undefined) && (
         <div style={{ height: '500px' }}>
@@ -398,9 +382,9 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
 }
 export default QuoteTable
 
-function truncateRowValue (quoteColumn: string): string {
+function truncateRowValue (quoteColumn: string, count = 8): string {
   let temp: string
   temp = quoteColumn.slice(0, 11)
-  temp = temp.length > 8 ? temp.concat('...') : temp
+  temp = temp.length > count ? temp.concat('...') : temp
   return temp
 }

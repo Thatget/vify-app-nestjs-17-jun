@@ -1,7 +1,8 @@
 import React, { type ReactElement, useContext, useState, useCallback } from 'react'
 import { StoreContext, actions } from '../../store'
 import { useAuthenticatedFetch } from '../../hooks'
-import { Frame, ContextualSaveBar, Toast, Loading } from '@shopify/polaris'
+import { ContextualSaveBar, Toast, Loading } from '@shopify/polaris'
+import { set } from 'lodash'
 
 interface SaveSettingProps {
   fetchQuoteEntity: () => Promise<void>
@@ -54,7 +55,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
       value: setting !== undefined ? setting.email_placeholder : ''
     }
     let defaultMessage = {
-      name: 'message',
+      name: 'message_title',
       value: setting !== undefined ? setting.message_title : ''
     }
     let defaultMessagePlaceholder = {
@@ -183,6 +184,9 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
             }
             break
           default:
+            if(currentSetting[key] !== setting[key]){
+              dataPost.push({ name: key, value: currentSetting !== undefined ? currentSetting[key] : (setting !== undefined ? setting[key] : '') })
+            }
             break
         }
       })
