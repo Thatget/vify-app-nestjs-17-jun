@@ -74,7 +74,7 @@ export default function GettingStarted (): ReactElement | null {
   )
 
   return (
-    <Page>
+    <Page fullWidth>
       <Layout sectioned>
         <LegacyCard>{selectProducts}</LegacyCard>
         <br/>

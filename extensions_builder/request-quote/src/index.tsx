@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import FormRequest from "./components/FormRequest/Index.tsx";
 import Thankyou from "./components/ThankyouPage/Index.tsx";
 import { useEffect } from "react";
@@ -25,8 +25,37 @@ function Index() {
   const variant_selected = (window as any).variant_selected;
   const [selectedVariant, setSelectedVariant] = useState(variant_selected);
   const [variantList, setVariantList] = useState([]);
+  const [checkVariant,setCheckVariant] = useState(variant_selected)
   let foundVariant = variant_selected;
-  let checkVariant: any;
+  // let checkVariant = foundVariant;
+  // Css for Button
+  const font_color = (window as any).font_color
+  const background_color = (window as any).background_color
+  const border_color = (window as any).border_color
+  const border_width = (window as any).border_width 
+  const border_radius = (window as any).border_radius
+  const button_padding = (window as any).button_padding
+  const margin_top = (window as any).margin_top
+  const button_content = (window as any).button_content
+  const text_align = (window as any).text_align
+  const font_size = (window as any).font_size
+  const button_height = (window as any).button_height
+  const button_width = (window as any).button_width
+  const is_SetButtonWidth = (window as any).is_SetButtonWidth
+  
+  const buttonStyle = {
+    color: font_color,
+    backgroundColor: background_color,
+    fontSize: font_size,
+    textAlign: text_align,
+    marginTop: margin_top,
+    borderColor: border_color,
+    borderRadius: border_radius,
+    borderWidth: border_width,
+    padding: button_padding,
+    width: button_width,
+    height: button_height
+  }
 
   const toggleApiProduct = useCallback(() => {
     setActiveApiProduct((activeApiProduct) => !activeApiProduct);
@@ -34,7 +63,7 @@ function Index() {
 
   useEffect(() => {
     const checkExist = document.querySelector(".product-form__input")
-    console.log('checkExist 1.9',checkExist);
+    console.log('checkExist 1.7',checkExist);
     
     if(checkExist !== null){
       document
@@ -104,10 +133,11 @@ function Index() {
   useEffect(() => {
     console.log("effect variant");
     if(check === false ) {
-      checkVariant = variantList.find(
+      let tempVariant = variantList.find(
         (variant) => parseInt(variant.id) === selectedVariant.id
       );
-      console.log("checkVariant",checkVariant);
+      setCheckVariant(tempVariant)
+      console.log("checkVariant",tempVariant);
       
       if (checkVariant !== undefined) {
         const show_request_for_quote = showAndHide(dataSettings);
@@ -117,8 +147,7 @@ function Index() {
         setCheck(false);
       }
     }
-    
-  }, [ selectedVariant]);
+  }, [ selectedVariant,checkVariant]);
 
   const handleChangeModal = (modal: string) => {
     setModal(modal);
@@ -128,15 +157,18 @@ function Index() {
     <>
     <Frame>
       {check && (
-        <div>
-          <Button
-            style={{ backgroundColor: "#212121" }}
+        <div style={{ justifyContent: "center", display: 'flex'}}>
+          <button style={buttonStyle} onClick={() => handleChangeModal("request")}>
+          {button_content}
+          </button>
+          {/* <Button
+            style={{ backgroundColor: `${background_color}` ,border: `${border_width}`}}
             variant="contained"
             sx={{ width: "100%" }}
             onClick={() => handleChangeModal("request")}
           >
-            Request For Quote
-          </Button>
+            <Typography variant={font_size} >Request For Quote </Typography>
+          </Button> */}
           {modal === "request" && (
             <FormRequest
               isOpen={modal === "request"}
@@ -164,8 +196,6 @@ export default Index;
 
 function showAndHide(settings: quoteEntity[]): boolean {
   console.log("Show and Hide function");
-  
-
   const hidepriceElement: HTMLElement =
     document.querySelector(".price--show-badge");
   const hide_price: quoteEntity = settings.find(

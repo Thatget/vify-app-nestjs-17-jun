@@ -24,8 +24,12 @@ export class ProductService {
   }
 
   async findAll(store_id: number, skip: number, take: number) {
+    console.log('Come to find');
+
     return await this.productRepository.findAndCount({
-      where: { store_id },
+      where: {
+        store_id,
+      },
       skip,
       take,
     });
@@ -47,7 +51,7 @@ export class ProductService {
 
   async findByProductId(product_id: string) {
     const product = await this.productRepository.findOneBy({ id: product_id });
-    console.log('product',product);
+    console.log('product', product);
     return product;
   }
   async selectedPiecked(store_id: number): Promise<Product[]> {

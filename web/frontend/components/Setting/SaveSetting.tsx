@@ -2,7 +2,6 @@ import React, { type ReactElement, useContext, useState, useCallback } from 'rea
 import { StoreContext, actions } from '../../store'
 import { useAuthenticatedFetch } from '../../hooks'
 import { ContextualSaveBar, Toast, Loading } from '@shopify/polaris'
-import { set } from 'lodash'
 
 interface SaveSettingProps {
   fetchQuoteEntity: () => Promise<void>
@@ -12,14 +11,26 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
   const { state, dispatch } = useContext(StoreContext)
   const setting = state.setting
   const currentSetting = state.currentSetting
+  // console.log('localConfigSetting- save',localConfigSetting)
+  console.log('state.setting - save', state.setting)
+  console.log('state.currentSetting-save', state.currentSetting)
   const [isLoading, setIsLoading] = useState(false)
   const [active, setActive] = useState(false)
+  const [activeToastUnchanged, setActiveToastUnchanged] = useState(false)
   const toggleActive = useCallback(() => {
     setActive((active) => !active)
+  }, [])
+  const toggleActiveToastUnchanged = useCallback(() => {
+    setActiveToastUnchanged((activeToastUnchanged) => !activeToastUnchanged)
   }, [])
   const toastMarkup = active
     ? (
       <Toast content="Save Successfully" onDismiss={toggleActive}/>
+      )
+    : null
+  const unsavedMarkup = activeToastUnchanged
+    ? (
+      <Toast content="Discarded Changes" onDismiss={toggleActiveToastUnchanged}/>
       )
     : null
   const loadingMarkup = isLoading
@@ -48,6 +59,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
     let changeShoppingButton = false
     let changeFormTitle = false
     let changeAddToCart = false
+    let changeAllProducts = false
     let defaultName = { name: 'name', value: setting !== undefined ? setting.name : '' }
     let defaultEmail = { name: 'email', value: setting !== undefined ? setting.email_title : '' }
     let defaultEmailPlaceholder = {
@@ -90,6 +102,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
       value: setting !== undefined ? setting.shopping_button : ''
     }
     let defaultAddToCart = { name: 'hide_add_to_cart', value: setting !== undefined ? setting.hide_add_to_cart : '' }
+    let defaultAllProducts = { name: 'all_product', value: setting !== undefined ? setting.all_product : '' }
     if (currentSetting !== undefined) {
       Object.entries(currentSetting).forEach(([key, value]) => {
         switch (key) {
@@ -131,6 +144,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
             }
             break
           case 'hide_price':
+            console.log('case hide price')
             if (value !== setting?.hide_price) {
               defaultHidePrice = { ...defaultHidePrice, value }
               changedHidePrice = true
@@ -167,8 +181,10 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
             }
             break
           case 'all_product':
+            console.log('case of All_product', value)
             if (value !== setting?.all_product) {
-              dataPost.push({ name: 'all_product', value })
+              defaultAllProducts = { ...defaultAllProducts, value }
+              changeAllProducts = true
             }
             break
           case 'form_title':
@@ -184,7 +200,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
             }
             break
           default:
-            if(currentSetting[key] !== setting[key]){
+            if (currentSetting[key] !== setting[key]) {
               dataPost.push({ name: key, value: currentSetting !== undefined ? currentSetting[key] : (setting !== undefined ? setting[key] : '') })
             }
             break
@@ -232,6 +248,10 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
       if (changeAddToCart) {
         dataPost.push(defaultAddToCart)
       }
+      if (changeAllProducts) {
+        console.log('all product has changed')
+        dataPost.push(defaultAllProducts)
+      }
       await fetch('/api/quote-entity', {
         method: 'POST',
         headers: {
@@ -250,7 +270,7 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
       { Boolean(state.currentSetting !== null) &&
         <ContextualSaveBar
           alignContentFlush
-          message="Unsaved changes"
+          message="Save changes"
           saveAction={
             {
               onAction: () => {
@@ -263,11 +283,13 @@ const SaveSetting = ({ fetchQuoteEntity }: SaveSettingProps): ReactElement | nul
           discardAction={{
             onAction: () => {
               unchangeSetting()
+              toggleActiveToastUnchanged()
             }
           }}
         />}
       {toastMarkup}
         {loadingMarkup}
+        {unsavedMarkup}
     </>
   )
 }

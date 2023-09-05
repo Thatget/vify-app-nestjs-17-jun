@@ -17,7 +17,7 @@ import { logger } from '../helpers/logger.helper';
 
 interface Sort {
   sortBy: string;
-  sortType: 'DESC'|'ASC'
+  sortType: 'DESC' | 'ASC';
 }
 
 interface searchOption {
@@ -40,7 +40,7 @@ export class QuoteController {
     @Query('since') since: string,
     @Query('until') until: string,
     @Query('sortBy') sortBy: string,
-    @Query('sortType') sortType: 'DESC'| 'ASC',
+    @Query('sortType') sortType: 'DESC' | 'ASC',
     @Req() req: Request,
     @Res() res: Response,
   ) {
@@ -50,19 +50,23 @@ export class QuoteController {
       const foundStore = await this.storeService.findByShopDomain(shopDomain);
       const store_id = foundStore.id;
 
-      const sort: Sort = {sortBy, sortType}
-      const options:searchOption = {}
+      const sort: Sort = { sortBy, sortType };
+      const options: searchOption = {};
       if (since) options.since = new Date(since);
       if (until) {
         const endDate = new Date(until);
-        endDate.setHours(endDate.getHours() + 24)
-        options.until = endDate
-
+        endDate.setHours(endDate.getHours() + 24);
+        options.until = endDate;
       }
       if (textSearch) options.textSearch = textSearch;
-      [quotes, count] = await this.quoteService
-          .searchQuote(store_id, skip, 5, sort, options )
-  
+      [quotes, count] = await this.quoteService.searchQuote(
+        store_id,
+        skip,
+        5,
+        sort,
+        options,
+      );
+
       return res.status(200).send({ quotes, count });
     } catch (error) {
       logger.error(error.message);

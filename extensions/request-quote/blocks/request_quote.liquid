@@ -6,7 +6,38 @@
   vifyRequestFQ.lineItem = {{ product | json }};
   var variant_selected_id
   variant_selected_id = {{ current_variant.id }}
+
+
 </script>
+<script>
+{%  assign fontColor = block.settings.font_color %}
+{%  assign backgroundColor = block.settings.background_color %}
+{%  assign borderColor = block.settings.border_color %}
+{%  assign borderWidth = block.settings.border_width %}
+{%  assign borderRadius = block.settings.border_radius %}
+{%  assign padding = block.settings.padding %}
+{%  assign marginTop = block.settings.margin_top %}
+{%  assign buttonContent = block.settings.button_content %}
+{%  assign textAlign = block.settings.text_align %}
+{%  assign fontSize = block.settings.font_size %}
+{%  assign buttonHeight = block.settings.button_height %}
+{%  assign buttonWidth = block.settings.button_width %}
+{%  assign isSetButtonWidth = block.settings.customize_button_width %}
+var font_color = {{ fontColor | json }}
+var background_color = {{ backgroundColor | json }}
+var border_color = {{ borderColor | json }}
+var border_width = {{ borderWidth | json }}
+var border_radius = {{ borderRadius | json }}
+var margin_top = {{ marginTop | json }}
+var button_content = {{ buttonContent | json }}
+var text_align = {{ textAlign | json }}
+var font_size = {{ fontSize | json }}
+var button_height = {{ buttonHeight | json }}
+var button_width = {{ buttonWidth | json }}
+var is_SetButtonWidth = {{ isSetButtonWidth | json }}
+var button_padding = {{ padding | json }}
+
+</script> 
 <style>
   .price--show-badge {
     display: none;
@@ -18,13 +49,107 @@
     display: none;
   }
 </style>
-<div id="vify_rfq-f">version 1.0</div>
+<div id="vify_rfq-f">version 1.1</div>
+
 {% schema %}
   {
-    "name": "Vify Quote",
+    "name": "Vify Easy Quote",
     "target": "section",
+    "class":"vifyquote",
     "stylesheet": "index.css",
     "javascript": "index.js",
-    "settings": []
+    "enabled_on": {
+      "templates": ["product"]
+    },
+    "settings": [
+      { "label": "Button font color", "id": "font_color", "type": "color", "default": "#FFFFFF" },
+      { "label": "Button background color", "id": "background_color", "type": "color", "default": "#000000" },
+      { "label": "Button border color", "id": "border_color", "type": "color", "default": "#000000" },
+{
+  "type": "number",
+  "id": "border_width",
+  "label": "Button border width",
+  "default": 2
+},
+{
+  "type": "range",
+  "id": "border_radius",
+  "min": 2,
+  "max": 20,
+  "step": 1,
+  "unit": "px",
+  "label": "Border radius",
+  "default": 5
+},
+{
+  "type": "range",
+  "id": "padding",
+  "min": 1,
+  "max": 20,
+  "step": 1,
+  "unit": "px",
+  "label": "Padding",
+  "default": 3
+},
+{
+  "type": "range",
+  "id": "font_size",
+  "min": 1,
+  "max": 35,
+  "step": 1,
+  "unit": "px",
+  "label": "Font Size",
+  "default": 10
+},
+{
+  "type": "number",
+  "id": "button_width",
+  "label": "Button Width",
+  "default": 200
+},
+{
+  "type": "number",
+  "id": "button_height",
+  "label": "Button Height",
+  "default": 44
+},
+{
+  "type": "number",
+  "id": "margin_top",
+  "label": "Button Margin Top",
+  "default": 10
+},
+{
+  "type": "text",
+  "id": "button_content",
+  "label": "Button Content",
+  "default": "Request for Quote"
+},
+{
+  "type": "select",
+  "id": "text_align",
+  "label": "Text Align",
+  "options": [
+    {
+      "value": "Left",
+      "label": "Left"
+    },
+    {
+      "value": "Center",
+      "label": "Center"
+    }, {
+      "value": "Right",
+      "label": "Right"
+    }
+  ]
+},
+{
+  "type": "checkbox",
+  "id": "customize_button_width",
+  "label": "Customize Button Width",
+  "default": false
+}
+
+    ]
   }
 {% endschema %}
