@@ -112,6 +112,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
   }
 
   const label = <>{page + 1}/{Math.ceil(count / 10)}</>
+  
   return (
     <>
     <Box sx={{ width: '100%' }}>
