@@ -22,9 +22,19 @@ export class ProductService {
   async insert(product: CreateProductDto): Promise<InsertResult> {
     return await this.productRepository.insert(product);
   }
+  async upsert(product: CreateProductDto[]) {
+    return await this.productRepository.upsert(product, [
+      'id',
+      'title',
+      'productDescription',
+      'imageURL',
+      'variants',
+      'store_id',
+    ]);
+  }
 
   async findAll(store_id: number, skip: number, take: number) {
-    console.log('Come to find');
+    // console.log('Come to find');
 
     return await this.productRepository.findAndCount({
       where: {

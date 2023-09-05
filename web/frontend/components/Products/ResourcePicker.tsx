@@ -7,6 +7,7 @@ import type Product from 'types/Product'
 import { Button, ContextualSaveBar, Loading, Toast, Text, ButtonGroup } from '@shopify/polaris'
 import { ResourcePicker } from '@shopify/app-bridge-react'
 import { type SelectPayload } from '@shopify/app-bridge/actions/ResourcePicker'
+import type ProductWithVariantArray from 'types/ProductWithVariantArray'
 
 interface ResourcePickerProp {
   handleUpdateProduct: () => Promise<void>
@@ -25,26 +26,6 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
   const [active, setActive] = useState(false)
   const [activeToast, setActiveToast] = useState(false)
   const [activeToastUnchanged, setActiveToastUnchanged] = useState(false)
-  // useEffect(() => {
-  //   console.log('Effect test')
-  //   setShow(show => {
-  //     props.showVariants(!show)
-  //     console.log('set Show again?')
-  //     return !show
-  //   })
-  // let temp: boolean
-  // setShow(show => {
-  //   temp = show
-  //   console.log('set Show again?')
-  //   return !show
-  // })
-  // props.showVariants(temp)
-  //   setShow(show => !show)
-  // }, [test])
-  // const toggleTest = useCallback(() => {
-  //   console.log('Toggle Test')
-  //   setTest(test => !test)
-  // }, [])
 
   const toggleShowVariants = useCallback(() => {
     setShow(show => {
@@ -103,7 +84,7 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
     }
   }, [open])
 
-  const handleSave = useCallback(async (deleteList: ProductSelect[], newList: any[]): Promise<void> => {
+  const handleSave = useCallback(async (deleteList: ProductSelect[], newList: Product[]): Promise<void> => {
     console.log('handleSave')
     const deleeteIds = deleteList.map(list => (list.id.split('/')[list.id.split('/').length - 1]))
     // if (save) {
@@ -132,10 +113,10 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
     console.log('initialSelectionIds', initialSelectionIds)
     const deleteProducts = initialSelectionIds.filter(initSelect => {
       if (selection !== undefined) {
-        selection.find((item: { id: string }) => item.id === initSelect.id)
-        console.log('selection !== undefine')
+        return selection.find((item: { id: string }) => item.id === initSelect.id)
       }
     })
+
     if (selection !== null) {
       selection.map(select => {
         let checkUpdate = false
