@@ -84,9 +84,6 @@ const Setting = (): ReactElement | null => {
             <LegacyCard title="General Setting" sectioned>
               <ConfigSetting/>
             </LegacyCard>
-            <LegacyCard title="Product Selector" sectioned>
-              <ProductSelector/>
-            </LegacyCard>
           </div>
         </Grid.Cell>
 
@@ -157,7 +154,7 @@ const Setting = (): ReactElement | null => {
   )
 
   return (
-    <Page>
+    <Page fullWidth>
       <SaveSetting fetchQuoteEntity={fetchQuoteEntity} />
       <Layout sectioned>
         {/* <div style={{ position: 'absolute', top: '0', left: '0.2' }}> */}

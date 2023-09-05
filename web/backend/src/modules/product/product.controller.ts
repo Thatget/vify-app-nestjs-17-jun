@@ -32,12 +32,20 @@ export class ProductController {
   ) {
     try {
       const { shop } = res.locals.shopify.session;
+      console.log('shop api products', shop);
+
       const foundStore = await this.storeService.findByShopDomain(shop);
+      console.log('foundStore', foundStore);
+
       const [products, count] = await this.productService.findAll(
         foundStore.id,
         page * 10,
         10,
       );
+      const test = await this.productService.findByStoreId(foundStore.id);
+      console.log('test', test);
+
+      console.log('finished', { products, count });
       return res.status(200).send({ products, count });
     } catch (e) {
       return res.status(500).send({ message: 'Failed when get products' });

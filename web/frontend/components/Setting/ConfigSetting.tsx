@@ -9,12 +9,15 @@ export const defaultConfigSetting = {
   hide_buy_now: false,
   hide_add_to_cart: false,
   show_request_for_quote: false,
-  all_product: true
+  all_product: false
 }
 
 const ConfigSetting = (): JSX.Element => {
   const { state, dispatch } = useContext(StoreContext)
   const localConfigSetting = ({ ...defaultConfigSetting, ...state.setting, ...state.currentSetting })
+  console.log('localConfigSetting', localConfigSetting)
+  console.log('state.setting', state.setting)
+  console.log('state.currentSetting', state.currentSetting)
 
   const handleChangeConfig = (configKey: string) => {
     switch (configKey) {

@@ -1,27 +1,74 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { type ReactElement, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
 import type ProductSelect from '../../types/ProductSelect'
 import type Product from 'types/Product'
-import { Button, ContextualSaveBar, Divider, Loading, Toast } from '@shopify/polaris'
+import { Button, ContextualSaveBar, Loading, Toast, Text, ButtonGroup } from '@shopify/polaris'
+import { ResourcePicker } from '@shopify/app-bridge-react'
+import { type SelectPayload } from '@shopify/app-bridge/actions/ResourcePicker'
 
 interface ResourcePickerProp {
-  handleUpdateProduct: () => void
+  handleUpdateProduct: () => Promise<void>
+  productList: (selectedItems: Product[]) => void
+  showVariants: (show: boolean) => void
+  // activeButton: boolean
 }
 
-export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerProp): ReactElement | null {
+const PickingResource: React.FC<ResourcePickerProp> = (props) => {
   const fetch = useAuthenticatedFetch()
   const [open, setOpen] = useState(false)
   const [initialSelectionIds, setInitialSelectionIds] = useState<ProductSelect[]>([])
+  const [updatedList, setUpdatedList] = useState<SelectPayload>()
   const [isLoading, setIsLoading] = useState(false)
+  const [show, setShow] = useState(false)
   const [active, setActive] = useState(false)
-  const toggleActive = useCallback(() => {
-    setActive((active) => !active)
+  const [activeToast, setActiveToast] = useState(false)
+  const [activeToastUnchanged, setActiveToastUnchanged] = useState(false)
+  // useEffect(() => {
+  //   console.log('Effect test')
+  //   setShow(show => {
+  //     props.showVariants(!show)
+  //     console.log('set Show again?')
+  //     return !show
+  //   })
+  // let temp: boolean
+  // setShow(show => {
+  //   temp = show
+  //   console.log('set Show again?')
+  //   return !show
+  // })
+  // props.showVariants(temp)
+  //   setShow(show => !show)
+  // }, [test])
+  // const toggleTest = useCallback(() => {
+  //   console.log('Toggle Test')
+  //   setTest(test => !test)
+  // }, [])
+
+  const toggleShowVariants = useCallback(() => {
+    setShow(show => {
+      props.showVariants(!show)
+      console.log('set Show again?')
+      return !show
+    })
   }, [])
-  const toastMarkup = active
+
+  const toggleActiveToast = useCallback(() => {
+    setActiveToast((activeToast) => !activeToast)
+    setIsLoading((isLoading) => !isLoading)
+  }, [])
+  const toggleActiveToastUnchanged = useCallback(() => {
+    setActiveToastUnchanged((activeToastUnchanged) => !activeToastUnchanged)
+  }, [])
+  const toastMarkup = activeToast
     ? (
-      <Toast content="Save Successfully" onDismiss={toggleActive}/>
+      <Toast content="Save Successfully" onDismiss={toggleActiveToast}/>
+      )
+    : null
+  const toastUnchanged = activeToastUnchanged
+    ? (
+      <Toast content="Unchanged" onDismiss={toggleActiveToastUnchanged}/>
       )
     : null
   const loadingMarkup = isLoading
@@ -42,7 +89,9 @@ export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerP
           return { id, variants }
         })
         setInitialSelectionIds(initSelected)
+        setUpdatedList(initSelected)
       }
+      console.log('data from product_picked', data)
       return data
     } catch (error) {
       console.log(error.message)
@@ -54,8 +103,10 @@ export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerP
     }
   }, [open])
 
-  const handleSave = async (deleteList: ProductSelect[], newList: any[]): Promise<void> => {
+  const handleSave = useCallback(async (deleteList: ProductSelect[], newList: any[]): Promise<void> => {
+    console.log('handleSave')
     const deleeteIds = deleteList.map(list => (list.id.split('/')[list.id.split('/').length - 1]))
+    // if (save) {
     await fetch('/api/products/delete',
       {
         method: 'Post',
@@ -70,15 +121,19 @@ export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerP
         headers: { 'Content-Type': 'application/json' }
       }
     )
-    handleUpdateProduct()
-  }
+    console.log('if save, come here')
+  }, [])
 
-  const handleSelection = async (resources: any): Promise<void> => {
+  const handleSelection = useCallback(async (resources: SelectPayload, isSave: boolean): Promise<void> => {
+    console.log('come handle selection')
     const selection = (resources !== undefined) ? resources.selection : []
+    console.log('selection', selection)
     const newOrUpdate = []
+    console.log('initialSelectionIds', initialSelectionIds)
     const deleteProducts = initialSelectionIds.filter(initSelect => {
       if (selection !== undefined) {
         selection.find((item: { id: string }) => item.id === initSelect.id)
+        console.log('selection !== undefine')
       }
     })
     if (selection !== null) {
@@ -88,6 +143,7 @@ export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerP
         if (initId != null) {
           if (initId.variants.length !== select.variants.length) {
             checkUpdate = true
+            console.log('setactive')
             setActive(true)
           } else {
             for (let i = 0; i < initId.variants.length; i++) {
@@ -95,6 +151,7 @@ export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerP
               if (select.variants !== undefined) {
                 select.variants.find(variant => variant.id === element.id)
                 checkUpdate = true
+                console.log('setactive true')
                 setActive(true)
                 break
               }
@@ -105,9 +162,9 @@ export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerP
           }
         } else {
           newOrUpdate.push(select)
+          setActive(true)
         }
       })
-
       const productList = newOrUpdate.map(selectedProduct => {
         const parts = selectedProduct.id.split('/')
         const variants = selectedProduct.variants
@@ -121,53 +178,76 @@ export default function ResourcePicker ({ handleUpdateProduct }: ResourcePickerP
         }
         return currentProduct
       })
-
-      await handleSave(deleteProducts, productList)
+      console.log('productList', productList)
+      console.log('deleteProducts', deleteProducts)
+      if (isSave) {
+        await handleSave(deleteProducts, productList)
+        props.handleUpdateProduct()
+        setActive(false)
+      }
+      // productList(productList)
+      props.productList(productList)
       setOpen(false)
     }
-  }
+  }, [initialSelectionIds])
 
   return (
         <>
-        <Divider />
         <br/>
             <Box
                 display="flex"
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
+              <ButtonGroup>
+              <Button onClick={() => {
+                toggleShowVariants()
+              }}
+                >{!show ? 'Show Variants' : 'Hide Variants'}</Button>
                 <Button onClick={() => {
                   setOpen(true)
-                }}
+                }} primary
                 >Add Products</Button>
+                </ButtonGroup>
             </Box>
             <ResourcePicker
-                resourceType={'Product'}
+                resourceType='Product'
                 open={open}
                 onCancel={() => { setOpen(false) }}
-                onSelection={(resources) => { handleSelection(resources) }}
+                onSelection={(resources: SelectPayload) => {
+                  handleSelection(resources, false)
+                  setUpdatedList(resources)
+                  console.log('resources', resources)
+                }}
                 selectMultiple={true}
                 initialSelectionIds={initialSelectionIds}
             />
             { active &&
         <ContextualSaveBar
           alignContentFlush
-          message="Unsaved changes"
+          message="Save changes"
           saveAction={
             {
               onAction: () => {
-                handleSelection()
-                toggleActive()
+                console.log('save - contextualSaveBar')
+                handleSelection(updatedList, true)
+                toggleActiveToast()
               },
               loading: false
             }
           }
           discardAction={{
             onAction: () => {
-              handleSelection()
+              console.log('unchanged')
+              toggleActiveToastUnchanged()
+              handleSelection(updatedList, true)
             }
           }}
         />}
+        {toastMarkup}
+        {/* {loadingMarkup} */}
+        {toastUnchanged}
         </>
   )
 }
+export default PickingResource

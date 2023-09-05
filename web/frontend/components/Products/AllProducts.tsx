@@ -1,45 +1,19 @@
-import Box from '@mui/material/Box';
-import CardMedia from "@mui/material/CardMedia"
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import {
-    Card,
-    CardBody,
-} from "@material-tailwind/react";
+import { Text } from '@shopify/polaris'
+import React, { type ReactElement } from 'react'
 
 const AllProductsSelected = (
-    <Card sx={{width: '100%'}}>
-        <CardBody>
-            <Typography gutterBottom variant="h6" component="div">
+  <div style={{ textAlign: 'center' }}>
+            <Text variant="headingLg" as="h5">
                 Vify Quotes will apply to All of Your Products
-            </Typography>
-        </CardBody>
-        {/*<CardMedia*/}
-        {/*    component="img"*/}
-        {/*    height="180"*/}
-        {/*    image="./assets/allProducts.png"*/}
-        {/*    alt="green iguana"*/}
-        {/*/>*/}
-    </Card>
+            </Text>
+            </div>
 )
-export default function AllProducts() {
+export default function AllProducts (): ReactElement | null {
   return (
     <>
       <br/>
-      <Container>
-        <Box sx={{minWidth: 275}}>
-          <Card>{AllProductsSelected}</Card>
+          {AllProductsSelected}
           <br/>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="flex-end"
-            sx={{width: '100%'}}
-          >
-          </Box>
-        </Box>
-      </Container>
     </>
-  );
+  )
 }
-

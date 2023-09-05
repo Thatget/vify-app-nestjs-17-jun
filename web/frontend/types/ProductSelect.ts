@@ -1,10 +1,10 @@
 interface ProductSelect {
-  id: string;
+  id: string
   variants?: Variant[]
 }
 
 interface Variant {
-  id: string;
+  id: string
 }
 
 export default ProductSelect

@@ -4,13 +4,14 @@ import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
 import TableViewIcon from '@mui/icons-material/TableView'
 import Button from '@mui/material/Button'
 import {
-  TopBar
+  TopBar, Text
 } from '@shopify/polaris'
 import { useAuthenticatedFetch } from '../../hooks'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext, actions } from '../../store'
 import Typography from '@mui/material/Typography'
+
 
 const pages = [
   {
@@ -84,7 +85,7 @@ export const TopBarMarkup = () => {
       <TopBar.Menu
         activatorContent={
           <Button variant ="text" startIcon={<HomeIcon />}>
-              <Typography variant='body2'>Dashboard</Typography>
+              <Text variant='headingXs' as="h6">DASHBOARD</Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -103,7 +104,7 @@ export const TopBarMarkup = () => {
                   <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<SettingsSuggestIcon />}>
-            Products
+            <Text variant='headingXs' as="h6">PRODUCTS</Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -122,7 +123,7 @@ export const TopBarMarkup = () => {
       <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<TableViewIcon />}>
-            Quotes
+            <Text variant='headingXs' as="h6">QUOTES</Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -141,7 +142,7 @@ export const TopBarMarkup = () => {
       <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<SettingsSuggestIcon />}>
-            Setting
+            <Text variant='headingXs' as="h6">SETTING</Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
