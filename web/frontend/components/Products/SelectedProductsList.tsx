@@ -44,7 +44,18 @@ export default function SelectedProductsList (): React.ReactElement | null {
   const getProductList = (selectedItems: Product[]): void => {
     setProductList(selectedItems)
     console.log('selectedItems', selectedItems)
-    setVisibleProduct(selectedItems)
+    const temp: Product[] = selectedItems.map(product => {
+      const convertedVariant = {
+        id: product.id,
+        imageURL: product.imageURL,
+        productDescription: product.productDescription,
+        title: product.title,
+        variants: JSON.stringify(product.variants)
+      }
+      return convertedVariant
+    })
+
+    setVisibleProduct(temp)
   }
 
   const fetchData = React.useCallback(async (page: number) => {

@@ -6,5 +6,4 @@ interface Product {
   variants: string
 }
 
-
 export default Product

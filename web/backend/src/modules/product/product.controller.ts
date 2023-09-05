@@ -32,10 +32,10 @@ export class ProductController {
   ) {
     try {
       const { shop } = res.locals.shopify.session;
-      console.log('shop api products', shop);
+      // console.log('shop api products', shop);
 
       const foundStore = await this.storeService.findByShopDomain(shop);
-      console.log('foundStore', foundStore);
+      // console.log('foundStore', foundStore);
 
       const [products, count] = await this.productService.findAll(
         foundStore.id,
@@ -43,9 +43,9 @@ export class ProductController {
         10,
       );
       const test = await this.productService.findByStoreId(foundStore.id);
-      console.log('test', test);
+      // console.log('test', test);
 
-      console.log('finished', { products, count });
+      // console.log('finished', { products, count });
       return res.status(200).send({ products, count });
     } catch (e) {
       return res.status(500).send({ message: 'Failed when get products' });
@@ -113,23 +113,54 @@ export class ProductController {
 
   @Post('/insert')
   async insert(@Req() req: Request, @Res() res: Response) {
-    let rawData: CreateProductDto;
+    const rawData: CreateProductDto[] = [];
     const shopDomain = res.locals.shopify.session.shop;
     const foundStore = await this.storeService.findByShopDomain(shopDomain);
-    await req.body.map(async (result: any) => {
-      const found = await this.productService.findOne(result.id);
-      if (found !== true) {
-        rawData = {
-          id: result.id,
-          title: result.title || '',
-          productDescription: result.descriptionHtml,
-          store_id: foundStore.id,
-          imageURL: result.imageURL || null,
-          variants: JSON.stringify(result.variants) || '',
-        };
-        await this.productService.insert(rawData);
-      }
+    console.log('foundStore api insert', foundStore);
+    console.log('req.body', req.body);
+    req.body.map(async (result) => {
+      const temp = {
+        id: result.id,
+        title: result.title || '',
+        productDescription: result.descriptionHtml,
+        store_id: foundStore.id,
+        imageURL: result.imageURL || null,
+        variants: JSON.stringify(result.variants) || '',
+      };
+      console.log(temp);
+      rawData.push(temp);
+
+      // const found = await this.productService.findOne(result.id);
+      // const product = await this.productService.findByProductId(result.id);
+      // if (found !== true) {
+      //   if (product !== undefined) {
+      //     JSON.parse(product.variants)
+      //       .find((element) => element.id !== result.id)
+      //       .then(async (rel) => {
+      //         rawData = {
+      //           id: rel.id,
+      //           title: rel.title || '',
+      //           productDescription: rel.descriptionHtml,
+      //           store_id: foundStore.id,
+      //           imageURL: rel.imageURL || null,
+      //           variants: JSON.stringify(rel.variants) || '',
+      //         };
+      //         await this.productService.insert(rawData);
+      //       });
+      //   }
+      // } else {
+      //   rawData = {
+      //     id: result.id,
+      //     title: result.title || '',
+      //     productDescription: result.descriptionHtml,
+      //     store_id: foundStore.id,
+      //     imageURL: result.imageURL || null,
+      //     variants: JSON.stringify(result.variants) || '',
+      //   };
+      //   await this.productService.insert(rawData);
+      // }
     });
+    await this.productService.upsert(rawData);
     return res.status(200).send('OK');
   }
 
