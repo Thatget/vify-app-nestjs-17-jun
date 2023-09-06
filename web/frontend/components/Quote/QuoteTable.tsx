@@ -19,8 +19,8 @@ import {
 import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
 import defaultImg from '../../assets/default.jpg'
-import Quote from 'types/Quote'
-import { Sort } from 'pages/Quotes'
+import type Quote from 'types/Quote'
+import { type Sort } from 'pages/Quotes'
 
 interface IPropQuoteTable {
   quotes: Quote[]
@@ -29,7 +29,7 @@ interface IPropQuoteTable {
   count: number
   skip: number
   isLoading: boolean
-  handleSortBy: (sort: Sort)=> void;
+  handleSortBy: (sort: Sort) => void
 }
 
 interface IButtonHolderProps {
@@ -51,12 +51,11 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   const [rows, setRows] = React.useState<TableData[][]>([])
   const handleSort = useCallback(
     (index: number, direction: 'ascending' | 'descending') => {
-      const sortBy = ['id','name','email', 'created_time', 'product','message', 'status'][index];
-      const type = direction === 'ascending' ? 'DESC' : 'ASC';
+      const sortBy = ['id', 'name', 'email', 'created_time', 'product', 'message', 'status'][index]
+      const type = direction === 'ascending' ? 'DESC' : 'ASC'
       const sort: Sort = { sortBy, type }
-      if (direction)
-      props.handleSortBy(sort)
-    }, []);
+      if (direction) { props.handleSortBy(sort) }
+    }, [])
   let activator: JSX.Element
   let countIndex: number
   React.useEffect(() => {
@@ -155,7 +154,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
       activator = tempColumn[7] = (
         <Button
           onClick={() => {
-            toggleModal(quote,1)
+            toggleModal(quote, 1)
           }}
           size="slim"
         >
@@ -185,7 +184,7 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
     },
     []
   )
-  const label = <>{props.skip/5 + 1}/{Math.ceil(props.count/5)}</>
+  const label = <>{props.skip / 5 + 1}/{Math.ceil(props.count / 5)}</>
   return (
     <>
       <DataTable

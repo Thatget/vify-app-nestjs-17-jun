@@ -1,3 +1,33 @@
-# This file stores configurations for your Shopify app.
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
+name = "vify_request_for_quotes"
+client_id = "c264ed2a60bd4d137a07f93106337716"
+application_url = "https://quote.vify.io"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products,write_customers,write_orders,read_customers,read_orders"
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = [
+  "https://quote.vify.io/auth/callback",
+  "https://quote.vify.io/auth/shopify/callback",
+  "https://quote.vify.io/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-07"
+
+[app_proxy]
+url = "https://quote.vify.io/api/proxy"
+subpath = "vify_rfq-f"
+prefix = "apps"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = false
+dev_store_url = "vifytestshop.myshopify.com"

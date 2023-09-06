@@ -1,12 +1,12 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
-import {Box, Card, CardMedia, TextareaAutosize, TextField, Typography} from '@mui/material';
-import {styled} from "@mui/system";
+import React, { useCallback, useEffect, useState} from 'react';
+import {Box, Card, CardMedia, TextField, Typography} from '@mui/material';
 import {useForm, useWatch} from "react-hook-form";
 import "../../css/style.css"
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import {Modal} from '@shopify/polaris'
 import ImageNotFound from '../../public/imageNotFound.png'
+import StyledTextarea from './StyledTextarea';
 
 
 type Props = {
@@ -86,11 +86,10 @@ const DefaultForm = ({isOpen, handleModal, form, dataSettings}: Props) => {
   const [formMessagePlaceholder, setMessagePlaceholder] = useState<quoteEntity>(initialValue)
   const [formFormTitle, setFormTitle] = useState<quoteEntity>(initialValue)
   const [formHidePrice, setHidePrice] = useState<quoteEntity>(initialValue)
- 
 
   let variant_selected_id = (window as any).variant_selected_id
   const [variantSelectedId, setVariantSelectedId] = useState(variant_selected_id)
-  
+
   useEffect(() => {
     if(open === true) {
       const backdropElement: HTMLElement = document.querySelector(
@@ -178,7 +177,6 @@ const resetCss =  () => {
   const sendQuote = () => {
     setOpen(false)
     handleModal('thankyou');
-    // const variant_selected_id = (window as any).variant_selected_id
     const product = (window as any).vifyRequestFQ.lineItem;
     let selected_product: ProductDTO
     selected_product = {
@@ -214,11 +212,9 @@ const resetCss =  () => {
         }
       })
       .catch(error => {
-        // Handle any errors that occurred during the request
         handleModal('');
         console.error('Error:', error);
       });
-    
   }
   
   const onSubmit = () => {
@@ -313,14 +309,14 @@ const resetCss =  () => {
               alignItems: 'center'
             }}>
               <Typography variant="body1">{formMessage.value || "Your Message: "}</Typography>
-              {/* <StyledTextarea
+              <StyledTextarea
                 aria-label="minimum height"
                 minRows={5}
                 placeholder={formMessagePlaceholder.value || 'Write Your Message here'}
-                // value={formValue.message}
+                value={formValue.message}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setFormData(e.target.value, "message")}
                 sx={{width: '49ch', mr: 0, ml: 'auto'}}
-              /> */}
+              />
             </Box>
 
         </Modal.Section>
@@ -330,4 +326,5 @@ const resetCss =  () => {
 }
 
 export default DefaultForm
+
 
