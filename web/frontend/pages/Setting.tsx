@@ -47,6 +47,7 @@ const Setting = (): ReactElement | null => {
     try {
       const response = await fetch('/api/quote-entity', { method: 'GET' })
       const data = await response.json()
+      console.log('data fetch quote-entity',data)
       if (data !== undefined) {
         let setting: SettingX = {}
         data.forEach((entity: QuoteEntity) => {

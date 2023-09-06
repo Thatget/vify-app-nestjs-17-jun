@@ -314,7 +314,7 @@ const resetCss =  () => {
                 minRows={5}
                 placeholder={formMessagePlaceholder.value || 'Write Your Message here'}
                 value={formValue.message}
-                onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setFormData(e.target.value, "message")}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setFormData(e.target.value, "message")}
                 sx={{width: '49ch', mr: 0, ml: 'auto'}}
               />
             </Box>

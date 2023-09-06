@@ -25,7 +25,7 @@ export default function GettingStarted (): ReactElement | null {
           Click <Link onClick={() => {
           navigate('/Setting')
         }}>Add products</Link> to browser your products , select some to
-          show quote button
+          show quote button 1.0
         </Typography>
       </CardContent>
       <CardActions>

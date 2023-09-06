@@ -1,47 +1,46 @@
-import { MediaCard, Modal, TextContainer} from '@shopify/polaris';
-import {useState, useCallback, useEffect} from 'react';
-import Quote from '../../types/Quote';
+import { MediaCard, Modal, TextContainer } from '@shopify/polaris'
+import React, { useState, useCallback, useEffect } from 'react'
+import type Quote from '../../types/Quote'
 
 interface QuoteDetailProp {
-    view: {
-      quote?: Quote;
-      active: boolean;
-    }
-    deleteInView: () => void
+  view: {
+    quote?: Quote
+    active: boolean
+  }
+  deleteInView: () => void
 }
 
-const QuoteDetail = ({view, deleteInView}: QuoteDetailProp) => {
-    const [active, setActive] = useState(true);
+const QuoteDetail = ({ view, deleteInView }: QuoteDetailProp) => {
+  const [active, setActive] = useState(true)
 
-    const handleChange = useCallback(() => setActive(!active), [active]);
+  const handleChange = useCallback(() => { setActive(!active) }, [active])
 
   useEffect(() => {
-    setActive(view.active);
+    setActive(view.active)
   }, [view])
-  
 
   return (
-    <div style={{height: '500px'}}>
+    <div style={{ height: '500px' }}>
       <Modal
         open={active}
         onClose={handleChange}
         title="View Quote"
         primaryAction={{
           content: 'Add',
-          onAction: handleChange,
+          onAction: handleChange
         }}
         secondaryActions={[
           {
             content: 'Delete',
             destructive: true,
-            onAction: deleteInView,
-          },
+            onAction: deleteInView
+          }
         ]}
       >
         <Modal.Section>
         <MediaCard
           title={view.quote?.product?.selected_product.title || 'Product Name'}
-          description={view.quote?.product?.selected_variant.title  + view.quote?.product?.selected_variant.price || 'Product description'}
+          description={view.quote?.product?.selected_variant.title + view.quote?.product?.selected_variant.price || 'Product description'}
         >
           <img
             alt="Product Image"
@@ -49,9 +48,9 @@ const QuoteDetail = ({view, deleteInView}: QuoteDetailProp) => {
             height="100%"
             style={{
               objectFit: 'cover',
-              objectPosition: 'center',
+              objectPosition: 'center'
             }}
-            src={(view.quote?.product?.selected_product !== undefined ) ? view.quote?.product?.selected_product.image : 'Product Name'}
+            src={(view.quote?.product?.selected_product !== undefined) ? view.quote?.product?.selected_product.image : 'Product Name'}
           />
         </MediaCard>
           <TextContainer>
@@ -62,7 +61,7 @@ const QuoteDetail = ({view, deleteInView}: QuoteDetailProp) => {
         </Modal.Section>
       </Modal>
     </div>
-  );
+  )
 }
 
 export default QuoteDetail
