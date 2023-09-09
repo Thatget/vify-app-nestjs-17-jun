@@ -9,6 +9,6 @@ import { ProductModule } from '../product/product.module';
 @Module({
   imports: [QuoteEntityModule, StoreModule, QuoteModule, ProductModule],
   controllers: [StoreFrontendController],
-  providers: [StoreFrontendService]
+  providers: [StoreFrontendService],
 })
 export class StoreFrontendModule {}

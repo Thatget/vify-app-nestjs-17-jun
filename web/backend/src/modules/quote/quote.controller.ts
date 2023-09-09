@@ -9,6 +9,8 @@ import {
   Res,
   Post,
   Query,
+  BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { QuoteService } from './quote.service';
@@ -120,15 +122,21 @@ export class QuoteController {
     @Body('status') status: number,
     @Res() res: Response,
   ) {
-    try {
-      const shopDomain = res.locals.shopify.session.shop;
-      const foundStore = await this.storeService.findByShopDomain(shopDomain);
-      const store_id = foundStore.id;
-      await this.quoteService.updateStatus(id, store_id, status);
-      return res.status(200).send('OK');
-    } catch (error) {
-      return res.status(500).send({ message: error.message });
+    const shopDomain = res.locals.shopify.session.shop;
+    if (!shopDomain) {
+      throw new NotFoundException('shopdomain not found');
     }
+
+    const foundStore = await this.storeService.findByShopDomain(shopDomain);
+    if (!foundStore) {
+      throw new NotFoundException('Store not found');
+    }
+
+    const store_id = foundStore.id;
+
+    await this.quoteService.updateStatus(id, store_id, status);
+
+    return res.status(200).send('OK');
   }
 
   @Delete(':id')

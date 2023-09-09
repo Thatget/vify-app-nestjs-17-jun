@@ -7,8 +7,8 @@ export default () => ({
     host: process.env.HOST || '',
   },
   database: {
-    user: 'vify_user',
-    password: 'vify_password',
+    user: 'root',
+    password: 'root',
     host: 'vify_databse' || 'localhost',
     port: parseInt(process.env.DATABASE_PORT, 10) || 3306,
   },

@@ -15,18 +15,19 @@ export class Product {
   @Column({ nullable: true })
   productDescription: string;
 
+  
   @Column()
   title: string;
 
   @Column({ nullable: true })
-  imageURL: string
+  imageURL: string;
 
   @Column('text')
-  variants: string
+  variants: string;
 
   @Column({ nullable: false })
   store_id: number;
-  @ManyToOne(() => Store, store => store.products, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Store, (store) => store.products, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'store_id' })
   store: Store;
 }

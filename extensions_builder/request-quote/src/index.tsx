@@ -64,7 +64,7 @@ function Index() {
 
   useEffect(() => {
     const checkExist = document.querySelector(".product-form__input")
-    console.log('checkExist 1.8',checkExist);
+    console.log('checkExist 1.4',checkExist);
     
     if(checkExist !== null){
       document
@@ -159,7 +159,7 @@ function Index() {
     <Frame>
       {check && (
         <div style={{ justifyContent: "center", display: 'flex'}}>
-          <button style={buttonStyle} onClick={() => handleChangeModal("request")}>
+          <button className='rfq_button' style={buttonStyle} onClick={() => handleChangeModal("request")}>
           {button_content}
           </button>
           {modal === "request" && (
