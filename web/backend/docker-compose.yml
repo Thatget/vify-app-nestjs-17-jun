@@ -5,10 +5,10 @@
       ports:
       - "3307:3309"
       environment:
-        MYSQL_ROOT_PASSWORD: 123456789
+        MYSQL_ROOT_PASSWORD: Secret123
         MYSQL_DATABASE: vify_database
         MYSQL_USER: root
-        MYSQL_PASSWORD: 123456789
+        MYSQL_PASSWORD: Secret123
       volumes:
           - ./data/mysql:/usr/local/mysql
 

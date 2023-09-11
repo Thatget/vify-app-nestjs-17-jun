@@ -7,7 +7,7 @@ export const databaseProviders = [
       const dataSource = new DataSource({
         type: 'mysql',
         host: 'localhost',
-        port: 8889,
+        port: 3306,
         username: 'root',
         password: 'root',
         database: 'vify_database',
