@@ -7,7 +7,6 @@ import type Product from 'types/Product'
 import { Button, ContextualSaveBar, Loading, Toast, Text, ButtonGroup } from '@shopify/polaris'
 import { ResourcePicker } from '@shopify/app-bridge-react'
 import { type SelectPayload } from '@shopify/app-bridge/actions/ResourcePicker'
-import type ProductWithVariantArray from 'types/ProductWithVariantArray'
 
 interface ResourcePickerProp {
   handleUpdateProduct: () => Promise<void>
@@ -120,8 +119,8 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
     //     }
     //   }
     // })
-    const deleteProducts = initialSelectionIds.filter(initSelect => 
-      !selection.find((item: { id: string }) => item.id === initSelect.id))
+    const deleteProducts = initialSelectionIds.filter(initSelect =>
+      selection.find((item: { id: string }) => item.id === initSelect.id) == null)
     console.log('deleteProducts', deleteProducts)
 
     if (selection !== null) {
@@ -167,7 +166,7 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
         return currentProduct
       })
       console.log('productList', productList)
-      
+
       if (isSave) {
         await handleSave(deleteProducts, productList)
         props.handleUpdateProduct()

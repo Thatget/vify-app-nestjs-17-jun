@@ -8,13 +8,15 @@ export const databaseProviders = [
         type: 'mysql',
         host: 'localhost',
         port: 3306,
-        username: 'vify_user',
-        password: 'vify_password',
+        username: 'root',
+        password: 'root',
         database: 'vify_database',
         synchronize: true,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       });
-      return dataSource.initialize();
+      const isInit = dataSource.isInitialized;
+      console.log('isInit', isInit);
+      return await dataSource.initialize();
     },
   },
 ];

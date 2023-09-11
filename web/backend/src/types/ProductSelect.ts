@@ -1,10 +1,10 @@
 interface ProductSelect {
   id: string;
-  variants?: Variant[]
+  variants?: Variant[];
 }
 
 interface Variant {
   id: string;
 }
 
-export default ProductSelect
+export default ProductSelect;

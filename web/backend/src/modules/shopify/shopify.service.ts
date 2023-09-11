@@ -29,8 +29,8 @@ export class ShopifyService {
       sessionStorage: MySQLSessionStorage.withCredentials(
         'localhost',
         'vify_database',
-        'vify_user',
-        'vify_password',
+        'root',
+        'root',
         { connectionPoolLimit: 10 }, // optional
       ),
     });
