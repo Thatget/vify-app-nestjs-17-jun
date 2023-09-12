@@ -112,8 +112,17 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
     console.log('selection', selection)
     const newOrUpdate = []
     console.log('initialSelectionIds', initialSelectionIds)
-    const deleteProducts = initialSelectionIds.filter(initSelect => 
-      !selection.find((item: { id: string }) => item.id === initSelect.id))
+    // const deleteProducts = initialSelectionIds.filter(initSelect => {
+    //   if (selection !== undefined) {
+    //     const temp = selection.find((item: { id: string }) => item.id !== initSelect.id)
+    //     console.log('temp',temp)
+    //     if (temp === undefined) {
+    //       return initSelect
+    //     }
+    //   }
+    // })
+    const deleteProducts = initialSelectionIds.filter(initSelect =>
+      selection.find((item: { id: string }) => item.id === initSelect.id) == null)
     console.log('deleteProducts', deleteProducts)
 
     if (selection !== null) {
@@ -159,7 +168,7 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
         return currentProduct
       })
       console.log('productList', productList)
-      
+
       if (isSave) {
         await handleSave(deleteProducts, productList)
         props.handleUpdateProduct()

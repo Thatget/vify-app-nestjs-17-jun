@@ -21,7 +21,7 @@ export class Quote {
   email: string;
   @Column({ nullable: true })
   message: string;
-  @Index({ fulltext: true })
+  // @Index({ fulltext: true })
   @Column('json', { nullable: false })
   product: ProductInQuote;
   @Column('tinyint', { default: 0 })

@@ -5,4 +5,4 @@ interface ShopInfo {
   ianaTimezone: string;
 }
 
-export default ShopInfo
+export default ShopInfo;

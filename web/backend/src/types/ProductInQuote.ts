@@ -6,5 +6,5 @@ export default interface ProductInQuote {
   selected_variant: {
     id: string;
     title: string;
-  }
+  };
 }

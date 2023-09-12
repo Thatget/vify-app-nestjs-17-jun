@@ -39,9 +39,12 @@ export class Store {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
-  @OneToMany(() => Quote, (quote) => quote.store, {cascade: true,})
+  @OneToMany(() => Quote, (quote) => quote.store, { cascade: true })
   quotes: Quote[];
-  @OneToMany(() => QuoteEntity, (quote_entity) => quote_entity.store, {cascade: true,})
+  @OneToMany(() => QuoteEntity, (quote_entity) => quote_entity.store, {
+    cascade: true,
+  })
   quote_entities: QuoteEntity[];
-  @OneToMany(() => Product, (product) => product.store, {cascade: true,}) products: Product[];
+  @OneToMany(() => Product, (product) => product.store, { cascade: true })
+  products: Product[];
 }

@@ -46,7 +46,7 @@ type VariantDTO = {
 };
 
 type ProductDTO = {
-  id: string;
+  id: number;
   title: string;
   image: string;
 };

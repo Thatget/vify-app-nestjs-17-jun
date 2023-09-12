@@ -14,16 +14,9 @@ export const databaseProviders = [
         synchronize: true,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       });
-      // console.log('dataSource', dataSource);
-      try {
-        const isInitialized: boolean = dataSource.isInitialized;
-        // const driver: Driver = dataSource.driver;
-        // console.log('driver', driver);
-        console.log('isInitialized', isInitialized);
-        return dataSource.initialize();
-      } catch (e) {
-        console.log('big error');
-      }
+      const isInit = dataSource.isInitialized;
+      console.log('isInit', isInit);
+      return await dataSource.initialize();
     },
   },
 ];

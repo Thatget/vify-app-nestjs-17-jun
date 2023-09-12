@@ -190,7 +190,7 @@ export class ProductController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number, @Res() res: Response) {
+  async remove(@Param('id') id: string, @Res() res: Response) {
     try {
       const { shop } = res.locals.shopify.session;
       const foundStore = await this.storeService.findByShopDomain(shop);
@@ -202,7 +202,7 @@ export class ProductController {
   }
 
   @Post('/delete')
-  async delete(@Body() ids: number[], @Res() res: Response) {
+  async delete(@Body() ids: string[], @Res() res: Response) {
     try {
       console.log(typeof ids[0]);
       console.log('delete ids', ids);

@@ -1,5 +1,5 @@
 interface ProductResponse {
-  id: string;
+  id: number;
   title: string;
   image: string;
   variants: ProductVariant[];
@@ -12,4 +12,4 @@ export interface ProductVariant {
   selected?: boolean;
 }
 
-export default ProductResponse
+export default ProductResponse;

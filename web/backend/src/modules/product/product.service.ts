@@ -79,7 +79,7 @@ export class ProductService {
     return products;
   }
 
-  async delete(id: number, store_id: number) {
+  async delete(id: string, store_id: number) {
     await this.productRepository
       .createQueryBuilder()
       .delete()
@@ -88,7 +88,7 @@ export class ProductService {
       .execute();
   }
 
-  async deleteMany(ids: number[], store_id: number) {
+  async deleteMany(ids: string[], store_id: number) {
     await this.productRepository.delete({ id: In(ids), store_id });
   }
 }

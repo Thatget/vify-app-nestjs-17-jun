@@ -1,4 +1,13 @@
-import { Controller, Post, Req, Res, UseGuards, InternalServerErrorException, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+  InternalServerErrorException,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { WebhookGuard } from './webhook.guard';
 import { IncomingMessage } from 'http';
@@ -8,10 +17,7 @@ import { logger } from '../helpers/logger.helper';
 @Controller('/api/webhooks')
 @UseGuards(WebhookGuard)
 export class WebhookController {
-    constructor(
-      private readonly storeService: StoreService
-    ) {
-    }
+  constructor(private readonly storeService: StoreService) {}
 
   @Post()
   async processWebhook(
@@ -21,16 +27,12 @@ export class WebhookController {
     const topic = req.headers['x-shopify-topic'] as string;
 
     if (!req.body) {
-      throw new InternalServerErrorException(
-        'raw body not found',
-      );
+      throw new InternalServerErrorException('raw body not found');
     }
 
     const domain = req.headers['x-shopify-shop-domain'] as string;
     if (!domain || !topic) {
-      throw new BadRequestException(
-        `something went wrong`,
-      );
+      throw new BadRequestException(`something went wrong`);
     }
 
     const graphqlTopic = topic.toUpperCase().replace(/\//g, '_');
@@ -46,7 +48,7 @@ export class WebhookController {
 
   private async uninstall(shop: string) {
     try {
-      this.storeService.deleteByShopDomain(shop)
+      this.storeService.deleteByShopDomain(shop);
     } catch (error) {
       logger.error(error.message);
     }

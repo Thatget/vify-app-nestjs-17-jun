@@ -1,11 +1,11 @@
-import ProductResponse from "./ProductResponse"
+import ProductResponse from './ProductResponse';
 
 interface ProductPage {
   productList: ProductResponse[];
   pageInfo: {
     hasNextPage: boolean;
     endCursor: string;
-  }
+  };
 }
 
-export default ProductPage
+export default ProductPage;
