@@ -15,6 +15,7 @@ export class Product {
   @Column({ nullable: true })
   productDescription: string;
 
+  
   @Column()
   title: string;
 

@@ -1,5 +1,5 @@
 import {
-  Box, Button, DatePicker, HorizontalGrid, HorizontalStack, Icon, OptionList,
+  Box, Button, ButtonGroup, DatePicker, HorizontalGrid, HorizontalStack, Icon, OptionList,
   Popover, Scrollable, Select, TextField, VerticalStack, useBreakpoints
 } from '@shopify/polaris'
 import {
@@ -37,9 +37,9 @@ const DateRangePicker = ({ initDateRange, onChangeDate }) => {
       alias: 'last7days',
       period: {
         since: new Date(
-          new Date(new Date().setDate(today.getDate() - 7)).setHours(0, 0, 0, 0)
+          new Date(new Date().setDate(today.getDate() - 6)).setHours(0, 0, 0, 0)
         ),
-        until: yesterday
+        until: today
       }
     }
   ]
@@ -320,10 +320,12 @@ const DateRangePicker = ({ initDateRange, onChangeDate }) => {
       <Popover.Pane fixed>
         <Popover.Section>
           <HorizontalStack align="end">
+            <ButtonGroup>
             <Button onClick={cancel}>Cancel</Button>
             <Button primary onClick={apply}>
               Apply
             </Button>
+            </ButtonGroup>
           </HorizontalStack>
         </Popover.Section>
       </Popover.Pane>

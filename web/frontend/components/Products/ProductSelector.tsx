@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography'
 import { StoreContext, actions } from '../../store'
 import { defaultConfigSetting } from '../Setting/ConfigSetting'
 import { useState } from 'react'
-import { ContextualSaveBar } from '@shopify/polaris'
 
 export default function ProductSelector (): React.ReactElement | null {
   const { state, dispatch } = React.useContext(StoreContext)
@@ -42,12 +41,6 @@ export default function ProductSelector (): React.ReactElement | null {
       console.log('state.setting', state.setting)
     }
   }
-  const handleSave = (): void => {
-    console.log('handle Save')
-    dispatch(actions.setNewSetting({ all_product: true }))
-    setActive(false)
-  }
-
   return (
     <>
       <FormControl sx={{ width: '100%' }}>

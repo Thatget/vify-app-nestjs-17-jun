@@ -14,7 +14,6 @@ import { StoreService } from '../store/store.service';
 import { QuoteService } from '../quote/quote.service';
 import { CreateQuoteDto } from '../quote/dto/create-quote.dto';
 import { ProductService } from '../product/product.service';
-import { CreateProductDto } from '../product/dto/create-product.dto';
 
 @Controller('api/proxy')
 export class StoreFrontendController {

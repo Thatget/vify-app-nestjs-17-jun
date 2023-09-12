@@ -63,7 +63,7 @@ export default function Quotes (): ReactElement | null {
   const fetchData = useCallback(async (skip: number, text?: string, since?: Date, until?: Date, sort?: Sort): Promise<[Quote[], number]> => {
     try {
       let url = `/api/quote?skip=${skip}`
-      if (text) url += `&textSearch=${encodeURIComponent(text)}`
+      if (text !== null) url += `&textSearch=${encodeURIComponent(text)}`
       if (sort != null) url += `&sortBy=${encodeURIComponent(sort.sortBy)}&sortType=${encodeURIComponent(sort.type)}`
       if (since != null) url += `&since=${encodeURIComponent(since.toISOString())}`
       if (until != null) url += `&until=${encodeURIComponent(until.toISOString())}`

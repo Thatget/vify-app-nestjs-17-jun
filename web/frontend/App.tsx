@@ -18,6 +18,7 @@ import Quotes from './pages/Quotes'
 import Setting from './pages/Setting'
 import './css/app.css'
 import Analysis from './pages/Analysis'
+import { NavigationMenu } from '@shopify/app-bridge-react'
 export interface IApplicationProps {}
 
 const App: React.FC<IApplicationProps> = (props) => {
@@ -113,6 +114,24 @@ const App: React.FC<IApplicationProps> = (props) => {
             <Route path="analysis" element={<Analysis />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <NavigationMenu navigationLinks={[
+            {
+              label: 'Dashboard',
+              destination: '/gettingStarted'
+            },
+            {
+              label: 'Products',
+              destination: '/Products'
+            },
+            {
+              label: 'Quotes',
+              destination: '/Quotes'
+            },
+            {
+              label: 'Setting',
+              destination: '/Setting'
+            }
+          ]} />
       </ThemeProvider>
     </PolarisProvider>
   )

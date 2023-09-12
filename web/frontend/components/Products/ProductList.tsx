@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import {
   Collapsible,
@@ -23,7 +24,6 @@ export default function ProductList (props: {
   activePicker: (childData: boolean) => void
 }): ReactElement {
   const { visibleProduct, activePicker } = props
-
   const resourceName = {
     singular: 'Product',
     plural: 'Products'
@@ -164,5 +164,6 @@ function VariantRows (props: {
         </Collapsible>
       </div>
     </>
+
   )
 }

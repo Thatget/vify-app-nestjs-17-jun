@@ -6,7 +6,8 @@ import Button from '@mui/material/Button'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { defaultConfigSetting } from './ConfigSetting'
-import productCard from '../../assets/product-card.jpg.avif'
+// import productCard from '../../assets/product-card.jpg.avif'
+import sampleProduct from '../../assets/sampleProduct05.png'
 import React from 'react'
 
 const ConfigSettingPreview = (): ReactElement | null => {
@@ -27,12 +28,12 @@ const ConfigSettingPreview = (): ReactElement | null => {
   const test = (
     <>
       <Box sx={{ flexWrap: 'wrap', width: '100%' }}>
-        <div>
-          <img src={productCard} alt="" width="100%" height="100%"/>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <img src={sampleProduct} alt="" width="100%" height="60%" style={{ borderRadius: '10px' }}/>
         </div>
         <div>
           {Boolean(localConfigSetting.hide_price === false) &&
-              <Box sx={{ display: 'flex', mt: 1 }}>
+              <Box sx={{ display: 'flex', mt: 1, justifyContent: 'center' }}>
                   <Typography variant="body2" color="red" sx={{ m: 1, fontSize: '1.5rem' }}>$69.06</Typography>
                   <Typography variant="body2" color="black"
                               sx={{ m: 1, fontSize: '1.5rem' }}>$86.31</Typography>

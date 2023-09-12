@@ -33,11 +33,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
   const [active, setActive] = React.useState(false)
   const [show, setShow] = React.useState(false)
   const [productList, setProductList] = React.useState<Product[]>()
-  // const handleClick = React.useCallback(() => {
-  //   console.log('handleClick')
-  //   setShow(show => !show)
-  //   console.log('show', show)
-  // }, [show])
+
   const toggleShowVariants = (showVariants): void => {
     setShow(showVariants)
   }
@@ -116,6 +112,10 @@ export default function SelectedProductsList (): React.ReactElement | null {
       await fetchData(0)
     } catch (error) {
     }
+  }
+
+  const handleClick = (): void => {
+    console.log('Clicked')
   }
 
   const label = <>{page + 1}/{Math.ceil(count / 10)}</>
