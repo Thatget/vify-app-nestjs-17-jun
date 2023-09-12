@@ -12,7 +12,7 @@ interface ResourcePickerProp {
   handleUpdateProduct: () => Promise<void>
   productList: (selectedItems: Product[]) => void
   showVariants: (show: boolean) => void
-  // activeButton: boolean
+  active: boolean
 }
 
 const PickingResource: React.FC<ResourcePickerProp> = (props) => {
@@ -21,10 +21,15 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
   const [initialSelectionIds, setInitialSelectionIds] = useState<ProductSelect[]>([])
   const [updatedList, setUpdatedList] = useState<SelectPayload>()
   const [isLoading, setIsLoading] = useState(false)
-  const [show, setShow] = useState(false)
+  // const [show, setShow] = useState(false)
   const [active, setActive] = useState(false)
   const [activeToast, setActiveToast] = useState(false)
   const [activeToastUnchanged, setActiveToastUnchanged] = useState(false)
+
+  useEffect(() => {
+    console.log('props.active', props.active)
+    setOpen(props.active)
+  }, [props.active])
 
   const toggleShowVariants = useCallback(() => {
     setShow(show => {
@@ -188,8 +193,8 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
             >
-              <ButtonGroup>
-              {/* <Button onClick={() => {
+              {/* <ButtonGroup>
+              <Button onClick={() => {
                 toggleShowVariants()
               }}
                 >{!show ? 'Show Variants' : 'Hide Variants'}</Button> */}
@@ -197,7 +202,7 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
                   setOpen(true)
                 }} primary
                 >Add Products</Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
             </Box>
             <ResourcePicker
                 resourceType='Product'

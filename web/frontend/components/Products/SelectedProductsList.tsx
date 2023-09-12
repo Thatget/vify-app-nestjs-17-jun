@@ -16,7 +16,7 @@ import { Pagination, Spinner, Divider, ContextualSaveBar, Listbox, ResourceList,
 import PickingResource from './ResourcePicker'
 import imageNotFound from '../../assets/imageNotFound.png'
 
-// import ProductList from './ProductList'
+import ProductList from './ProductList'
 
 interface responseProduct {
   products: object[]
@@ -30,12 +30,18 @@ export default function SelectedProductsList (): React.ReactElement | null {
   const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([])
   const [page, setPage] = React.useState<number>(0)
   const [count, setCount] = React.useState<number>(0)
-  const [open, setOpen] = React.useState(true)
+  const [active, setActive] = React.useState(false)
   const [show, setShow] = React.useState(false)
   const [productList, setProductList] = React.useState<Product[]>()
 
   const toggleShowVariants = (showVariants): void => {
     setShow(showVariants)
+  }
+  // const activeButton = React.useCallback((childData: boolean) => {
+  //   setActive(childData)
+  // }, [])
+  const activeButton = (childData: boolean): void => {
+    setActive(childData)
   }
 
   const getProductList = (selectedItems: Product[]): void => {
@@ -115,12 +121,13 @@ export default function SelectedProductsList (): React.ReactElement | null {
   const label = <>{page + 1}/{Math.ceil(count / 10)}</>
 
   return (
+
     <>
     {/* <Box sx={{ width: '100%' }}> */}
       <Box sx={{ width: '100%' }}>
         <Divider />
         <PickingResource handleUpdateProduct={getSelectedProducts} productList={getProductList} showVariants={toggleShowVariants}
-        // activeButton={show}
+        active={active}
         />
       </Box>
       <Box sx={{ width: '100%' }}>
@@ -128,8 +135,8 @@ export default function SelectedProductsList (): React.ReactElement | null {
           ? <div style={{ marginLeft: '50%' }}>
             <Spinner/>
           </div>
-          : undefined
-          // : <ProductList visibleProduct={visibleProduct} />
+          // : undefined
+          : <ProductList visibleProduct={visibleProduct} activePicker={activeButton} />
         }
         <br/>
         <Box
@@ -170,5 +177,6 @@ export default function SelectedProductsList (): React.ReactElement | null {
         />}
 
     </>
+
   )
 }
