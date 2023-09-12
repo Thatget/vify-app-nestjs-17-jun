@@ -2,18 +2,18 @@ import {
   QueryClient,
   QueryClientProvider,
   QueryCache,
-  MutationCache,
-} from "react-query";
+  MutationCache
+} from 'react-query'
 
 /**
  * Sets up the QueryClientProvider from react-query.
  * @desc See: https://react-query.tanstack.com/reference/QueryClientProvider#_top
  */
-export function QueryProvider({ children }:any) {
+export function QueryProvider ({ children }: any) {
   const client: QueryClient = new QueryClient({
     queryCache: new QueryCache(),
-    mutationCache: new MutationCache(),
-  });
+    mutationCache: new MutationCache()
+  })
 
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+  return <QueryClientProvider client={client}>{children}</QueryClientProvider>
 }

@@ -3,12 +3,12 @@
     my-sql:
       image: mysql:8.0
       ports:
-      - "3309:3306"
+      - "3307:3309"
       environment:
-        MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: Secret123
         MYSQL_DATABASE: vify_database
         MYSQL_USER: root
-        MYSQL_PASSWORD: root
+        MYSQL_PASSWORD: Secret123
       volumes:
-          - ./data/mysql:/var/lib/mysql
+          - ./data/mysql:/usr/local/mysql
 

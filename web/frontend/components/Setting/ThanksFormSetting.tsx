@@ -33,7 +33,6 @@ export default function ThanksFormSetting () {
     <Form
       onSubmit={() => handleSubmit}
     >
-      <Typography variant="body2" sx={{ mb: 1 }}>Thanks Form Setting</Typography>
       <TextField
         id='thank_title'
         label="ThankYou Page Title"

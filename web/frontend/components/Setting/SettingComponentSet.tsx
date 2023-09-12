@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import ConfigSetting from './ConfigSetting'
 import FormSetting from './FormSetting'
-import { actions, StoreContext } from '../../store'
-import { type payloadObject } from '../../store/actions'
+import { StoreContext } from '../../store'
 import ThanksFormSetting from './ThanksFormSetting'
 
 export const hover: object = {

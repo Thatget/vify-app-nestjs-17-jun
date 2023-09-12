@@ -2,7 +2,7 @@
 
 name = "vify_request_for_quotes"
 client_id = "c264ed2a60bd4d137a07f93106337716"
-application_url = "https://vary-ingredients-hundred-jets.trycloudflare.com"
+application_url = "https://queries-yacht-tt-mp.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -12,9 +12,9 @@ use_legacy_install_flow = true
 
 [auth]
 redirect_urls = [
-  "https://vary-ingredients-hundred-jets.trycloudflare.com/auth/callback",
-  "https://vary-ingredients-hundred-jets.trycloudflare.com/auth/shopify/callback",
-  "https://vary-ingredients-hundred-jets.trycloudflare.com/api/auth/callback"
+  "https://queries-yacht-tt-mp.trycloudflare.com/auth/callback",
+  "https://queries-yacht-tt-mp.trycloudflare.com/auth/shopify/callback",
+  "https://queries-yacht-tt-mp.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

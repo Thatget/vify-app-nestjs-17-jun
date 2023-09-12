@@ -25,7 +25,7 @@ export class QuoteEntityController {
       const { shop } = res.locals.shopify.session;
       if (shop) {
         const foundStore = await this.storeService.findByShopDomain(shop);
-        console.log('foundStore', foundStore);
+        console.log('foundStore quote-enity api', foundStore);
         // Filter allowed quote entities
         // let value;
         const passedQuoteEntities = quoteEntities

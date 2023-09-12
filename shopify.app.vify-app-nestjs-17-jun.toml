@@ -1,0 +1,33 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "vify-app-nestjs-17-jun"
+client_id = "96b7bc915138d6e851c55cf27839bdec"
+application_url = "https://chad-experience-arc-whereas.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products,write_customers,write_orders,read_customers,read_orders"
+use_legacy_install_flow = true
+
+[auth]
+redirect_urls = [
+  "https://chad-experience-arc-whereas.trycloudflare.com/auth/callback",
+  "https://chad-experience-arc-whereas.trycloudflare.com/auth/shopify/callback",
+  "https://chad-experience-arc-whereas.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-04"
+
+[app_proxy]
+url = "https://monitor-describing-terrorism-stability.trycloudflare.com/api/proxy"
+subpath = "vify_rfq-f"
+prefix = "apps"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "brucenguyennewstore.myshopify.com"

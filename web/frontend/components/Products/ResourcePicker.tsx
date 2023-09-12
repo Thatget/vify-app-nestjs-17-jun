@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import { useAuthenticatedFetch } from '../../hooks'
 import type ProductSelect from '../../types/ProductSelect'
 import type Product from 'types/Product'
-import { Button, ContextualSaveBar, Loading, Toast, Text, ButtonGroup } from '@shopify/polaris'
+import { Button, ContextualSaveBar, Loading, Toast, ButtonGroup } from '@shopify/polaris'
 import { ResourcePicker } from '@shopify/app-bridge-react'
 import { type SelectPayload } from '@shopify/app-bridge/actions/ResourcePicker'
 
@@ -97,7 +97,9 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
     await fetch('/api/products/insert',
       {
         method: 'Post',
-        body: JSON.stringify(newList),
+        body: JSON.stringify({
+          products: newList
+        }),
         headers: { 'Content-Type': 'application/json' }
       }
     )
@@ -187,10 +189,10 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
                 alignItems="flex-end"
             >
               <ButtonGroup>
-              <Button onClick={() => {
+              {/* <Button onClick={() => {
                 toggleShowVariants()
               }}
-                >{!show ? 'Show Variants' : 'Hide Variants'}</Button>
+                >{!show ? 'Show Variants' : 'Hide Variants'}</Button> */}
                 <Button onClick={() => {
                   setOpen(true)
                 }} primary

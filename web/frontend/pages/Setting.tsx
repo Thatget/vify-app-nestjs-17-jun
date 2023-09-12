@@ -1,6 +1,5 @@
 import { Grid, Layout, LegacyCard, Page, Tabs } from '@shopify/polaris'
 import React, { useCallback, useContext, useState, type ReactElement } from 'react'
-import ProductSelector from '../components/Products/ProductSelector'
 import ConfigSetting from '../components/Setting/ConfigSetting'
 import ConfigSettingPreview from '../components/Setting/ConfigSettingPreview'
 import FormSetting from '../components/Setting/FormSetting'
@@ -47,7 +46,7 @@ const Setting = (): ReactElement | null => {
     try {
       const response = await fetch('/api/quote-entity', { method: 'GET' })
       const data = await response.json()
-      console.log('data fetch quote-entity',data)
+      console.log('data fetch quote-entity', data)
       if (data !== undefined) {
         let setting: SettingX = {}
         data.forEach((entity: QuoteEntity) => {
@@ -77,7 +76,7 @@ const Setting = (): ReactElement | null => {
   const configSetting = (
     <div style={{ marginTop: '10px' }}>
       <Grid>
-        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 8, xl: 8 }}>
+        <Grid.Cell columnSpan={{ xs: 4, sm: 4, md: 4, lg: 7, xl: 7 }}>
           <div style={{
             maxHeight: '80vh',
             overflow: 'auto'
@@ -88,12 +87,12 @@ const Setting = (): ReactElement | null => {
           </div>
         </Grid.Cell>
 
-        <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 2, lg: 4, xl: 4 }}>
+        <Grid.Cell columnSpan={{ xs: 2, sm: 2, md: 2, lg: 5, xl: 5 }}>
           <div style={{
             maxHeight: '80vh',
             overflow: 'auto'
           }}>
-            <LegacyCard title="" sectioned>
+            <LegacyCard title="Preview" sectioned>
               <ConfigSettingPreview/>
             </LegacyCard>
           </div>
@@ -109,7 +108,7 @@ const Setting = (): ReactElement | null => {
             maxHeight: '80vh',
             overflow: 'auto'
           }}>
-            <LegacyCard title="General Setting" sectioned>
+            <LegacyCard title="Form Setting" sectioned>
               <FormSetting/>
             </LegacyCard>
           </div>
@@ -119,7 +118,7 @@ const Setting = (): ReactElement | null => {
             maxHeight: '80vh',
             overflow: 'auto'
           }}>
-            <LegacyCard title="" sectioned>
+            <LegacyCard title="Preview" sectioned>
               <FormSettingPreview/>
             </LegacyCard>
           </div>
@@ -135,7 +134,7 @@ const Setting = (): ReactElement | null => {
             maxHeight: '80vh',
             overflow: 'auto'
           }}>
-            <LegacyCard title="General Setting" sectioned>
+            <LegacyCard title="ThanksPage Setting" sectioned>
               <ThanksFormSetting/>
             </LegacyCard>
           </div>
@@ -145,7 +144,7 @@ const Setting = (): ReactElement | null => {
             maxHeight: '80vh',
             overflow: 'auto'
           }}>
-            <LegacyCard title="" sectioned>
+            <LegacyCard title="Preview" sectioned>
               <ThanksPagePreview/>
             </LegacyCard>
           </div>
@@ -158,13 +157,11 @@ const Setting = (): ReactElement | null => {
     <Page fullWidth>
       <SaveSetting fetchQuoteEntity={fetchQuoteEntity} />
       <Layout sectioned>
-        {/* <div style={{ position: 'absolute', top: '0', left: '0.2' }}> */}
           <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>
             {selected === 0 && configSetting}
             {selected === 1 && formSetting}
             {selected === 2 && thanksSetting}
           </Tabs>
-        {/* </div> */}
       </Layout>
     </Page>
   )
