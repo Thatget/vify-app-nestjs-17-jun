@@ -5,17 +5,18 @@ import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
-import DeleteIcon from '@mui/icons-material/Delete'
-import IconButton from '@mui/material/IconButton'
+
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import { useAuthenticatedFetch } from '../../hooks'
 import Typography from '@mui/material/Typography'
 import type Product from '../../types/Product'
 import type Variant from '../../types/Variant'
-import { Pagination, Spinner, Divider, ContextualSaveBar, Listbox, ResourceList, IndexTable, Text, Collapsible } from '@shopify/polaris'
+import { Pagination, Spinner, Divider, ContextualSaveBar, Listbox, ResourceList, IndexTable, Text, Collapsible, Checkbox } from '@shopify/polaris'
 import PickingResource from './ResourcePicker'
 import imageNotFound from '../../assets/imageNotFound.png'
+
+import ProductList from './ProductList'
 
 interface responseProduct {
   products: object[]
@@ -29,7 +30,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
   const [visibleProduct, setVisibleProduct] = React.useState<Product[]>([])
   const [page, setPage] = React.useState<number>(0)
   const [count, setCount] = React.useState<number>(0)
-  const [open, setOpen] = React.useState(true)
+  const [active, setActive] = React.useState(false)
   const [show, setShow] = React.useState(false)
   const [productList, setProductList] = React.useState<Product[]>()
   // const handleClick = React.useCallback(() => {
@@ -39,6 +40,12 @@ export default function SelectedProductsList (): React.ReactElement | null {
   // }, [show])
   const toggleShowVariants = (showVariants): void => {
     setShow(showVariants)
+  }
+  // const activeButton = React.useCallback((childData: boolean) => {
+  //   setActive(childData)
+  // }, [])
+  const activeButton = (childData: boolean): void => {
+    setActive(childData)
   }
 
   const getProductList = (selectedItems: Product[]): void => {
@@ -112,14 +119,15 @@ export default function SelectedProductsList (): React.ReactElement | null {
   }
 
   const label = <>{page + 1}/{Math.ceil(count / 10)}</>
-  
+
   return (
+
     <>
-    <Box sx={{ width: '100%' }}>
+    {/* <Box sx={{ width: '100%' }}> */}
       <Box sx={{ width: '100%' }}>
         <Divider />
         <PickingResource handleUpdateProduct={getSelectedProducts} productList={getProductList} showVariants={toggleShowVariants}
-        // activeButton={show}
+        active={active}
         />
       </Box>
       <Box sx={{ width: '100%' }}>
@@ -127,70 +135,8 @@ export default function SelectedProductsList (): React.ReactElement | null {
           ? <div style={{ marginLeft: '50%' }}>
             <Spinner/>
           </div>
-          : <List dense sx={{ width: '100%', bgcolor: 'background.paper' }}>
-
-            {(visibleProduct !== undefined) && visibleProduct.length > 0 && visibleProduct.map((product: Product) => {
-              const labelId = `checkbox-list-secondary-label-${product.id}`
-              return (
-                <>
-
-                <ListItem
-                  key={product.id}
-                  secondaryAction={
-                    <>
-                    <IconButton edge="end" aria-label="delete" onClick={() => {
-                      setDeleteList(preSet => [...preSet, product.id])
-                    }}>
-                      <DeleteIcon/>
-                    </IconButton>
-                    {/* <IconButton edge="end" aria-label="delete" onClick={() => {
-                      handleClick()
-                    }}> */}
-                      {/* {show ? <ExpandLess /> : <ExpandMore />} */}
-                    {/* </IconButton> */}
-
-                    </>
-                  }
-                  disablePadding
-                >
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={''}
-                        src={`${(product.imageURL !== null) ? product.imageURL : imageNotFound}`}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText id={labelId} primary={<Typography
-                      variant="body1">{`${(product.title !== null) ? product.title : 'Default Product Title'}`}</Typography>}/>
-                  </ListItem>
-                </ListItem>
-                {JSON.parse(product.variants).map((variant: Variant) => {
-                  const variantID = `checkbox-list-secondary-label-${variant.id}`
-                  return (
-                    <>
-                    <div style={{ marginLeft: '60px' }}>
-                      <Collapsible
-                      id={variantID}
-                      open={show}
-                      transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
-                      expandOnPrint
-                      >
-                        <Listbox accessibilityLabel='Variant List' >
-                        <Listbox.Option value={variantID} >{`${(variant.title !== null) ? variant.title : 'Default Variant Title'}`}</Listbox.Option>
-                        {/* <Listbox.Loading accessibilityLabel='Loading' /> */}
-                      </Listbox>
-                      </Collapsible>
-                    </div>
-                    </>
-                  )
-                })}
-                <br/>
-                <Divider/>
-                </>
-              )
-            })}
-
-          </List>
+          // : undefined
+          : <ProductList visibleProduct={visibleProduct} activePicker={activeButton} />
         }
         <br/>
         <Box
@@ -212,7 +158,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
           />
         </Box>
       </Box>
-    </Box>
+
     {deleteList.length > 0 &&
           <ContextualSaveBar
           alignContentFlush
@@ -229,6 +175,8 @@ export default function SelectedProductsList (): React.ReactElement | null {
             }
           }}
         />}
+
     </>
+
   )
 }
