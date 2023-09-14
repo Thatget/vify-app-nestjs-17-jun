@@ -1,0 +1,28 @@
+.Polaris-Tabs__Tab--selected {
+  background: var(--p-color-bg-primary-subdued-hover) !important;
+  color: var(--p--color-text-primary) !important;
+}
+.Polaris-Tabs__Tab {
+  border-radius: var(--p-border-radius-1) !important;
+}
+.Polaris-Tabs {
+  gap: var(--p-space-1) !important;
+}
+.Polaris-Tabs__Tab {
+  background: var(--p-color-bg) ;
+  color: var(--p-color-text-subdued) !important;
+  padding: 0 !important;
+}
+.Polaris-Tabs__Title {
+  font-weight: var(--p-font-weight-semibold) !important;
+}
+.Polaris-Text--bodyMd {
+  font-size: var(--p-font-size-100) !important;
+  line-height: var(--p-font-line-height-2) !important;
+}
+.Polaris-Tabs__Tab :hover {
+  background: var(--p-color-bg) !important;
+}
+/* .Polaris-Tabs__Tab--selected : hover {
+  background: 'unset' !important
+} */

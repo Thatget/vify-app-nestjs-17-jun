@@ -10,6 +10,7 @@ import { useAuthenticatedFetch } from '../hooks'
 import { StoreContext, actions } from '../store'
 import type QuoteEntity from '../types/QuoteEntity'
 import SaveSetting from '../components/Setting/SaveSetting'
+import '../css/setting.css'
 
 type SettingX = Record<string, string | number | boolean>
 

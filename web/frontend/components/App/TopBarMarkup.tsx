@@ -3,15 +3,11 @@ import HomeIcon from '@mui/icons-material/Home'
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest'
 import TableViewIcon from '@mui/icons-material/TableView'
 import Button from '@mui/material/Button'
-import {
-  TopBar, Text
-} from '@shopify/polaris'
+import { TopBar, Text } from '@shopify/polaris'
 import { useAuthenticatedFetch } from '../../hooks'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StoreContext, actions } from '../../store'
-import Typography from '@mui/material/Typography'
-
 
 const pages = [
   {
@@ -38,7 +34,7 @@ const pages = [
 
 export const TopBarMarkup = () => {
   const fetch = useAuthenticatedFetch()
-  const { state, dispatch } = useContext(StoreContext)
+  const { dispatch } = useContext(StoreContext)
   const history = useNavigate()
   const handleCloseNavMenu = (href: string): void => {
     history(href)
@@ -84,8 +80,10 @@ export const TopBarMarkup = () => {
     <div style={{ display: 'flex' }}>
       <TopBar.Menu
         activatorContent={
-          <Button variant ="text" startIcon={<HomeIcon />}>
-              <Text variant='headingXs' as="h6">DASHBOARD</Text>
+          <Button variant="text" startIcon={<HomeIcon />}>
+            <Text variant="headingXs" as="h6">
+              DASHBOARD
+            </Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -101,10 +99,12 @@ export const TopBarMarkup = () => {
           }
         ]}
       />
-                  <TopBar.Menu
+      <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<SettingsSuggestIcon />}>
-            <Text variant='headingXs' as="h6">PRODUCTS</Text>
+            <Text variant="headingXs" as="h6">
+              PRODUCTS
+            </Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -123,7 +123,9 @@ export const TopBarMarkup = () => {
       <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<TableViewIcon />}>
-            <Text variant='headingXs' as="h6">QUOTES</Text>
+            <Text variant="headingXs" as="h6">
+              QUOTES
+            </Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -142,7 +144,9 @@ export const TopBarMarkup = () => {
       <TopBar.Menu
         activatorContent={
           <Button variant="text" startIcon={<SettingsSuggestIcon />}>
-            <Text variant='headingXs' as="h6">SETTING</Text>
+            <Text variant="headingXs" as="h6">
+              SETTING
+            </Text>
           </Button>
         }
         open={isSecondaryMenuOpen}
@@ -170,7 +174,7 @@ export const TopBarMarkup = () => {
           toggleIsSecondaryMenuOpen(3)
         }}
         onClose={() => {
-          toggleIsSecondaryMenuOpen(3)  
+          toggleIsSecondaryMenuOpen(3)
         }}
         actions={[
           {

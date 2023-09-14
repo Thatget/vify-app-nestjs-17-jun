@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { DataSource, Driver } from 'typeorm';
 
 export const databaseProviders = [
@@ -12,7 +13,7 @@ export const databaseProviders = [
         password: 'root',
         database: 'vify_database',
         synchronize: true,
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        entities: [join(__dirname, '/../**/*.entity{.ts,.js}')],
       });
       const isInit = dataSource.isInitialized;
       console.log('isInit', isInit);

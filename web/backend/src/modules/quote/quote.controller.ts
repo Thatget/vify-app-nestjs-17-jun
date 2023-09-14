@@ -68,7 +68,6 @@ export class QuoteController {
         sort,
         options,
       );
-
       return res.status(200).send({ quotes, count });
     } catch (error) {
       logger.error(error.message);

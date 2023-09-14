@@ -122,12 +122,14 @@ const QuoteTable: React.FC<IPropQuoteTable> = (props) => {
   useEffect(() => {
     const temp: JSX.Element[][] = []
     countIndex = index
+    
     quotesTables.map((quote: Quote) => {
       const tempColumn: JSX.Element[] = []
       tempColumn[0] = <>{countIndex.toString()}</>
       tempColumn[1] = <>{truncateRowValue(quote.name)}</>
       tempColumn[2] = <>{quote.email}</>
       tempColumn[3] = <>{quote.created_at}</>
+      console.log('quote.created_at',quote.created_at)
       tempColumn[4] = (
         <div style={{}}>
           <Thumbnail

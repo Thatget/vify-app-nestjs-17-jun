@@ -89,6 +89,9 @@ const App: React.FC<IApplicationProps> = (props) => {
     <Toast onDismiss={toggleToastActive} content="Changes saved" />
       )
     : null
+    const pathname = {
+
+    }
 
   return (
     <PolarisProvider>
@@ -121,17 +124,18 @@ const App: React.FC<IApplicationProps> = (props) => {
             },
             {
               label: 'Products',
-              destination: '/Products'
+              destination: '/products'
             },
             {
               label: 'Quotes',
-              destination: '/Quotes'
+              destination: '/quotes'
             },
             {
               label: 'Setting',
-              destination: '/Setting'
+              destination: '/setting'
             }
-          ]} />
+          ]}
+          />
       </ThemeProvider>
     </PolarisProvider>
   )
