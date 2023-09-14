@@ -76,6 +76,7 @@ export class StoreFrontendController {
   async findSetting(@Query() query, @Res() res: Response) {
     let show = true;
     const settings: { name: string; value: string }[] = [];
+    console.log('quote_setting');
     try {
       const shop = query.shop;
       console.log('shop quote_setting api', shop);

@@ -64,7 +64,7 @@ function Index() {
 
   useEffect(() => {
     const checkExist = document.querySelector(".product-form__input")
-    console.log('checkExist 1.4',checkExist);
+    console.log('checkExist 1.3',checkExist);
     
     if(checkExist !== null){
       document
@@ -81,16 +81,40 @@ function Index() {
     
   }, [selectedVariant]);
 
+  // useEffect(() => {
+  //   async function fetchQuote() {
+  //     console.log("effect fetchQuote");
+      
+  //     await fetch("/apps/vify_rfq-f/quote_setting")
+  //       .then((response) => response.json())
+  //       .then((data: dataReturn) => {
+  //         setSetting(data);
+  //         console.log("Data from Setting",data);
+          
+  //         setDataSettings(data.settings);
+  //         if (data.show === true) {
+  //           const show_request_for_quote = showAndHide(data.settings);
+  //           setCheck(true && show_request_for_quote);
+  //         } else {
+  //           // setActiveApiProduct(true);
+  //           toggleApiProduct()
+  //         }
+  //       });
+  //       // fetchQuoteSetting()
+  //   }
+  //   fetchQuote();
+  // }, []);
   useEffect(() => {
     async function fetchQuote() {
       console.log("effect fetchQuote");
       
-      const fetchQuoteSetting = await fetch("/apps/vify_rfq-f/quote_setting")
+       await fetch("/apps/vify_rfq-f/quote_setting")
         .then((response) => response.json())
-        .then((data: dataReturn) => {
-          setSetting(data);
+        .then((data: dataReturn)  => {
+          if(data !== undefined){
+            setSetting(data);
           console.log("Data from Setting",data);
-          
+            
           setDataSettings(data.settings);
           if (data.show === true) {
             const show_request_for_quote = showAndHide(data.settings);
@@ -99,7 +123,12 @@ function Index() {
             // setActiveApiProduct(true);
             toggleApiProduct()
           }
+          } else {
+            console.log('Can not get data from Quote_setting')
+          }
+          
         });
+        // void fetchQuoteSetting()
     }
     fetchQuote();
   }, []);

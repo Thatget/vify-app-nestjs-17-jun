@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Card,
   CardMedia,
   IconButton,
-  TextField,
   Typography,
-  Button,
   Modal,
 } from "@mui/material";
 import { useForm, useWatch } from "react-hook-form";

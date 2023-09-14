@@ -7,3 +7,10 @@
 .Polaris-TopBar__LogoDisplayControl {
   flex: unset
 }
+
+button:focus.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+  background: var(--p-color-bg-hover) !important;
+}
+.Polaris-Text--root.Polaris-Text--headingXs {
+  color: black
+}

@@ -1,20 +1,10 @@
 import * as React from 'react'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 
-import ExpandMore from '@mui/icons-material/ExpandMore'
-import ExpandLess from '@mui/icons-material/ExpandLess'
 import { useAuthenticatedFetch } from '../../hooks'
-import Typography from '@mui/material/Typography'
 import type Product from '../../types/Product'
-import type Variant from '../../types/Variant'
-import { Pagination, Spinner, Divider, ContextualSaveBar, Listbox, ResourceList, IndexTable, Text, Collapsible, Checkbox } from '@shopify/polaris'
+import { Pagination, Spinner, ContextualSaveBar } from '@shopify/polaris'
 import PickingResource from './ResourcePicker'
-import imageNotFound from '../../assets/imageNotFound.png'
 
 import ProductList from './ProductList'
 
@@ -33,6 +23,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
   const [active, setActive] = React.useState(false)
   const [show, setShow] = React.useState(false)
   const [productList, setProductList] = React.useState<Product[]>()
+  const [state, setState] = React.useState(false)
 
   const toggleShowVariants = (showVariants): void => {
     setShow(showVariants)
@@ -43,7 +34,17 @@ export default function SelectedProductsList (): React.ReactElement | null {
   const activeButton = (childData: boolean): void => {
     setActive(childData)
   }
-
+  const changeState = (): void => {
+    setState(state => !state)
+  }
+  // const pushDeleteList = React.useCallback((childData: number[]): void => {
+  //   console.log('childData',childData)
+  //   setDeleteList(childData)
+  // }, [])
+  const pushDeleteList = (childData: number[]): void => {
+    console.log('childData', childData)
+    setDeleteList(childData)
+  }
   const getProductList = (selectedItems: Product[]): void => {
     setProductList(selectedItems)
     console.log('selectedItems', selectedItems)
@@ -92,6 +93,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
   React.useEffect(() => {
     console.log('delete')
     const subSet = new Set(deleteList)
+    console.log('deleteList', deleteList)
     let resultArray = []
     if (currentProducts !== undefined) {
       resultArray = currentProducts.filter((item) => !subSet.has(item.id))
@@ -125,9 +127,9 @@ export default function SelectedProductsList (): React.ReactElement | null {
     <>
     {/* <Box sx={{ width: '100%' }}> */}
       <Box sx={{ width: '100%' }}>
-        <Divider />
+        {/* <Divider /> */}
         <PickingResource handleUpdateProduct={getSelectedProducts} productList={getProductList} showVariants={toggleShowVariants}
-        active={active}
+        active={active} state={state}
         />
       </Box>
       <Box sx={{ width: '100%' }}>
@@ -136,7 +138,7 @@ export default function SelectedProductsList (): React.ReactElement | null {
             <Spinner/>
           </div>
           // : undefined
-          : <ProductList visibleProduct={visibleProduct} activePicker={activeButton} />
+          : <ProductList visibleProduct={visibleProduct} activePicker={activeButton} deleteList={pushDeleteList} state={changeState}/>
         }
         <br/>
         <Box

@@ -34,17 +34,15 @@ export class ProductController {
       console.log('shop api products', shop);
 
       const foundStore = await this.storeService.findByShopDomain(shop);
-      console.log('foundStore', foundStore);
-
+      // console.log('foundStore', foundStore);
       const [products, count] = await this.productService.findAll(
         foundStore.id,
         page * 10,
         10,
       );
       const test = await this.productService.findByStoreId(foundStore.id);
-      console.log('test', test);
-
-      console.log('finished', { products, count });
+      // console.log('test', test);
+      // console.log('finished', { products, count });
       return res.status(200).send({ products, count });
     } catch (e) {
       return res.status(500).send({ message: 'Failed when get products' });
@@ -125,7 +123,8 @@ export class ProductController {
     const rawData: CreateProductDto[] = [];
     const shopDomain = res.locals.shopify.session.shop;
     const foundStore = await this.storeService.findByShopDomain(shopDomain);
-    req.body.map(async (result) => {
+    console.log('req.body', req.body);
+    req.body.products.map(async (result) => {
       const temp = {
         id: result.id,
         title: result.title || '',

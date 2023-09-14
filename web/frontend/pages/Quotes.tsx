@@ -41,10 +41,12 @@ export default function Quotes (): ReactElement | null {
   const [active, setActive] = useState(false)
   const [textSearch, setTextSearch] = useState<string>('')
   const [range, setRange] = useState<DateRange>({
-    title: 'Today',
-    alias: 'today',
+    title: 'Last 7 days',
+    alias: 'last7days',
     period: {
-      since: today,
+      since: new Date(
+        new Date(new Date().setDate(today.getDate() - 6)).setHours(0, 0, 0, 0)
+      ),
       until: today
     }
   })
@@ -95,6 +97,7 @@ export default function Quotes (): ReactElement | null {
   React.useEffect(() => {
     const fetchQuote = async (): Promise<void> => {
       const [quotes, count] = await fetchData(skip, debouncedSearchTerm, range.period.since, range.period.until, sort)
+
       setQuote(quotes)
       setCount(count)
     }

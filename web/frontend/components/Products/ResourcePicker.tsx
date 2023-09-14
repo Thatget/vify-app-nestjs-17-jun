@@ -13,6 +13,7 @@ interface ResourcePickerProp {
   productList: (selectedItems: Product[]) => void
   showVariants: (show: boolean) => void
   active: boolean
+  state: boolean
 }
 
 const PickingResource: React.FC<ResourcePickerProp> = (props) => {
@@ -28,8 +29,9 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
 
   useEffect(() => {
     console.log('props.active', props.active)
-    setOpen(props.active)
-  }, [props.active])
+    if (props.active) setOpen(true)
+    // else setOpen(false)
+  }, [props.active,props.state])
 
   const toggleShowVariants = useCallback(() => {
     setShow(show => {
@@ -187,23 +189,6 @@ const PickingResource: React.FC<ResourcePickerProp> = (props) => {
 
   return (
         <>
-        <br/>
-            <Box
-                display="flex"
-                justifyContent="flex-end"
-                alignItems="flex-end"
-            >
-              {/* <ButtonGroup>
-              <Button onClick={() => {
-                toggleShowVariants()
-              }}
-                >{!show ? 'Show Variants' : 'Hide Variants'}</Button> */}
-                <Button onClick={() => {
-                  setOpen(true)
-                }} primary
-                >Add Products</Button>
-                </ButtonGroup> */}
-            </Box>
             <ResourcePicker
                 resourceType='Product'
                 open={open}
